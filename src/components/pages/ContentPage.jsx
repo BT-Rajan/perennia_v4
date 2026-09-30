@@ -4,6 +4,7 @@ import TopBar from "../layout/TopBar.jsx";
 import SiteFooter from "../layout/SiteFooter.jsx";
 import GlassPanel from "../ui/GlassPanel.jsx";
 import Markdown from "../ui/Markdown.jsx";
+import PageIllustration, { asideProps } from "../ui/PageIllustration.jsx";
 import { COPY } from "../../data/content.js";
 import { PAGE_ILLUSTRATIONS } from "../../data/pageIllustrations.js";
 import "./ContentPage.css";
@@ -16,22 +17,6 @@ import "./ContentPage.css";
  * content record (fetched from the backend, see src/data/siteContent.js)
  * renders inside the shell.
  */
-function Illustration({ item, lang, className = "", sizes }) {
-  return (
-    <figure className={`content-illustration ${className}`.trim()}>
-      <img
-        src={item.src}
-        srcSet={item.srcSet}
-        sizes={sizes}
-        width={item.width}
-        height={item.height}
-        alt={item.alt[lang] ?? item.alt.en}
-        decoding="async"
-      />
-    </figure>
-  );
-}
-
 export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick }) {
   const { pages, copy, lang, features } = useLang();
   const meta = pages[pageId];
@@ -65,7 +50,7 @@ export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick
         </div>
 
         {illustration?.placement === "banner" && (
-          <Illustration item={illustration} lang={lang} sizes="(max-width: 1240px) calc(100vw - 48px), 1180px" />
+          <PageIllustration item={illustration} lang={lang} sizes="(max-width: 1240px) calc(100vw - 48px), 1180px" />
         )}
 
         {illustration?.placement === "aside" ? (
@@ -73,12 +58,7 @@ export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick
             <div className="content-shell-text">
               <Markdown source={meta.body} cta={cta} />
             </div>
-            <Illustration
-              item={illustration}
-              lang={lang}
-              className={`content-aside${illustration.portrait ? " content-aside--portrait" : ""}`}
-              sizes="(max-width: 1023px) calc(100vw - 48px), 440px"
-            />
+            <PageIllustration item={illustration} lang={lang} {...asideProps(illustration)} />
           </GlassPanel>
         ) : (
           <GlassPanel className="content-shell" as="section">

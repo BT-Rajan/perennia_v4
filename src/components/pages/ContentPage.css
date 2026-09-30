@@ -91,7 +91,7 @@
 @media (max-width: 1023px) {
   .content-shell--aside { grid-template-columns: 1fr; }
   .content-aside { position: static; order: -1; }
-  .content-aside--portrait { max-width: 280px; justify-self: center; }
+  .content-aside--portrait { max-width: 220px; justify-self: center; }
 }
 
 
