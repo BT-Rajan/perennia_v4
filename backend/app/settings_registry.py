@@ -186,7 +186,7 @@ _DEFS: list[SettingDef] = [
 
     # contact -----------------------------------------------------------
     SettingDef("contact.email", "contact", "Contact email", SettingType.EMAIL, ""),
-    SettingDef("contact.phone", "contact", "Contact phone", SettingType.STRING, ""),
+    SettingDef("contact.phone", "contact", "Contact phone", SettingType.STRING, "+965 9933 1344"),
     SettingDef("contact.whatsapp_number", "contact", "WhatsApp number", SettingType.STRING, "",
                help_text="Include country code, digits only, e.g. 96599999999."),
     SettingDef("contact.address", "contact", "Address", SettingType.TEXT, {"en": "", "ar": ""}, i18n=True),

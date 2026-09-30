@@ -1,21 +1,39 @@
-/* Two classes (.glass-panel.booking-panel) so this background wins over
-   the shared, near-transparent glass-panel default regardless of CSS
-   import order — otherwise the chat transcript behind shows through
-   and its text visually collides with the booking form's text. */
-.glass-panel.booking-panel {
-  position: absolute;
+/* A modal over the whole page: fixed (not absolute, which scrolled
+   with the page and sat under the header), above the header (200) and
+   the chat launcher/widget (999/1000), and fully opaque. The selectors
+   are listed with and without [data-surface-style] so the theme's
+   "outline"/"solid"/"elevated" glass-panel variants (themeVariants.css)
+   can't make it see-through again. */
+.glass-panel.booking-panel,
+[data-surface-style] .glass-panel.booking-panel {
+  position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 1100;
   padding: var(--space-5);
   overflow-y: auto;
-  /* Was a literal navy-blue rgba() left over from the site's old dark-
-     navy palette — reads as a mismatched, third-party-feeling widget
-     against the current near-black/gold design system. Derived from
-     --brand-bg instead, so it re-themes along with everything else. */
-  background: color-mix(in srgb, var(--brand-bg) 97%, transparent);
-  backdrop-filter: blur(28px) saturate(140%);
-  -webkit-backdrop-filter: blur(28px) saturate(140%);
+  overscroll-behavior: contain;
+  border-radius: 0;
+  background: color-mix(in srgb, var(--brand-bg) 96%, white);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   animation: bk-in 0.25s var(--ease);
+}
+
+/* Desktop/tablet: a centred dialog of readable width over a dimmed
+   page, instead of a form stretched edge to edge. */
+@media (min-width: 768px) {
+  .glass-panel.booking-panel,
+  [data-surface-style] .glass-panel.booking-panel {
+    inset: 0;
+    margin: auto;
+    width: min(640px, calc(100vw - 48px));
+    height: fit-content;
+    max-height: calc(100dvh - 48px);
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.72), 0 24px 64px rgba(0, 0, 0, 0.6);
+  }
 }
 
 .booking-close {
@@ -64,6 +82,3 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 767px) {
-  .booking-panel { border-radius: 0; }
-}

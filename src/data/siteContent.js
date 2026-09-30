@@ -249,7 +249,7 @@ function apiContact(publicConfig) {
   };
 }
 
-const FALLBACK_CONTACT = { email: "", phone: "", whatsappNumber: "", addressByLang: { en: "", ar: "" } };
+const FALLBACK_CONTACT = { email: "", phone: "+965 9933 1344", whatsappNumber: "", addressByLang: { en: "", ar: "" } };
 
 function apiTheme(publicConfig) {
   return {
