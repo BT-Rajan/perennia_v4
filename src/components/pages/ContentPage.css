@@ -26,6 +26,24 @@
   margin: 0 auto;
 }
 
+/* Page illustration banner (src/data/pageIllustrations.js): full content
+   width, on a light card the artwork was flattened onto, so it reads
+   the same in the dark and light themes. */
+.content-illustration {
+  width: 100%;
+  margin: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #f5f7fb;
+  border: 1px solid color-mix(in srgb, var(--gold) 18%, transparent);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+}
+.content-illustration img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .content-tagline {
   text-align: center;
   /* same flex-item max-content sizing issue as .chat-tagline — see
