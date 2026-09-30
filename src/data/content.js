@@ -35,7 +35,7 @@ export const NAV = {
 // navigate to a page — clicking one hands its `question` straight to
 // the AI Assistant chat (see Hero.jsx handleTopicClick), so the card
 // IS the entry point into a relevant conversation, not a page link.
-export const HOME_TOPICS = {
+const HOME_TOPICS = {
   en: [
     {
       id: "starting-digital",
@@ -87,7 +87,7 @@ export const HOME_TOPICS = {
 // Homepage sectors (HeroSituations) — business types Perennia
 // understands particularly well. Framed as relevance, not a limit on
 // who we work with, and with no compliance/certification claims.
-export const HOME_SECTORS = {
+const HOME_SECTORS = {
   en: [
     { id: "trading", label: "Trading & Distribution", body: "Customers, orders, inventory, procurement and delivery, connected through business software built around how you trade." },
     { id: "professional-services", label: "Professional Services", body: "Workflows, approvals, documents and client management, made more connected and efficient through automation and custom systems." },
@@ -105,7 +105,7 @@ export const HOME_SECTORS = {
 // Homepage capabilities (HeroCapabilities in HeroShared.jsx) — what
 // Perennia does, as three connected capabilities. Static content, not
 // links; the section's own CTAs lead to booking / the products page.
-export const HOME_CAPABILITIES = {
+const HOME_CAPABILITIES = {
   en: [
     {
       id: "technology",
@@ -152,7 +152,7 @@ export const HOME_CAPABILITIES = {
 // the existing site already supports (Kuwait-based per About; Arabic/
 // English per the FAQ/Products page; in person or virtual per Contact).
 // No customer names, counts, offices or partnerships.
-export const HOME_LOCAL_POINTS = {
+const HOME_LOCAL_POINTS = {
   en: [
     { id: "kuwait", label: "Based in Kuwait", body: "Working with businesses across the GCC, in person or virtually." },
     { id: "bilingual", label: "Arabic and English", body: "Interfaces, content and AI assistants that work fully in both languages, right-to-left included — as on this site." },
@@ -168,7 +168,7 @@ export const HOME_LOCAL_POINTS = {
 // Homepage process (HeroProcess in HeroShared.jsx) — how Perennia takes
 // a business from a problem to a working solution. Rendered as one
 // ordered list: horizontal timeline on desktop, vertical on mobile.
-export const HOME_PROCESS = {
+const HOME_PROCESS = {
   en: [
     { id: "understand", label: "Understand", body: "A 30-minute discovery conversation to understand the business, problem and desired outcome." },
     { id: "assess", label: "Assess", body: "Examine the existing process, identify gaps and determine where technology can genuinely help." },
@@ -191,7 +191,7 @@ export const HOME_PROCESS = {
 
 // Homepage featured work (HeroWork) — the JDK Factory ERP
 // lifecycle, every stage of which is implemented in that project.
-export const HOME_CASE_STAGES = {
+const HOME_CASE_STAGES = {
   en: ["Sales", "Feasibility", "Quotation", "Order", "Procurement", "Inventory", "Production", "Delivery", "Payment"],
   ar: ["المبيعات", "الجدوى", "عرض السعر", "الطلب", "المشتريات", "المخزون", "الإنتاج", "التسليم", "الدفع"],
 };
@@ -202,7 +202,7 @@ export const HOME_CASE_STAGES = {
 // already named by the featured case study). Excluded pending
 // confirmation: projects whose status or client relationship isn't
 // documented (see the Phase 1 portfolio report).
-export const HOME_OTHER_WORK = {
+const HOME_OTHER_WORK = {
   en: [
     {
       id: "field-sales",
@@ -268,7 +268,7 @@ export const HOME_OTHER_WORK = {
 // Homepage trust section (HeroTrust in HeroShared.jsx) — how Perennia
 // approaches delivery, grouped into four points rather than a long
 // feature list. These describe an approach, not guarantees.
-export const HOME_TRUST_POINTS = {
+const HOME_TRUST_POINTS = {
   en: [
     { id: "business-first", label: "Business first", body: "We understand the business before building, and design around your actual process." },
     { id: "careful", label: "Careful implementation", body: "We introduce technology carefully to minimise disruption, and help your people adopt and use it." },
@@ -343,6 +343,16 @@ export const COPY = {
       supportingText: "Perennia helps GCC businesses adopt, build and scale technology — from their first digital initiative to practical AI and larger-scale transformation.",
       ctaPrimary: "Book a 30-Minute Discovery Meeting",
       ctaSecondary: "Explore What We Build",
+      situations: HOME_TOPICS.en,
+      sectors: HOME_SECTORS.en,
+      capabilities: HOME_CAPABILITIES.en,
+      localPoints: HOME_LOCAL_POINTS.en,
+      processSteps: HOME_PROCESS.en,
+      caseStages: HOME_CASE_STAGES.en,
+      otherWork: HOME_OTHER_WORK.en,
+      trustPoints: HOME_TRUST_POINTS.en,
+      casePageSlug: "jdk-factory-erp",
+      caseImageUrl: "/static/case-studies/jdk-erp/sales-order.png",
       situationsKicker: "Who we work with",
       situationsHeading: "Technology should fit the business — not force the business into a template.",
       situationsIntro: "We work with SMEs in Kuwait and the wider GCC, typically organisations of around 100 to 500 people. Whatever stage your business is at, we help you adopt technology reliably, practically and with a clear path forward.",
@@ -480,6 +490,16 @@ export const COPY = {
       supportingText: "تساعد بيرينيا الشركات في دول الخليج على تبنّي التقنية وبنائها وتوسيعها — من أول مبادرة رقمية إلى الذكاء الاصطناعي العملي والتحول على نطاق أوسع.",
       ctaPrimary: "احجز اجتماعًا استكشافيًا لمدة 30 دقيقة",
       ctaSecondary: "استكشف ما نبنيه",
+      situations: HOME_TOPICS.ar,
+      sectors: HOME_SECTORS.ar,
+      capabilities: HOME_CAPABILITIES.ar,
+      localPoints: HOME_LOCAL_POINTS.ar,
+      processSteps: HOME_PROCESS.ar,
+      caseStages: HOME_CASE_STAGES.ar,
+      otherWork: HOME_OTHER_WORK.ar,
+      trustPoints: HOME_TRUST_POINTS.ar,
+      casePageSlug: "jdk-factory-erp",
+      caseImageUrl: "/static/case-studies/jdk-erp/sales-order.png",
       situationsKicker: "مع من نعمل",
       situationsHeading: "يجب أن تناسب التقنية الأعمال — لا أن تُجبر الأعمال على قالب جاهز.",
       situationsIntro: "نعمل مع الشركات الصغيرة والمتوسطة في الكويت ودول الخليج، وعادةً ما تضم نحو 100 إلى 500 موظف. أيًّا كانت المرحلة التي تمر بها أعمالك، نساعدك على تبنّي التقنية بشكل موثوق وعملي، مع مسار واضح للمضي قدمًا.",

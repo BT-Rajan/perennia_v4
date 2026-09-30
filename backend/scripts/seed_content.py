@@ -22,6 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from app.db import Base, engine, session_scope
 from app.models import ContentPage, FaqItem, SiteSetting
 from app import content_service
+from app.settings_registry import get_def
 from app.settings_service import set_many
 
 FRONTEND_CONTENT_DIR = Path(__file__).resolve().parent.parent.parent / "src" / "content"
@@ -113,127 +114,10 @@ FAQ_SEED = [
                  "وسنوفر لك ما يناسبك."}},
 ]
 
-# Must stay in sync with copy.home's default in settings_registry.py —
-# get_setting() only merges copy.home at the top level (per-language,
-# not per-field), so a DB row missing a field here would silently drop
-# that field out of the live response rather than falling through to
-# the registry default. See withHomeFallbacks in Hero.jsx for the
-# frontend-side safety net this is meant to make unnecessary.
-COPY_HOME = {
-    "en": {"welcome": "Welcome to Perennia", "tagline": "Visit our V-Lounge for more",
-           "hero_statement": "", "eyebrow": "Practical AI. Affordable Innovation.",
-           "assistant_label": "Try the bilingual assistant we built — the same kind of tool we build for clients.",
-           "tagline_line1": "Technology that moves", "tagline_line2": "your business forward.",
-           "supporting_text": "Perennia helps GCC businesses adopt, build and scale technology — from their "
-                              "first digital initiative to practical AI and larger-scale transformation.",
-           "cta_primary": "Book a 30-Minute Discovery Meeting", "cta_secondary": "Explore What We Build",
-           "situations_kicker": "Who we work with",
-           "situations_heading": "Technology should fit the business — not force the business into a template.",
-           "situations_intro": "We work with SMEs in Kuwait and the wider GCC, typically organisations of around 100 to 500 people. "
-                               "Whatever stage your business is at, we help you adopt technology reliably, practically and with a clear path forward.",
-           "sectors_heading": "Businesses we understand particularly well",
-           "sectors_note": "Not in one of these? The approach is the same: understand how your business works, then build the technology around it.",
-           "work_kicker": "Our work",
-           "work_heading": "Different businesses have different technology problems.",
-           "work_intro": "We understand the problem first, then build the appropriate solution — "
-                         "from a factory's complete operation to a sales team in the field.",
-           "work_other_label": "Other work",
-           "work_need_label": "The need",
-           "work_built_label": "What we built",
-           "case_kicker": "Featured work",
-           "case_heading": "JDK Factory ERP: one system around a manufacturing workflow.",
-           "case_body": "We mapped how a manufacturing business actually runs — "
-                        "from sales and feasibility through procurement, production, delivery and payment — and built its ERP around that workflow.",
-           "case_link": "View Case Study",
-           "case_image_alt": "The completed sales order in JDK Factory ERP, linked to its quotation, finance record and deliveries",
-           "trust_kicker": "What sets Perennia apart",
-           "trust_heading": "Reliable technology induction for your business.",
-           "trust_intro": "Technology only creates value when it works in the real business. Building software is one part of that — "
-                          "we focus on the complete journey, from understanding the business through implementation, adoption and change.",
-           "trust_contrast_label_a": "Software delivery",
-           "trust_contrast_a": "“We can build software.”",
-           "trust_contrast_label_b": "Technology induction",
-           "trust_contrast_b": "“We can help you introduce technology into your business reliably.”",
-           "discovery_heading": "Let's understand the problem before deciding what to build.",
-           "discovery_body": "In 30 minutes we look at your business, your current process or problem, "
-                             "the outcome you want, whether technology can help — and what the sensible "
-                             "next step is.",
-           "discovery_note": "A working conversation, not a sales pitch — no solution or price is committed in the meeting.",
-           "capabilities_heading": "Three capabilities. One technology partner.",
-           "capabilities_intro": "Understand the business. Decide what technology is needed. Build it. "
-                                 "Put it into operation. Help the business adapt.",
-           "capabilities_roles": "Work with us as an advisor, an implementation partner, a software builder, "
-                                 "an AI implementation partner — or a combination of these.",
-           "capabilities_scope_note": "Scope and investment are agreed once we understand your requirements.",
-           "local_kicker": "Kuwait and the GCC",
-           "local_heading": "Technology built with your business environment in mind.",
-           "local_intro": "Perennia combines technology expertise with practical understanding of how businesses operate in Kuwait and the wider GCC.",
-           "process_heading": "Start with the business. Build the technology around it.",
-           "process_intro": "We normally take responsibility for the whole journey — from the first conversation "
-                            "to the solution in operation — so you are not left coordinating several vendors.",
-           "principles": ["Practical AI, not fashionable AI",
-                          "Experienced technology professionals",
-                          "Transparent scope and investment"],
-           "example_prompts": ["Where should my business start with technology?",
-                                "Where could AI genuinely help my business?",
-                                "What happens in a discovery meeting?"],
-           "hint": "Start chatting", "lang_switch": "AR | عربي"},
-    "ar": {"welcome": "مرحبا بك في بيرينيا", "tagline": "زوروا V-Lounge الخاص بنا لمزيد من المعلومات",
-           "hero_statement": "", "eyebrow": "ذكاء اصطناعي عملي. ابتكار في المتناول.",
-           "assistant_label": "جرّب المساعد ثنائي اللغة الذي بنيناه — من نوع الأدوات التي نبنيها لعملائنا.",
-           "tagline_line1": "تقنية تدفع", "tagline_line2": "أعمالك إلى الأمام.",
-           "supporting_text": "تساعد بيرينيا الشركات في دول الخليج على تبنّي التقنية وبنائها وتوسيعها — من أول "
-                              "مبادرة رقمية إلى الذكاء الاصطناعي العملي والتحول على نطاق أوسع.",
-           "cta_primary": "احجز اجتماعًا استكشافيًا لمدة 30 دقيقة", "cta_secondary": "استكشف ما نبنيه",
-           "situations_kicker": "مع من نعمل",
-           "situations_heading": "يجب أن تناسب التقنية الأعمال — لا أن تُجبر الأعمال على قالب جاهز.",
-           "situations_intro": "نعمل مع الشركات الصغيرة والمتوسطة في الكويت ودول الخليج، وعادةً ما تضم نحو 100 إلى 500 موظف. "
-                               "أيًّا كانت المرحلة التي تمر بها أعمالك، نساعدك على تبنّي التقنية بشكل موثوق وعملي، مع مسار واضح للمضي قدمًا.",
-           "sectors_heading": "أعمال نفهمها جيدًا بشكل خاص",
-           "sectors_note": "لست ضمن هذه القطاعات؟ النهج نفسه: نفهم طريقة عمل أعمالك، ثم نبني التقنية حولها.",
-           "work_kicker": "أعمالنا",
-           "work_heading": "لكل عمل مشكلاته التقنية الخاصة.",
-           "work_intro": "نفهم المشكلة أولًا، ثم نبني الحل المناسب — "
-                         "من التشغيل الكامل لمصنع إلى فريق مبيعات في الميدان.",
-           "work_other_label": "أعمال أخرى",
-           "work_need_label": "الحاجة",
-           "work_built_label": "ما بنيناه",
-           "case_kicker": "عمل مميز",
-           "case_heading": "نظام ERP لمصنع JDK: نظام واحد حول سير عمل تصنيعي.",
-           "case_body": "رسمنا طريقة عمل شركة تصنيع فعليًا — "
-                        "من المبيعات والجدوى إلى المشتريات والإنتاج والتسليم والدفع — وبنينا نظام ERP الخاص بها حول سير العمل هذا.",
-           "case_link": "عرض دراسة الحالة",
-           "case_image_alt": "أمر بيع مكتمل في نظام ERP لمصنع JDK، مرتبط بعرض السعر والسجل المالي والتسليمات",
-           "trust_kicker": "ما يميّز بيرينيا",
-           "trust_heading": "إدخال موثوق للتقنية إلى أعمالك.",
-           "trust_intro": "لا تُحدث التقنية قيمة إلا عندما تعمل في واقع الأعمال. بناء البرمجيات جزء من ذلك فقط — "
-                          "نحن نركّز على الرحلة كاملة، من فهم الأعمال إلى التنفيذ والاعتماد والتكيّف مع التغيير.",
-           "trust_contrast_label_a": "تسليم البرمجيات",
-           "trust_contrast_a": "«نستطيع بناء البرمجيات.»",
-           "trust_contrast_label_b": "إدخال التقنية",
-           "trust_contrast_b": "«نساعدك على إدخال التقنية إلى أعمالك بشكل موثوق.»",
-           "discovery_heading": "لنفهم المشكلة قبل أن نقرر ما يجب بناؤه.",
-           "discovery_body": "خلال 30 دقيقة نتعرّف على أعمالك، والعملية أو المشكلة الحالية، والنتيجة التي "
-                             "تريدها، وما إذا كانت التقنية قادرة على المساعدة — وما الخطوة التالية المناسبة.",
-           "discovery_note": "محادثة عمل، لا عرض مبيعات — لا نلتزم في الاجتماع بحل أو سعر.",
-           "capabilities_heading": "ثلاث قدرات. شريك تقني واحد.",
-           "capabilities_intro": "نفهم الأعمال. نحدد التقنية المطلوبة. نبنيها. نضعها قيد التشغيل. "
-                                 "ونساعد الأعمال على التكيّف.",
-           "capabilities_roles": "اعمل معنا كمستشار، أو شريك تنفيذ، أو مطوّر برمجيات، أو شريك لتطبيق الذكاء "
-                                 "الاصطناعي — أو مزيج من ذلك.",
-           "capabilities_scope_note": "نتفق على نطاق العمل والتكلفة بعد فهم متطلباتك.",
-           "local_kicker": "الكويت ودول الخليج",
-           "local_heading": "تقنية مبنية مع مراعاة بيئة أعمالك.",
-           "local_intro": "تجمع بيرينيا بين الخبرة التقنية والفهم العملي لطريقة عمل الشركات في الكويت ودول الخليج.",
-           "process_heading": "ابدأ بالأعمال. وابنِ التقنية حولها.",
-           "process_intro": "نتحمّل عادةً مسؤولية الرحلة كاملة — من المحادثة الأولى حتى تشغيل الحل — فلا تضطر "
-                            "إلى التنسيق بين عدة موردين.",
-           "principles": ["ذكاء اصطناعي عملي، لا لمجرد مواكبة الموضة",
-                          "خبراء تقنية ذوو خبرة", "نطاق عمل وتكلفة واضحان"],
-           "example_prompts": ["من أين تبدأ أعمالي مع التقنية؟", "أين يمكن للذكاء الاصطناعي أن يفيد أعمالي فعلًا؟",
-                                "ماذا يحدث في الاجتماع الاستكشافي؟"],
-           "hint": "ابدأ المحادثة", "lang_switch": "EN | English"},
-}
+# The homepage copy (text and lists) has one source: copy.home's
+# registry default in app/settings_registry.py — seeding reads it
+# rather than keeping a hand-synced duplicate here.
+COPY_HOME = get_def("copy.home").default
 
 COPY_CHAT = {
     "en": {"tagline_line1": "Practical AI. ", "tagline_line2": "Affordable Innovation.",

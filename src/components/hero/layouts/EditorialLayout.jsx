@@ -82,7 +82,7 @@ export default function EditorialLayout({ home, heroButtons, lang, quickDraft, s
           stages: homeCaseStages,
           linkLabel: home.caseLink,
           onOpen: onOpenCaseStudy,
-          imageSrc: "/static/case-studies/jdk-erp/sales-order.png",
+          imageSrc: home.caseImageUrl,
           imageAlt: home.caseImageAlt,
         }}
         otherLabel={home.workOtherLabel}

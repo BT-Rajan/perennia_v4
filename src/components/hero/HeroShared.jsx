@@ -155,9 +155,9 @@ export function HeroTrust({ kicker, heading, intro, contrast, points, principles
 
 /**
  * "Who we work with" — the section under the hero: the positioning
- * heading and target profile, the three situation cards (HOME_TOPICS),
+ * heading and target profile, the three situation cards (copy.home situations),
  * then the business types Perennia understands particularly well
- * (HOME_SECTORS, plain text — not an icon grid) with a closing note so
+ * (copy.home sectors, plain text — not an icon grid) with a closing note so
  * no other industry feels excluded. Shared by
  * the classic/split/editorial layouts; each passes its own list/card
  * classes (grid, stacked rows, or a horizontal strip) so only the
@@ -203,7 +203,7 @@ export function HeroSituations({
 }
 
 /**
- * "What Perennia does" — Technology / AI / Advisory (HOME_CAPABILITIES)
+ * "What Perennia does" — Technology / AI / Advisory (copy.home capabilities)
  * as three columns of ONE GlassPanel (the design system's shared
  * surface, so it follows the admin surface-style setting), deliberately
  * not three more cards: these are facets of one partner, not separate
@@ -239,7 +239,7 @@ export function HeroCapabilities({ heading, intro, items, roles, scopeNote, clas
  * Kuwait/GCC credibility — one restrained GlassPanel between "what we
  * do" and "how we work" (technology → GCC understanding → practical
  * implementation): the message on one side, three factual points on
- * the other. No imagery, flags or maps; facts only (HOME_LOCAL_POINTS).
+ * the other. No imagery, flags or maps; facts only (copy.home local_points).
  */
 export function HeroLocal({ kicker, heading, intro, points, className }) {
   if (!heading) return null;
@@ -267,7 +267,7 @@ export function HeroLocal({ kicker, heading, intro, points, className }) {
 }
 
 /**
- * "How we work" — the seven-step method (HOME_PROCESS) as one ordered
+ * "How we work" — the seven-step method (copy.home process_steps) as one ordered
  * list: a horizontal timeline on desktop, a vertical one on mobile
  * (see .hero-process in Hero.css). Plain numbered markers on a hairline
  * — a method, not an infographic. Followed by the page's closing CTAs.

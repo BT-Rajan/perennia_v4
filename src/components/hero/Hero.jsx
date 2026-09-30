@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLang } from "../../context/LangContext.jsx";
-import { COPY, HOME_CAPABILITIES, HOME_SECTORS, HOME_CASE_STAGES, HOME_OTHER_WORK, HOME_LOCAL_POINTS, HOME_PROCESS, HOME_TOPICS, HOME_TRUST_POINTS } from "../../data/content.js";
+import { COPY } from "../../data/content.js";
 import TopBar from "../layout/TopBar.jsx";
 import SiteFooter from "../layout/SiteFooter.jsx";
 import ClassicLayout from "./layouts/ClassicLayout.jsx";
@@ -49,6 +49,16 @@ function withHomeFallbacks(home, lang) {
     supportingText: home.supportingText ?? fallback.supportingText,
     examplePrompts: home.examplePrompts ?? fallback.examplePrompts,
     eyebrow: home.eyebrow ?? fallback.eyebrow,
+    situations: home.situations ?? fallback.situations,
+    sectors: home.sectors ?? fallback.sectors,
+    capabilities: home.capabilities ?? fallback.capabilities,
+    localPoints: home.localPoints ?? fallback.localPoints,
+    processSteps: home.processSteps ?? fallback.processSteps,
+    caseStages: home.caseStages ?? fallback.caseStages,
+    otherWork: home.otherWork ?? fallback.otherWork,
+    trustPoints: home.trustPoints ?? fallback.trustPoints,
+    casePageSlug: home.casePageSlug ?? fallback.casePageSlug,
+    caseImageUrl: home.caseImageUrl ?? fallback.caseImageUrl,
     assistantLabel: home.assistantLabel ?? fallback.assistantLabel,
     ctaPrimary: home.ctaPrimary ?? fallback.ctaPrimary,
     ctaSecondary: home.ctaSecondary ?? fallback.ctaSecondary,
@@ -119,24 +129,26 @@ export default function Hero({ onEnter, onNavigate, onBookingClick }) {
     : () => onNavigate("contact");
   const handleCtaSecondary = pages?.products ? () => onNavigate("products") : null;
   // The JDK Factory ERP case-study teaser only links if that page exists.
-  const handleOpenCaseStudy = pages?.["jdk-factory-erp"] ? () => onNavigate("jdk-factory-erp") : null;
+  // The featured case study is whichever content page copy.home.case_page_slug
+  // names (admin-editable); the teaser only links if that page exists.
+  const handleOpenCaseStudy = home.casePageSlug && pages?.[home.casePageSlug] ? () => onNavigate(home.casePageSlug) : null;
 
   // The homepage situation cards (Starting Digital / Making AI
   // Practical / Scaling Technology) aren't page links — clicking one hands its preset question straight to the
   // AI Assistant, the same handoff the quick-chat box uses above.
-  const homeTopics = HOME_TOPICS[lang] || HOME_TOPICS.en;
+  const homeTopics = home.situations || [];
   function handleTopicClick(topicId) {
     const topic = homeTopics.find((t) => t.id === topicId);
     if (topic) onEnter(topic.question);
   }
 
-  const homeCapabilities = HOME_CAPABILITIES[lang] || HOME_CAPABILITIES.en;
-  const homeSectors = HOME_SECTORS[lang] || HOME_SECTORS.en;
-  const homeLocalPoints = HOME_LOCAL_POINTS[lang] || HOME_LOCAL_POINTS.en;
-  const homeProcess = HOME_PROCESS[lang] || HOME_PROCESS.en;
-  const homeTrustPoints = HOME_TRUST_POINTS[lang] || HOME_TRUST_POINTS.en;
-  const homeCaseStages = HOME_CASE_STAGES[lang] || HOME_CASE_STAGES.en;
-  const homeOtherWork = HOME_OTHER_WORK[lang] || HOME_OTHER_WORK.en;
+  const homeCapabilities = home.capabilities || [];
+  const homeSectors = home.sectors || [];
+  const homeLocalPoints = home.localPoints || [];
+  const homeProcess = home.processSteps || [];
+  const homeTrustPoints = home.trustPoints || [];
+  const homeCaseStages = home.caseStages || [];
+  const homeOtherWork = home.otherWork || [];
 
   const Layout = LAYOUTS[theme?.layoutTemplate] || ClassicLayout;
 

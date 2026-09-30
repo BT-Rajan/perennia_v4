@@ -636,6 +636,190 @@ _DEFS: list[SettingDef] = [
                          "from sales and feasibility through procurement, production, delivery and payment — and built its ERP around that workflow.",
             "case_link": "View Case Study",
             "case_image_alt": "The completed sales order in JDK Factory ERP, linked to its quotation, finance record and deliveries",
+            "situations": [
+                {
+                    "id": "starting-digital",
+                    "label": "Starting Digital",
+                    "audience": "For businesses beginning their digital journey",
+                    "body": "You have a business process, but technology has not yet been properly integrated into it.",
+                    "question": "My business is just starting with technology — how can Perennia help?"
+                },
+                {
+                    "id": "practical-ai",
+                    "label": "Making AI Practical",
+                    "audience": "For businesses that want to use AI without the uncertainty",
+                    "body": "We identify where AI genuinely adds value and implement it around the business — not simply because it is fashionable.",
+                    "question": "Where could practical AI genuinely help my business?"
+                },
+                {
+                    "id": "scaling-technology",
+                    "label": "Scaling Technology",
+                    "audience": "For businesses ready for their next stage of growth",
+                    "body": "Technology needs to become more capable, connected and reliable as the business grows.",
+                    "question": "My business is growing — how can Perennia help our technology scale with it?"
+                }
+            ],
+            "sectors": [
+                {
+                    "id": "trading",
+                    "label": "Trading & Distribution",
+                    "body": "Customers, orders, inventory, procurement and delivery, connected through business software built around how you trade."
+                },
+                {
+                    "id": "professional-services",
+                    "label": "Professional Services",
+                    "body": "Workflows, approvals, documents and client management, made more connected and efficient through automation and custom systems."
+                },
+                {
+                    "id": "healthcare",
+                    "label": "Healthcare",
+                    "body": "Dependable technology around operational workflows, information and service delivery."
+                },
+                {
+                    "id": "education",
+                    "label": "Education",
+                    "body": "Practical technology for learning, administration and digital experiences."
+                }
+            ],
+            "capabilities": [
+                {
+                    "id": "technology",
+                    "label": "Technology",
+                    "lead": "Build the technology your business needs.",
+                    "body": "Custom software, business applications, automation and digital systems designed around the way the business actually operates."
+                },
+                {
+                    "id": "ai",
+                    "label": "AI",
+                    "lead": "Use AI where it makes business sense.",
+                    "body": "AI implementation, intelligent workflows and practical AI solutions focused on useful business outcomes — not AI for its own sake."
+                },
+                {
+                    "id": "advisory",
+                    "label": "Advisory",
+                    "lead": "Make better technology decisions.",
+                    "body": "Technology consulting, process assessment and guidance that helps businesses understand what to change, what to build and how to implement it reliably."
+                }
+            ],
+            "local_points": [
+                {
+                    "id": "kuwait",
+                    "label": "Based in Kuwait",
+                    "body": "Working with businesses across the GCC, in person or virtually."
+                },
+                {
+                    "id": "bilingual",
+                    "label": "Arabic and English",
+                    "body": "Interfaces, content and AI assistants that work fully in both languages, right-to-left included — as on this site."
+                },
+                {
+                    "id": "fit",
+                    "label": "Built around how you operate",
+                    "body": "Technology fitted to how your business actually works here — not an imported template."
+                }
+            ],
+            "process_steps": [
+                {
+                    "id": "understand",
+                    "label": "Understand",
+                    "body": "A 30-minute discovery conversation to understand the business, problem and desired outcome."
+                },
+                {
+                    "id": "assess",
+                    "label": "Assess",
+                    "body": "Examine the existing process, identify gaps and determine where technology can genuinely help."
+                },
+                {
+                    "id": "propose",
+                    "label": "Propose",
+                    "body": "Define the solution, scope, implementation approach and investment clearly."
+                },
+                {
+                    "id": "prototype",
+                    "label": "Prototype",
+                    "body": "Where appropriate, demonstrate the proposed solution before committing to the full build."
+                },
+                {
+                    "id": "build",
+                    "label": "Build",
+                    "body": "Develop and integrate the solution around the customer's actual business process."
+                },
+                {
+                    "id": "deploy",
+                    "label": "Deploy",
+                    "body": "Put the technology into operation, provide training and support adoption."
+                },
+                {
+                    "id": "adapt",
+                    "label": "Adapt",
+                    "body": "Continue improving the solution as the business, market and requirements evolve."
+                }
+            ],
+            "case_stages": [
+                "Sales",
+                "Feasibility",
+                "Quotation",
+                "Order",
+                "Procurement",
+                "Inventory",
+                "Production",
+                "Delivery",
+                "Payment"
+            ],
+            "other_work": [
+                {
+                    "id": "field-sales",
+                    "tag": "Mobile sales app · for JDK",
+                    "label": "Field sales app",
+                    "need": "Salespeople need to take a customer from enquiry to confirmed order while out of the office, and keep managers informed.",
+                    "built": "An installable Arabic/English app: customers and visits, feasibility against today's stock, quotations, proforma invoices and orders, with manager reports."
+                },
+                {
+                    "id": "service-operations",
+                    "tag": "Business platform · for a Kuwait-based service company",
+                    "label": "Service operations platform",
+                    "need": "One place to run client projects — from onboarding and government submissions to quotations, contracts and payments.",
+                    "built": "Client onboarding, project workspaces, a government forms library and submissions, quotations, contracts, tasks and reports, with an AI assistant — in Arabic and English."
+                },
+                {
+                    "id": "practice-management",
+                    "tag": "Practice management · for a small law firm",
+                    "label": "Law firm practice management",
+                    "need": "A small firm's clients, compliance records, tasks and billing in one system.",
+                    "built": "Client onboarding with KYC and leadership history, secure document storage, tasks and calendar, and billing with PDF invoices."
+                },
+                {
+                    "id": "perennia-site",
+                    "tag": "Website & AI · our own platform",
+                    "label": "This website",
+                    "need": "Visitors should be able to get answers and book time without waiting for a reply.",
+                    "built": "A bilingual website with an AI assistant grounded in our own content, and self-service booking with live availability."
+                }
+            ],
+            "trust_points": [
+                {
+                    "id": "business-first",
+                    "label": "Business first",
+                    "body": "We understand the business before building, and design around your actual process."
+                },
+                {
+                    "id": "careful",
+                    "label": "Careful implementation",
+                    "body": "We introduce technology carefully to minimise disruption, and help your people adopt and use it."
+                },
+                {
+                    "id": "security",
+                    "label": "Security and accountability",
+                    "body": "We treat security and data protection seriously, with clear accountability for what we deliver."
+                },
+                {
+                    "id": "support",
+                    "label": "Support as you change",
+                    "body": "Ongoing support where required, and technology that adapts as your requirements evolve."
+                }
+            ],
+            "case_page_slug": "jdk-factory-erp",
+            "case_image_url": "/static/case-studies/jdk-erp/sales-order.png",
             "trust_kicker": "What sets Perennia apart",
             "trust_heading": "Reliable technology induction for your business.",
             "trust_intro": "Technology only creates value when it works in the real business. Building software is one part of that — "
@@ -700,6 +884,190 @@ _DEFS: list[SettingDef] = [
                          "من المبيعات والجدوى إلى المشتريات والإنتاج والتسليم والدفع — وبنينا نظام ERP الخاص بها حول سير العمل هذا.",
             "case_link": "عرض دراسة الحالة",
             "case_image_alt": "أمر بيع مكتمل في نظام ERP لمصنع JDK، مرتبط بعرض السعر والسجل المالي والتسليمات",
+            "situations": [
+                {
+                    "id": "starting-digital",
+                    "label": "البدء رقميًا",
+                    "audience": "للشركات التي تبدأ رحلتها الرقمية",
+                    "body": "لديك عمليات أعمال قائمة، لكن التقنية لم تُدمج فيها بالشكل الصحيح بعد.",
+                    "question": "أعمالي في بداية رحلتها مع التقنية — كيف يمكن لبيرينيا المساعدة؟"
+                },
+                {
+                    "id": "practical-ai",
+                    "label": "ذكاء اصطناعي عملي",
+                    "audience": "للشركات التي تريد استخدام الذكاء الاصطناعي دون حيرة أو غموض",
+                    "body": "نحدد أين يضيف الذكاء الاصطناعي قيمة حقيقية، ونطبّقه بما يخدم أعمالك — لا لمجرد أنه رائج.",
+                    "question": "أين يمكن للذكاء الاصطناعي العملي أن يفيد أعمالي فعلًا؟"
+                },
+                {
+                    "id": "scaling-technology",
+                    "label": "توسيع التقنية",
+                    "audience": "للشركات المستعدة لمرحلة النمو التالية",
+                    "body": "مع نمو أعمالك، تحتاج التقنية إلى أن تصبح أكثر قدرة وترابطًا وموثوقية.",
+                    "question": "أعمالي تنمو — كيف يمكن لبيرينيا مساعدتنا على توسيع التقنية معها؟"
+                }
+            ],
+            "sectors": [
+                {
+                    "id": "trading",
+                    "label": "التجارة والتوزيع",
+                    "body": "العملاء والطلبات والمخزون والمشتريات والتسليم، مترابطة عبر برمجيات أعمال مبنية حول طريقة تجارتك."
+                },
+                {
+                    "id": "professional-services",
+                    "label": "الخدمات المهنية",
+                    "body": "سير العمل والاعتمادات والمستندات وإدارة العملاء، أكثر ترابطًا وكفاءة عبر الأتمتة والأنظمة المخصصة."
+                },
+                {
+                    "id": "healthcare",
+                    "label": "الرعاية الصحية",
+                    "body": "تقنية موثوقة حول سير العمل التشغيلي والمعلومات وتقديم الخدمات."
+                },
+                {
+                    "id": "education",
+                    "label": "التعليم",
+                    "body": "تقنية عملية للتعلّم والإدارة والتجارب الرقمية."
+                }
+            ],
+            "capabilities": [
+                {
+                    "id": "technology",
+                    "label": "التقنية",
+                    "lead": "ابنِ التقنية التي تحتاجها أعمالك.",
+                    "body": "برمجيات مخصصة وتطبيقات أعمال وأتمتة وأنظمة رقمية مصممة وفق طريقة عمل أعمالك فعليًا."
+                },
+                {
+                    "id": "ai",
+                    "label": "الذكاء الاصطناعي",
+                    "lead": "استخدم الذكاء الاصطناعي حيث يكون منطقيًا للأعمال.",
+                    "body": "تطبيق الذكاء الاصطناعي وسير عمل ذكي وحلول عملية تركّز على نتائج مفيدة للأعمال — لا ذكاء اصطناعي لذاته."
+                },
+                {
+                    "id": "advisory",
+                    "label": "الاستشارات",
+                    "lead": "اتخذ قرارات تقنية أفضل.",
+                    "body": "استشارات تقنية وتقييم للعمليات وتوجيه يساعدك على فهم ما يجب تغييره، وما يجب بناؤه، وكيف تنفّذه بشكل موثوق."
+                }
+            ],
+            "local_points": [
+                {
+                    "id": "kuwait",
+                    "label": "مقرّنا الكويت",
+                    "body": "نعمل مع الشركات في دول الخليج، حضوريًا أو عن بُعد."
+                },
+                {
+                    "id": "bilingual",
+                    "label": "العربية والإنجليزية",
+                    "body": "واجهات ومحتوى ومساعدون أذكياء يعملون بالكامل باللغتين، مع دعم الكتابة من اليمين إلى اليسار — كما في هذا الموقع."
+                },
+                {
+                    "id": "fit",
+                    "label": "مصمَّمة حول طريقة عملك",
+                    "body": "تقنية تناسب طريقة عمل أعمالك فعليًا هنا — لا قالبًا مستوردًا."
+                }
+            ],
+            "process_steps": [
+                {
+                    "id": "understand",
+                    "label": "الفهم",
+                    "body": "محادثة استكشافية مدتها 30 دقيقة لفهم الأعمال والمشكلة والنتيجة المطلوبة."
+                },
+                {
+                    "id": "assess",
+                    "label": "التقييم",
+                    "body": "دراسة العملية الحالية، وتحديد الفجوات، وتحديد أين يمكن للتقنية أن تساعد فعلًا."
+                },
+                {
+                    "id": "propose",
+                    "label": "المقترح",
+                    "body": "تحديد الحل ونطاق العمل وأسلوب التنفيذ والتكلفة بوضوح."
+                },
+                {
+                    "id": "prototype",
+                    "label": "النموذج الأولي",
+                    "body": "حيثما كان مناسبًا، نعرض الحل المقترح قبل الالتزام بالبناء الكامل."
+                },
+                {
+                    "id": "build",
+                    "label": "البناء",
+                    "body": "تطوير الحل ودمجه حول عمليات أعمال العميل الفعلية."
+                },
+                {
+                    "id": "deploy",
+                    "label": "التشغيل",
+                    "body": "وضع التقنية قيد التشغيل، وتقديم التدريب، ودعم اعتمادها."
+                },
+                {
+                    "id": "adapt",
+                    "label": "التكيّف",
+                    "body": "مواصلة تحسين الحل مع تطور الأعمال والسوق والمتطلبات."
+                }
+            ],
+            "case_stages": [
+                "المبيعات",
+                "الجدوى",
+                "عرض السعر",
+                "الطلب",
+                "المشتريات",
+                "المخزون",
+                "الإنتاج",
+                "التسليم",
+                "الدفع"
+            ],
+            "other_work": [
+                {
+                    "id": "field-sales",
+                    "tag": "تطبيق مبيعات · لـ JDK",
+                    "label": "تطبيق المبيعات الميدانية",
+                    "need": "يحتاج مندوبو المبيعات إلى نقل العميل من الاستفسار إلى الطلب المؤكد وهم خارج المكتب، مع إبقاء المديرين على اطلاع.",
+                    "built": "تطبيق قابل للتثبيت بالعربية والإنجليزية: العملاء والزيارات، وفحص الجدوى مقابل مخزون اليوم، وعروض الأسعار والفواتير المبدئية والطلبات، مع تقارير للمديرين."
+                },
+                {
+                    "id": "service-operations",
+                    "tag": "منصة أعمال · لشركة خدمات مقرّها الكويت",
+                    "label": "منصة عمليات الخدمات",
+                    "need": "مكان واحد لإدارة مشاريع العملاء — من الانضمام والمعاملات الحكومية إلى عروض الأسعار والعقود والمدفوعات.",
+                    "built": "انضمام العملاء، ومساحات عمل للمشاريع، ومكتبة للنماذج الحكومية وتقديمها، وعروض الأسعار والعقود والمهام والتقارير، مع مساعد ذكي — بالعربية والإنجليزية."
+                },
+                {
+                    "id": "practice-management",
+                    "tag": "إدارة مكتب · لمكتب محاماة صغير",
+                    "label": "إدارة مكتب محاماة",
+                    "need": "عملاء المكتب وسجلات الامتثال والمهام والفوترة في نظام واحد.",
+                    "built": "انضمام العملاء مع التحقق من الهوية وسجل القيادات، وتخزين آمن للمستندات، ومهام وتقويم، وفوترة مع فواتير PDF."
+                },
+                {
+                    "id": "perennia-site",
+                    "tag": "موقع وذكاء اصطناعي · منصتنا الخاصة",
+                    "label": "هذا الموقع",
+                    "need": "يجب أن يتمكن الزوار من الحصول على إجابات وحجز موعد دون انتظار رد.",
+                    "built": "موقع ثنائي اللغة مع مساعد ذكي يستند إلى محتوانا، وحجز ذاتي بمواعيد متاحة مباشرة."
+                }
+            ],
+            "trust_points": [
+                {
+                    "id": "business-first",
+                    "label": "الأعمال أولًا",
+                    "body": "نفهم أعمالك قبل أن نبني، ونصمّم حول عملياتك الفعلية."
+                },
+                {
+                    "id": "careful",
+                    "label": "تنفيذ مدروس",
+                    "body": "ندخل التقنية بعناية لتقليل التعطّل، ونساعد فريقك على اعتمادها واستخدامها."
+                },
+                {
+                    "id": "security",
+                    "label": "الأمان والمسؤولية",
+                    "body": "نتعامل مع الأمان وحماية البيانات بجدية، مع مسؤولية واضحة عمّا نقدّمه."
+                },
+                {
+                    "id": "support",
+                    "label": "دعم مع تغيّر أعمالك",
+                    "body": "دعم مستمر عند الحاجة، وتقنية تتكيّف مع تطور متطلباتك."
+                }
+            ],
+            "case_page_slug": "jdk-factory-erp",
+            "case_image_url": "/static/case-studies/jdk-erp/sales-order.png",
             "trust_kicker": "ما يميّز بيرينيا",
             "trust_heading": "إدخال موثوق للتقنية إلى أعمالك.",
             "trust_intro": "لا تُحدث التقنية قيمة إلا عندما تعمل في واقع الأعمال. بناء البرمجيات جزء من ذلك فقط — "
@@ -741,9 +1109,14 @@ _DEFS: list[SettingDef] = [
                           "local_kicker, local_heading, local_intro (the Kuwait/GCC panel), "
                           "process_heading, process_intro (the how-we-work section), work_kicker, work_heading, work_intro, "
                           "work_other_label, work_need_label, work_built_label (the Our work section), case_kicker, case_heading, case_body, "
-                          "case_link, case_image_alt (the JDK Factory ERP case-study teaser), trust_kicker, trust_heading, trust_intro, "
+                          "case_link, case_image_alt, case_page_slug, case_image_url (the featured case-study teaser), "
+                          "trust_kicker, trust_heading, trust_intro, "
                           "trust_contrast_label_a/_a/_label_b/_b (the reliable-induction section), discovery_heading, "
                           "discovery_body, discovery_note (the discovery-meeting panel after it). "
+                          "Homepage lists (edit or reorder the items in place; each is a list of objects): "
+                          "situations, sectors, capabilities, local_points, process_steps, case_stages, "
+                          "other_work, trust_points. case_page_slug picks which content page is the featured "
+                          "case study (the teaser hides if that page doesn't exist). "
                           "eyebrow is the static line above the headline. cta_primary opens "
                           "the booking panel (or the Contact page if booking is off); cta_secondary opens the "
                           "products page. hero_statement (empty by default) types itself out on the homepage "

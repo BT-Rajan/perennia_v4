@@ -72,7 +72,7 @@ export default function ClassicLayout({ home, heroButtons, lang, quickDraft, set
           stages: homeCaseStages,
           linkLabel: home.caseLink,
           onOpen: onOpenCaseStudy,
-          imageSrc: "/static/case-studies/jdk-erp/sales-order.png",
+          imageSrc: home.caseImageUrl,
           imageAlt: home.caseImageAlt,
         }}
         otherLabel={home.workOtherLabel}
