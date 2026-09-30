@@ -60,19 +60,28 @@ export default function SplitLayout({ home, heroButtons, lang, quickDraft, setQu
         className="hero-block-start"
       />
 
-      <HeroLocal
-        kicker={home.localKicker}
-        heading={home.localHeading}
-        intro={home.localIntro}
-        points={homeLocalPoints}
-      />
-
       <HeroProcess
         heading={home.processHeading}
         intro={home.processIntro}
         steps={homeProcess}
         className="hero-block-start"
       />
+
+      <HeroTrust
+        kicker={home.trustKicker}
+        heading={home.trustHeading}
+        intro={home.trustIntro}
+        contrast={{ labelA: home.trustContrastLabelA, a: home.trustContrastA, labelB: home.trustContrastLabelB, b: home.trustContrastB }}
+        points={homeTrustPoints}
+        className="hero-block-start"
+      >
+        <HeroLocal
+          kicker={home.localKicker}
+          heading={home.localHeading}
+          intro={home.localIntro}
+          points={homeLocalPoints}
+        />
+      </HeroTrust>
 
       <HeroWork
         kicker={home.workKicker}
@@ -92,16 +101,6 @@ export default function SplitLayout({ home, heroButtons, lang, quickDraft, setQu
         needLabel={home.workNeedLabel}
         builtLabel={home.workBuiltLabel}
         otherItems={homeOtherWork}
-        className="hero-block-start"
-      />
-
-      <HeroTrust
-        kicker={home.trustKicker}
-        heading={home.trustHeading}
-        intro={home.trustIntro}
-        contrast={{ labelA: home.trustContrastLabelA, a: home.trustContrastA, labelB: home.trustContrastLabelB, b: home.trustContrastB }}
-        points={homeTrustPoints}
-        principles={home.principles}
         className="hero-block-start"
       />
 

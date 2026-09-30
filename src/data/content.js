@@ -388,11 +388,6 @@ export const COPY = {
       localIntro: "Perennia combines technology expertise with practical understanding of how businesses operate in Kuwait and the wider GCC.",
       processHeading: "Start with the business. Build the technology around it.",
       processIntro: "We normally take responsibility for the whole journey — from the first conversation to the solution in operation — so you are not left coordinating several vendors.",
-      principles: [
-        "Practical AI, not fashionable AI",
-        "Experienced technology professionals",
-        "Transparent scope and investment",
-      ],
       examplePrompts: ["Where should my business start with technology?", "Where could AI genuinely help my business?", "What happens in a discovery meeting?"],
       hint: "Start chatting",
       langSwitch: "AR | عربي",
@@ -535,11 +530,6 @@ export const COPY = {
       localIntro: "تجمع بيرينيا بين الخبرة التقنية والفهم العملي لطريقة عمل الشركات في الكويت ودول الخليج.",
       processHeading: "ابدأ بالأعمال. وابنِ التقنية حولها.",
       processIntro: "نتحمّل عادةً مسؤولية الرحلة كاملة — من المحادثة الأولى حتى تشغيل الحل — فلا تضطر إلى التنسيق بين عدة موردين.",
-      principles: [
-        "ذكاء اصطناعي عملي، لا لمجرد مواكبة الموضة",
-        "خبراء تقنية ذوو خبرة",
-        "نطاق عمل وتكلفة واضحان",
-      ],
       examplePrompts: ["من أين تبدأ أعمالي مع التقنية؟", "أين يمكن للذكاء الاصطناعي أن يفيد أعمالي فعلًا؟", "ماذا يحدث في الاجتماع الاستكشافي؟"],
       hint: "ابدأ المحادثة",
       langSwitch: "EN | English",

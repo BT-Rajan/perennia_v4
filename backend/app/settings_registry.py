@@ -845,9 +845,6 @@ _DEFS: list[SettingDef] = [
             "process_heading": "Start with the business. Build the technology around it.",
             "process_intro": "We normally take responsibility for the whole journey — from the first conversation "
                              "to the solution in operation — so you are not left coordinating several vendors.",
-            "principles": ["Practical AI, not fashionable AI",
-                           "Experienced technology professionals",
-                           "Transparent scope and investment"],
             "example_prompts": ["Where should my business start with technology?",
                                  "Where could AI genuinely help my business?",
                                  "What happens in a discovery meeting?"],
@@ -1092,8 +1089,6 @@ _DEFS: list[SettingDef] = [
             "process_heading": "ابدأ بالأعمال. وابنِ التقنية حولها.",
             "process_intro": "نتحمّل عادةً مسؤولية الرحلة كاملة — من المحادثة الأولى حتى تشغيل الحل — فلا تضطر "
                              "إلى التنسيق بين عدة موردين.",
-            "principles": ["ذكاء اصطناعي عملي، لا لمجرد مواكبة الموضة",
-                           "خبراء تقنية ذوو خبرة", "نطاق عمل وتكلفة واضحان"],
             "example_prompts": ["من أين تبدأ أعمالي مع التقنية؟", "أين يمكن للذكاء الاصطناعي أن يفيد أعمالي فعلًا؟",
                                  "ماذا يحدث في الاجتماع الاستكشافي؟"],
             "hint": "ابدأ المحادثة",
@@ -1101,7 +1096,7 @@ _DEFS: list[SettingDef] = [
         },
     }, i18n=True,
                help_text="welcome, tagline, hint, lang_switch, hero_statement, tagline_line1, tagline_line2, "
-                          "eyebrow, supporting_text, cta_primary, cta_secondary, principles, assistant_label, example_prompts, "
+                          "eyebrow, supporting_text, cta_primary, cta_secondary, assistant_label, example_prompts, "
                           "situations_kicker, situations_heading, situations_intro, sectors_heading, sectors_note "
                           "(the who-we-work-with section under the hero), "
                           "capabilities_heading, capabilities_intro, capabilities_roles, "

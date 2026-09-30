@@ -48,18 +48,26 @@ export default function ClassicLayout({ home, heroButtons, lang, quickDraft, set
         scopeNote={home.capabilitiesScopeNote}
       />
 
-      <HeroLocal
-        kicker={home.localKicker}
-        heading={home.localHeading}
-        intro={home.localIntro}
-        points={homeLocalPoints}
-      />
-
       <HeroProcess
         heading={home.processHeading}
         intro={home.processIntro}
         steps={homeProcess}
       />
+
+      <HeroTrust
+        kicker={home.trustKicker}
+        heading={home.trustHeading}
+        intro={home.trustIntro}
+        contrast={{ labelA: home.trustContrastLabelA, a: home.trustContrastA, labelB: home.trustContrastLabelB, b: home.trustContrastB }}
+        points={homeTrustPoints}
+      >
+        <HeroLocal
+          kicker={home.localKicker}
+          heading={home.localHeading}
+          intro={home.localIntro}
+          points={homeLocalPoints}
+        />
+      </HeroTrust>
 
       <HeroWork
         kicker={home.workKicker}
@@ -79,15 +87,6 @@ export default function ClassicLayout({ home, heroButtons, lang, quickDraft, set
         needLabel={home.workNeedLabel}
         builtLabel={home.workBuiltLabel}
         otherItems={homeOtherWork}
-      />
-
-      <HeroTrust
-        kicker={home.trustKicker}
-        heading={home.trustHeading}
-        intro={home.trustIntro}
-        contrast={{ labelA: home.trustContrastLabelA, a: home.trustContrastA, labelB: home.trustContrastLabelB, b: home.trustContrastB }}
-        points={homeTrustPoints}
-        principles={home.principles}
       />
 
       <HeroDiscovery

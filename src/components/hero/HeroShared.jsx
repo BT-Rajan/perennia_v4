@@ -117,11 +117,10 @@ export function HeroWork({ kicker, heading, intro, featured, otherLabel, needLab
  * claim (reliable technology induction), a two-sided contrast between
  * delivering software and getting it working in the business, four
  * grouped points on how Perennia approaches delivery (an approach, not
- * guarantees), and the short trust line (copy.home.principles) that
- * used to sit in the hero. Sits after the process, before the
- * discovery panel.
+ * guarantees), and the Kuwait/GCC panel passed as children. Sits
+ * after the process and before the proof ("Our work").
  */
-export function HeroTrust({ kicker, heading, intro, contrast, points, principles, className }) {
+export function HeroTrust({ kicker, heading, intro, contrast, points, children, className }) {
   if (!heading) return null;
   return (
     <section className={`hero-block hero-trust ${className || ""}`.trim()} aria-labelledby="hero-trust-heading">
@@ -148,7 +147,7 @@ export function HeroTrust({ kicker, heading, intro, contrast, points, principles
           ))}
         </ul>
       )}
-      <HeroPrinciples items={principles} className="hero-trust-principles" />
+      {children}
     </section>
   );
 }
@@ -236,33 +235,31 @@ export function HeroCapabilities({ heading, intro, items, roles, scopeNote, clas
 }
 
 /**
- * Kuwait/GCC credibility — one restrained GlassPanel between "what we
- * do" and "how we work" (technology → GCC understanding → practical
- * implementation): the message on one side, three factual points on
- * the other. No imagery, flags or maps; facts only (copy.home local_points).
+ * Kuwait/GCC understanding — one restrained GlassPanel inside the trust
+ * section (GCC understanding is one of the reasons to trust Perennia):
+ * the message on one side, three factual points on the other. No
+ * imagery, flags or maps; facts only (copy.home local_points).
  */
-export function HeroLocal({ kicker, heading, intro, points, className }) {
+export function HeroLocal({ kicker, heading, intro, points }) {
   if (!heading) return null;
   return (
-    <section className={`hero-block hero-local ${className || ""}`.trim()} aria-labelledby="hero-local-heading">
-      <GlassPanel className="hero-local-panel">
-        <div className="hero-local-message">
-          {kicker && <p className="hero-eyebrow hero-local-kicker">{kicker}</p>}
-          <h2 id="hero-local-heading">{heading}</h2>
-          {intro && <p>{intro}</p>}
-        </div>
-        {points?.length > 0 && (
-          <ul className="hero-local-points">
-            {points.map(({ id, label, body }) => (
-              <li key={id}>
-                <h3>{label}</h3>
-                <p>{body}</p>
-              </li>
-            ))}
-          </ul>
-        )}
-      </GlassPanel>
-    </section>
+    <GlassPanel className="hero-local-panel">
+      <div className="hero-local-message">
+        {kicker && <p className="hero-eyebrow hero-local-kicker">{kicker}</p>}
+        <h3>{heading}</h3>
+        {intro && <p>{intro}</p>}
+      </div>
+      {points?.length > 0 && (
+        <ul className="hero-local-points">
+          {points.map(({ id, label, body }) => (
+            <li key={id}>
+              <h4>{label}</h4>
+              <p>{body}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </GlassPanel>
   );
 }
 
@@ -301,23 +298,6 @@ export function HeroProcess({ kicker, heading, intro, steps, ctas, className }) 
 export function HeroEyebrow({ text, className }) {
   if (!text) return null;
   return <p className={`hero-eyebrow ${className || ""}`.trim()}>{text}</p>;
-}
-
-/**
- * Short, quiet list of what Perennia stands for (copy.home.principles),
- * shown at the foot of the trust section (HeroTrust)
- * — plain text, not buttons, so it reads as context rather than as yet
- * another row of things to click.
- */
-export function HeroPrinciples({ items, className }) {
-  if (!items?.length) return null;
-  return (
-    <ul className={`hero-principles ${className || ""}`.trim()}>
-      {items.map((item, i) => (
-        <li key={i}>{item}</li>
-      ))}
-    </ul>
-  );
 }
 
 /**

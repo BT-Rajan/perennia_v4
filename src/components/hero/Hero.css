@@ -413,32 +413,6 @@
 .hero-ctas-left { justify-content: flex-start; }
 .hero-ctas .btn { white-space: normal; text-align: center; }
 
-/* ── Principles (HeroPrinciples) — quiet, dot-marked context line,
-   deliberately not styled as buttons or chips. */
-.hero-principles {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-1) var(--space-3);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  max-width: 64ch;
-  color: var(--muted);
-  font-size: var(--fs-sm);
-}
-.hero-principles-left { justify-content: flex-start; }
-.hero-principles li { display: inline-flex; align-items: center; gap: var(--space-2); }
-/* Every item gets its own marker (not a separator between items), so
-   a wrapped line never starts with a stray dot. */
-.hero-principles li::before {
-  content: "";
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--gold) 55%, transparent);
-}
-
 /* ── Homepage sections below the hero (HeroSituations,
    HeroCapabilities, …) — shared spacing, heading/intro and closing
    CTA, so every section reads as one family. */
@@ -517,7 +491,7 @@
 .hero-local-panel:hover { border-color: color-mix(in srgb, var(--gold) 15%, transparent); }
 .hero-local-message { display: flex; flex-direction: column; gap: var(--space-2); }
 .hero-local-message .hero-local-kicker { margin: 0; text-align: start; }
-.hero-local-message h2 {
+.hero-local-message h3 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 600;
@@ -525,7 +499,7 @@
   line-height: 1.25;
   color: var(--white-soft);
 }
-[dir="rtl"] .hero-local-message h2 { font-family: var(--font-ar); }
+[dir="rtl"] .hero-local-message h3 { font-family: var(--font-ar); }
 .hero-local-message p:not(.hero-local-kicker) {
   margin: 0;
   color: var(--muted-strong);
@@ -543,14 +517,14 @@
 .hero-local-points li:first-child { padding-top: 0; }
 .hero-local-points li:last-child { padding-bottom: 0; }
 .hero-local-points li + li { border-top: 1px solid color-mix(in srgb, var(--white-soft) 10%, transparent); }
-.hero-local-points h3 {
+.hero-local-points h4 {
   margin: 0 0 var(--space-1);
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--fs-body);
   color: var(--white-soft);
 }
-[dir="rtl"] .hero-local-points h3 { font-family: var(--font-ar); }
+[dir="rtl"] .hero-local-points h4 { font-family: var(--font-ar); }
 .hero-local-points p {
   margin: 0;
   color: var(--muted-strong);
@@ -562,8 +536,8 @@
 }
 
 /* ── Trust (HeroTrust) — central claim, a two-sided contrast panel,
-   four plain text points (no cards, no icons) and the short trust
-   line. Mature and quiet: hairlines, not boxes. */
+   four plain text points (no cards, no icons) and the Kuwait/GCC
+   panel. Mature and quiet: hairlines, not boxes. */
 .hero-trust-contrast {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -630,8 +604,6 @@
   font-size: var(--fs-sm);
   line-height: calc(1.6 * var(--line-height-scale));
 }
-.hero-trust .hero-trust-principles { margin-inline: auto; max-width: 80ch; }
-.hero-block-start .hero-trust-principles { justify-content: flex-start; margin-inline: 0; }
 @media (max-width: 1024px) {
   .hero-trust-points { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -1236,3 +1208,6 @@
 @media (max-width: 760px), (pointer: coarse) {
   .hero-example-prompt { min-height: 40px; padding: 8px 14px; white-space: normal; }
 }
+
+/* The Kuwait/GCC panel sits inside the trust section, after its points. */
+.hero-trust .hero-local-panel { margin-top: var(--space-3); }

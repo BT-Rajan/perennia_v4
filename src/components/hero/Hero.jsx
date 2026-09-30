@@ -62,7 +62,6 @@ function withHomeFallbacks(home, lang) {
     assistantLabel: home.assistantLabel ?? fallback.assistantLabel,
     ctaPrimary: home.ctaPrimary ?? fallback.ctaPrimary,
     ctaSecondary: home.ctaSecondary ?? fallback.ctaSecondary,
-    principles: home.principles ?? fallback.principles,
     situationsKicker: home.situationsKicker ?? fallback.situationsKicker,
     situationsHeading: home.situationsHeading ?? fallback.situationsHeading,
     sectorsHeading: home.sectorsHeading ?? fallback.sectorsHeading,
