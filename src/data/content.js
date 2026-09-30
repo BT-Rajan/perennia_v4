@@ -287,15 +287,15 @@ export const SECTIONS = {
   en: {
     about: {
       title: "About Perennia",
-      body: "Perennia is an AI-powered technology and innovation company. We partner with businesses to design, build, and operate intelligent products — from first concept through to production support.",
+      body: "Perennia is a Kuwait-based technology company. We help businesses adopt, build and scale technology — using AI where it makes business sense — from first conversation through to production support.",
     },
     products: {
       title: "Products",
-      body: "AI assistants, automation workflows, and custom digital platforms — built on modern stacks and tuned to how your team actually works.",
+      body: "Business platforms, booking systems, automation workflows and AI assistants — tuned to how your team actually works.",
     },
     services: {
       title: "Services",
-      body: "Consulting, product design, and full-cycle engineering. We embed with your team or run the build end-to-end, whichever fits your roadmap.",
+      body: "Technology, AI and Advisory — three connected capabilities, built around how your business actually works.",
     },
     contact: {
       title: "Contact Us",
@@ -305,7 +305,7 @@ export const SECTIONS = {
   ar: {
     about: {
       title: "عن بيرينيا",
-      body: "بيرينيا شركة تقنية وابتكار مدعومة بالذكاء الاصطناعي. نتعاون مع الشركات لتصميم وبناء وتشغيل منتجات ذكية — من الفكرة الأولى وحتى الدعم الإنتاجي.",
+      body: "بيرينيا شركة تقنية مقرّها الكويت. نساعد الشركات على تبنّي التقنية وبنائها وتوسيعها — مع استخدام الذكاء الاصطناعي حيث يكون منطقيًا للأعمال — من المحادثة الأولى وحتى الدعم في التشغيل.",
     },
     products: {
       title: "المنتجات",
@@ -388,15 +388,15 @@ export const COPY = {
       langSwitch: "AR | عربي",
     },
     chat: {
-      taglineLine1: "Solving Today. ",
-      taglineLine2: "Shaping Tomorrow.",
-      sub: "AI-POWERED TECHNOLOGY & INNOVATION",
+      taglineLine1: "Practical AI. ",
+      taglineLine2: "Affordable Innovation.",
+      sub: "PRACTICAL AI · AFFORDABLE INNOVATION",
       header: "AI Assistant",
       onlineStatus: "Online · AI Assistant",
       poweredBy: "Powered by",
       bookBtn: "Book a 30-Minute Discovery Meeting",
       faqTitle: "Quick Questions",
-      inputPlaceholder: "Ask Perennia AI anything…",
+      inputPlaceholder: "Ask Perennia anything…",
       welcomeMsg:
         "Hello! I'm Perennia's AI assistant. Before we get started, may I know your name? It helps us build a good relationship with you and follow up properly.",
       langSwitch: "AR | عربي",
@@ -525,9 +525,9 @@ export const COPY = {
       langSwitch: "EN | English",
     },
     chat: {
-      taglineLine1: "حلول اليوم. ",
-      taglineLine2: "لصناعة الغد.",
-      sub: "تقنية وابتكار مدعومان بالذكاء الاصطناعي",
+      taglineLine1: "ذكاء اصطناعي عملي. ",
+      taglineLine2: "ابتكار في المتناول.",
+      sub: "ذكاء اصطناعي عملي · ابتكار في المتناول",
       header: "المساعد الذكي",
       onlineStatus: "متصل الآن · مساعد ذكي",
       poweredBy: "بدعم من",
@@ -603,13 +603,13 @@ export const COPY = {
 
 export const FAQ = {
   en: [
-    { q: "What services does Perennia offer?", a: "We build AI-powered assistants, automation, and digital products tailored to your business — from concept through to production support." },
+    { q: "What services does Perennia offer?", a: "We help businesses adopt, build and scale technology: custom business software and automation, practical AI where it genuinely helps, and advisory — from the first discovery conversation through implementation and ongoing support." },
     { q: "How can I book a discovery meeting?", a: "Tap \"Book a 30-Minute Discovery Meeting\", choose a free slot, and you'll get an instant confirmation by email — no back-and-forth required." },
     { q: "Do you support Arabic and English?", a: "Yes — the whole experience, including this assistant, works fully in both English and Arabic with proper right-to-left layout." },
     { q: "Where are you located?", a: "We're based in Kuwait and work with businesses across the GCC. We meet either virtually or in person — ask during booking and we'll accommodate you." },
   ],
   ar: [
-    { q: "ما هي الخدمات التي تقدمها بيرينيا؟", a: "نصمم مساعدين مدعومين بالذكاء الاصطناعي وحلول أتمتة ومنتجات رقمية مخصصة لعملك — من الفكرة وحتى الدعم الإنتاجي." },
+    { q: "ما هي الخدمات التي تقدمها بيرينيا؟", a: "نساعد الشركات على تبنّي التقنية وبنائها وتوسيعها: برمجيات أعمال مخصصة وأتمتة، وذكاء اصطناعي عملي حيث يفيد فعلًا، واستشارات — من محادثة الاستكشاف الأولى حتى التنفيذ والدعم المستمر." },
     { q: "كيف يمكنني حجز اجتماع استكشافي؟", a: "اضغط على \"احجز اجتماعًا استكشافيًا لمدة 30 دقيقة\"، اختر موعدًا متاحًا، وستحصل على تأكيد فوري عبر البريد الإلكتروني." },
     { q: "هل تدعمون اللغتين العربية والإنجليزية؟", a: "نعم — التجربة بأكملها، بما في ذلك هذا المساعد، تعمل بالكامل باللغتين مع تخطيط صحيح من اليمين إلى اليسار." },
     { q: "أين يقع مقركم؟", a: "مقرّنا الكويت، ونعمل مع الشركات في دول الخليج. نلتقي افتراضيًا أو شخصيًا — أخبرنا أثناء الحجز وسنوفر لك ما يناسبك." },

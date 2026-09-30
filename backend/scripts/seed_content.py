@@ -33,15 +33,15 @@ FRONTEND_CONTENT_DIR = Path(__file__).resolve().parent.parent.parent / "src" / "
 PAGE_META = {
     "about": {
         "en": {"nav_label": "About", "section_title": "About Perennia",
-               "section_body": "Perennia is an AI-powered technology and innovation company. We partner with businesses to design, build, and operate intelligent products — from first concept through to production support.",
-               "tagline_line1": "Who We ", "tagline_line2": "Are", "tagline_sub": "AI-POWERED TECHNOLOGY & INNOVATION"},
+               "section_body": "Perennia is a Kuwait-based technology company. We help businesses adopt, build and scale technology — using AI where it makes business sense — from first conversation through to production support.",
+               "tagline_line1": "Who We ", "tagline_line2": "Are", "tagline_sub": "PRACTICAL AI · AFFORDABLE INNOVATION"},
         "ar": {"nav_label": "من نحن", "section_title": "عن بيرينيا",
-               "section_body": "بيرينيا شركة تقنية وابتكار مدعومة بالذكاء الاصطناعي. نتعاون مع الشركات لتصميم وبناء وتشغيل منتجات ذكية — من الفكرة الأولى وحتى الدعم الإنتاجي.",
-               "tagline_line1": "من ", "tagline_line2": "نحن", "tagline_sub": "تقنية وابتكار مدعومان بالذكاء الاصطناعي"},
+               "section_body": "بيرينيا شركة تقنية مقرّها الكويت. نساعد الشركات على تبنّي التقنية وبنائها وتوسيعها — مع استخدام الذكاء الاصطناعي حيث يكون منطقيًا للأعمال — من المحادثة الأولى وحتى الدعم في التشغيل.",
+               "tagline_line1": "من ", "tagline_line2": "نحن", "tagline_sub": "ذكاء اصطناعي عملي · ابتكار في المتناول"},
     },
     "products": {
         "en": {"nav_label": "Products", "section_title": "Products",
-               "section_body": "AI assistants, automation workflows, and custom digital platforms — built on modern stacks and tuned to how your team actually works.",
+               "section_body": "Business platforms, booking systems, automation workflows and AI assistants — tuned to how your team actually works.",
                "tagline_line1": "What We ", "tagline_line2": "Build", "tagline_sub": "PRODUCTS & PLATFORMS"},
         "ar": {"nav_label": "المنتجات", "section_title": "المنتجات",
                "section_body": "مساعدون بالذكاء الاصطناعي، وأتمتة سير العمل، ومنصات رقمية مخصصة — مبنية على تقنيات حديثة ومصممة لتناسب طريقة عمل فريقك.",
@@ -49,7 +49,7 @@ PAGE_META = {
     },
     "services": {
         "en": {"nav_label": "Solutions", "section_title": "Solutions",
-               "section_body": "Consulting, product design, and full-cycle engineering. We embed with your team or run the build end-to-end, whichever fits your roadmap.",
+               "section_body": "Technology, AI and Advisory — three connected capabilities, built around how your business actually works.",
                "tagline_line1": "What We ", "tagline_line2": "Do", "tagline_sub": "SOLUTIONS"},
         "ar": {"nav_label": "الحلول", "section_title": "الحلول",
                "section_body": "استشارات، وتصميم منتجات، وهندسة متكاملة. نندمج مع فريقك أو ننفذ المشروع بالكامل، وفق ما يناسب خطتك.",
@@ -94,9 +94,9 @@ PAGE_ORDER = ["services", "products", "labs", "about", "contact", "jdk-factory-e
 
 FAQ_SEED = [
     {"en": {"q": "What services does Perennia offer?",
-            "a": "We build AI-powered assistants, automation, and digital products tailored to your business — from concept through to production support."},
+            "a": "We help businesses adopt, build and scale technology: custom business software and automation, practical AI where it genuinely helps, and advisory — from the first discovery conversation through implementation and ongoing support."},
      "ar": {"q": "ما هي الخدمات التي تقدمها بيرينيا؟",
-            "a": "نصمم مساعدين مدعومين بالذكاء الاصطناعي وحلول أتمتة ومنتجات رقمية مخصصة لعملك — من الفكرة وحتى الدعم الإنتاجي."}},
+            "a": "نساعد الشركات على تبنّي التقنية وبنائها وتوسيعها: برمجيات أعمال مخصصة وأتمتة، وذكاء اصطناعي عملي حيث يفيد فعلًا، واستشارات — من محادثة الاستكشاف الأولى حتى التنفيذ والدعم المستمر."}},
     {"en": {"q": "How can I book a consultation?",
             "a": "Tap \"Book a 30-Minute Discovery Meeting\", choose a free slot, and you'll get an instant confirmation by email — no back-and-forth required."},
      "ar": {"q": "كيف يمكنني حجز استشارة؟",
@@ -236,15 +236,15 @@ COPY_HOME = {
 }
 
 COPY_CHAT = {
-    "en": {"tagline_line1": "Solving Today. ", "tagline_line2": "Shaping Tomorrow.",
-           "sub": "AI-POWERED TECHNOLOGY & INNOVATION", "header": "Perennia Assistant",
+    "en": {"tagline_line1": "Practical AI. ", "tagline_line2": "Affordable Innovation.",
+           "sub": "PRACTICAL AI · AFFORDABLE INNOVATION", "header": "Perennia Assistant",
            "book_btn": "Book a 30-Minute Discovery Meeting", "faq_title": "Quick Questions",
            "input_placeholder": "Type your message…",
            "welcome_msg": "Hello! I'm Perennia's AI assistant. Before we get started, may I know your name? "
                           "It helps us build a good relationship with you and follow up properly.",
            "lang_switch": "AR | عربي"},
-    "ar": {"tagline_line1": "حلول اليوم. ", "tagline_line2": "لصناعة الغد.",
-           "sub": "تقنية وابتكار مدعومان بالذكاء الاصطناعي", "header": "مساعد بيرينيا",
+    "ar": {"tagline_line1": "ذكاء اصطناعي عملي. ", "tagline_line2": "ابتكار في المتناول.",
+           "sub": "ذكاء اصطناعي عملي · ابتكار في المتناول", "header": "مساعد بيرينيا",
            "book_btn": "احجز اجتماعًا استكشافيًا لمدة 30 دقيقة", "faq_title": "أسئلة سريعة",
            "input_placeholder": "اكتب رسالتك…",
            "welcome_msg": "مرحباً! أنا المساعد الذكي لبيرينيا. قبل أن نبدأ، هل لي أن أعرف اسمك؟ "

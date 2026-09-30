@@ -36,10 +36,11 @@ SIMPLE_EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 # instead of always falling back to the "someone will follow up"
 # message the moment an LLM is configured but nothing else has been.
 DEFAULT_KNOWLEDGE = """
-COMPANY: Perennia — AI-powered technology and innovation company.
-TAGLINE: "Solving Today. Shaping Tomorrow."
+COMPANY: Perennia — a Kuwait-based technology company helping GCC businesses adopt, build and scale technology, using AI where it makes business sense.
+PRINCIPLE: "Practical AI. Affordable Innovation."
+NEXT STEP: a 30-minute discovery meeting ("Book a 30-Minute Discovery Meeting").
 NAME ORIGIN: From Latin "Perennis" — lasting, enduring, resilient, continuously growing.
-MISSION: Practical, affordable AI solutions for today's challenges and tomorrow's opportunities.
+MISSION: Practical, affordable technology — with AI where it genuinely helps — built around how each business actually works.
 """.strip()
 
 

@@ -1,10 +1,10 @@
 # About Perennia
 
-## Solving Today. Shaping Tomorrow.
+## Practical AI. Affordable Innovation.
 
-Perennia is a **Kuwait-based AI-powered technology and innovation company** developing practical and affordable solutions for organizations and individuals.
+Perennia is a **Kuwait-based technology company** developing practical and affordable solutions for organizations and individuals — using AI where it makes business sense.
 
-We combine **artificial intelligence, automation, and digital technologies** to solve real problems today and create new opportunities for tomorrow.
+We combine **software, automation and AI** to solve real business problems today, and build on them as the business grows.
 
 Our belief is simple: technology should create value that people can use, businesses can afford, and organizations can build on.
 
@@ -20,8 +20,6 @@ We design and build **custom intelligent solutions** for businesses across manuf
 
 We focus on practical opportunities to improve processes, reduce effort, accelerate work, and create better outcomes.
 
-> **AI that goes beyond answers to help get things done.**
-
 ### For Enterprises
 
 Through our India-based technology organization, **Cogzidel Technology Solutions**, with **28 years of enterprise technology experience**, we bring established software engineering and delivery capabilities together with modern AI and automation.
@@ -30,19 +28,17 @@ This enables Perennia to support organizations in Kuwait as they move from indiv
 
 ## Our Approach
 
-We follow a simple roadmap:
+We follow the same method on every engagement:
 
-**Understand → Identify → Build → Deploy → Improve**
+**Understand → Assess → Propose → Prototype → Build → Deploy → Adapt**
 
-We start with the problem, identify where AI or automation can create genuine value, build the right solution, put it into use, and continuously improve it.
+We start with the business and the problem, assess where technology — AI or otherwise — can create genuine value, agree the scope and investment, build the right solution, put it into use, and keep improving it as the business changes.
 
 We do not use AI for the sake of using AI. Every solution should be **practical, accessible, and affordable** — with measurable value for the people and organizations using it.
 
-## Our Growth Hackers
+## Advisory
 
-Our **Growth Hackers** help clients discover where technology can create the greatest opportunity — from solving operational challenges today to preparing the business for what comes next.
-
-> **Solve more today. Shape tomorrow.**
+Our advisory work helps clients discover where technology can create the greatest opportunity — from solving operational challenges today to preparing the business for what comes next.
 
 ## Our Guiding Principle
 
@@ -50,4 +46,4 @@ Our **Growth Hackers** help clients discover where technology can create the gre
 
 Perennia is here to make technology useful today, and make tomorrow more achievable.
 
-**Perennia — Solving Today. Shaping Tomorrow.**
+**Perennia — Practical AI. Affordable Innovation.**

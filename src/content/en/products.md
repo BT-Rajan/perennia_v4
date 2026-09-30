@@ -1,6 +1,6 @@
 # Products
 
-We build AI assistants, automation workflows, and custom digital platforms — tuned to how your team actually works, not the other way around.
+We build business platforms, booking systems, automation workflows and AI assistants — tuned to how your team actually works, not the other way around.
 
 ## AI Assistants
 
@@ -18,4 +18,4 @@ Behind-the-scenes automation that connects your CRM, inbox, and internal tools, 
 
 When an off-the-shelf tool won't cut it, we design and build the platform from scratch — web apps, internal tools, and industry-specific systems. We've shipped manufacturing ERPs and legal practice management systems, among others.
 
-Every product ships on a modern stack, with clean handover documentation, so your team can maintain and extend it long after we're done.
+Every system comes with clean handover documentation, so your team can maintain and extend it long after we're done.

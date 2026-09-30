@@ -1,22 +1,22 @@
-# Services
+# Solutions
 
-Consulting, product design, and full-cycle engineering — we embed with your team or run the build end-to-end, whichever fits your roadmap.
+Three connected capabilities — Technology, AI and Advisory — built around how your business actually works. Work with us on one of them, or across all three.
 
-## Consulting
+## Technology
 
-Not sure where AI actually helps your business? We start with a short discovery engagement — mapping your workflows, identifying the highest-leverage places to automate or assist, and giving you a realistic build plan with costs and timelines.
+Build the technology your business needs: custom software, business applications, automation and digital systems designed around the way the business actually operates — including the interface design that makes a system simple for your people to use.
 
-## Product Design
+## AI
 
-UX and product design for AI-native experiences: conversation design, information architecture, and interface design that make an intelligent system feel simple to use.
+Use AI where it makes business sense: AI implementation, intelligent workflows and practical AI solutions focused on useful business outcomes — not AI for its own sake.
 
-## Full-Cycle Engineering
+## Advisory
 
-From first commit to production deployment — frontend, backend, data, and infrastructure — with the same team throughout, so nothing gets lost in translation between design and delivery.
+Make better technology decisions. We start with a short discovery engagement — mapping your workflows, identifying where technology can genuinely help, and giving you a realistic plan with costs and timelines.
 
-## Ongoing Support
+## Implementation and support
 
-Post-launch, we stay available for monitoring, iteration, and scaling as your usage grows, on a schedule that matches your needs — from light-touch retainer support to fully embedded team members.
+From first build to production, with the same team throughout, so nothing gets lost between design and delivery. After launch, we stay available for monitoring, improvement and scaling, on a schedule that matches your needs.
 
 Not sure what you need yet? Let's understand the problem before deciding what to build.
 

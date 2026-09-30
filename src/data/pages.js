@@ -29,7 +29,7 @@ export const PAGE_CONTENT = {
 // page in the app reads as part of the same family.
 export const PAGE_META = {
   en: {
-    about: { line1: "Who We ", line2: "Are", sub: "AI-POWERED TECHNOLOGY & INNOVATION" },
+    about: { line1: "Who We ", line2: "Are", sub: "PRACTICAL AI · AFFORDABLE INNOVATION" },
     products: { line1: "What We ", line2: "Build", sub: "PRODUCTS & PLATFORMS" },
     services: { line1: "What We ", line2: "Do", sub: "SOLUTIONS" },
     labs: { line1: "Perennia ", line2: "Labs", sub: "EXPERIMENTS & OPEN WORK" },
@@ -38,7 +38,7 @@ export const PAGE_META = {
     "jdk-factory-erp": { line1: "JDK Factory ", line2: "ERP", sub: "CASE STUDY · MANUFACTURING" },
   },
   ar: {
-    about: { line1: "من ", line2: "نحن", sub: "تقنية وابتكار مدعومان بالذكاء الاصطناعي" },
+    about: { line1: "من ", line2: "نحن", sub: "ذكاء اصطناعي عملي · ابتكار في المتناول" },
     products: { line1: "ماذا ", line2: "نبني", sub: "المنتجات والمنصات" },
     services: { line1: "ماذا ", line2: "نقدّم", sub: "الحلول" },
     labs: { line1: "مختبر ", line2: "بيرينيا", sub: "تجارب وأعمال مفتوحة" },
