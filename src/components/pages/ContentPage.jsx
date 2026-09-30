@@ -16,6 +16,22 @@ import "./ContentPage.css";
  * content record (fetched from the backend, see src/data/siteContent.js)
  * renders inside the shell.
  */
+function Illustration({ item, lang, className = "", sizes }) {
+  return (
+    <figure className={`content-illustration ${className}`.trim()}>
+      <img
+        src={item.src}
+        srcSet={item.srcSet}
+        sizes={sizes}
+        width={item.width}
+        height={item.height}
+        alt={item.alt[lang] ?? item.alt.en}
+        decoding="async"
+      />
+    </figure>
+  );
+}
+
 export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick }) {
   const { pages, copy, lang, features } = useLang();
   const meta = pages[pageId];
@@ -48,23 +64,27 @@ export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick
           <div className="content-tagline-sub">{meta.sub}</div>
         </div>
 
-        {illustration && (
-          <figure className="content-illustration">
-            <img
-              src={illustration.src}
-              srcSet={illustration.srcSet}
-              sizes="(max-width: 1240px) calc(100vw - 48px), 1180px"
-              width={illustration.width}
-              height={illustration.height}
-              alt={illustration.alt[lang] ?? illustration.alt.en}
-              decoding="async"
-            />
-          </figure>
+        {illustration?.placement === "banner" && (
+          <Illustration item={illustration} lang={lang} sizes="(max-width: 1240px) calc(100vw - 48px), 1180px" />
         )}
 
-        <GlassPanel className="content-shell" as="section">
-          <Markdown source={meta.body} cta={cta} />
-        </GlassPanel>
+        {illustration?.placement === "aside" ? (
+          <GlassPanel className="content-shell content-shell--aside" as="section">
+            <div className="content-shell-text">
+              <Markdown source={meta.body} cta={cta} />
+            </div>
+            <Illustration
+              item={illustration}
+              lang={lang}
+              className={`content-aside${illustration.portrait ? " content-aside--portrait" : ""}`}
+              sizes="(max-width: 1023px) calc(100vw - 48px), 440px"
+            />
+          </GlassPanel>
+        ) : (
+          <GlassPanel className="content-shell" as="section">
+            <Markdown source={meta.body} cta={cta} />
+          </GlassPanel>
+        )}
       </main>
 
       <SiteFooter onNavigate={onNavigate} onBook={cta.onClick} />

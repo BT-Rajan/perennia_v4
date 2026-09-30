@@ -61,9 +61,37 @@
 .content-tagline-divider { width: 48px; height: 2px; background: var(--gold); margin: var(--space-2) auto; }
 .content-tagline-sub { font-size: var(--fs-sub); letter-spacing: 0.12em; color: var(--muted-strong); }
 
+/* Text is capped at a readable measure (72ch, Markdown.css), so a
+   full-width card left a wide empty band on the right. The card is
+   sized to that measure and centred instead… */
 .content-shell {
   width: 100%;
+  max-width: calc(72ch + 2 * var(--space-6));
+  font-size: var(--fs-body);
   padding: var(--space-6);
+}
+
+/* …unless the page has a side illustration: then the card takes the
+   full width and the free column holds the image, which stays in view
+   while the text scrolls. */
+.content-shell--aside {
+  max-width: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 38%);
+  gap: var(--space-6);
+  align-items: start;
+}
+.content-shell-text { min-width: 0; }
+.content-aside {
+  position: sticky;
+  top: calc(100px + var(--space-5));
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 1023px) {
+  .content-shell--aside { grid-template-columns: 1fr; }
+  .content-aside { position: static; order: -1; }
+  .content-aside--portrait { max-width: 280px; justify-self: center; }
 }
 
 
