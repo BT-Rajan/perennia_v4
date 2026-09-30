@@ -37,6 +37,29 @@ export const PAGE_ILLUSTRATIONS = {
       ar: "مكعبات بناء تحمل أسماء السحابة وقاعدة البيانات وإدارة علاقات العملاء والبرمجيات وتخطيط موارد المؤسسات والذكاء الاصطناعي والأمن والتكامل.",
     },
   },
+  about: {
+    placement: "aside",
+    portrait: true,
+    src: "/static/illustrations/about.webp",
+    srcSet: "/static/illustrations/about-512.webp 512w, /static/illustrations/about.webp 1024w",
+    width: 1024,
+    height: 1536,
+    alt: {
+      en: "A smiling young Kuwaiti man in a ghutra and hoodie giving a thumbs up, with the Kuwait Towers behind him.",
+      ar: "شاب كويتي مبتسم يرتدي الغترة وسترة بقلنسوة ويرفع إبهامه، وخلفه أبراج الكويت.",
+    },
+  },
+  contact: {
+    placement: "aside",
+    src: "/static/illustrations/contact.webp",
+    srcSet: "/static/illustrations/contact-768.webp 768w, /static/illustrations/contact.webp 1536w",
+    width: 1536,
+    height: 1024,
+    alt: {
+      en: "A calm meeting corner with two armchairs, a coffee table with a notebook and coffee, and a Perennia jacket, overlooking the city.",
+      ar: "ركن اجتماعات هادئ بمقعدين وطاولة قهوة عليها دفتر وفنجان قهوة وسترة تحمل اسم Perennia، يطل على المدينة.",
+    },
+  },
   labs: {
     placement: "aside",
     src: "/static/illustrations/labs.webp",
