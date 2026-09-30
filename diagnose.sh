@@ -15,6 +15,8 @@ APP_NAME="perennia4"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_FILE="$ROOT_DIR/backend/.env"
 PUBLIC_IP="${1:-}"
+HINT_IP="${PUBLIC_IP:-$(hostname -I 2>/dev/null | awk '{print $1}')}"
+HINT_IP="${HINT_IP:-<server-ip>}"
 
 pass() { printf '  \033[1;32mOK\033[0m    %s\n' "$1"; }
 bad()  { printf '  \033[1;31mFAIL\033[0m  %s\n' "$1"; [[ -n "${2:-}" ]] && printf '        → %s\n' "$2"; }
@@ -46,7 +48,7 @@ if [[ -z "$listen" ]]; then
 elif [[ "$listen" =~ (0\.0\.0\.0|\*|\[::\]): ]]; then
     pass "listening on all interfaces ($listen)"
 else
-    bad "listening on $listen only — unreachable from other machines" "./install.sh --public-ip=${PUBLIC_IP:-<server-ip>}   (or put nginx in front)"
+    bad "listening on $listen only — unreachable from other machines" "./install.sh --public-ip=$HINT_IP   (or put nginx in front)"
 fi
 note "backend/.env: HOST=$HOST PORT=$PORT ENVIRONMENT=$(env_get ENVIRONMENT) COOKIE_SECURE=$(env_get COOKIE_SECURE)"
 
@@ -89,10 +91,14 @@ elif command -v firewall-cmd >/dev/null 2>&1 && root firewall-cmd --state >/dev/
 else
     note "no ufw/firewalld status available (not installed, or needs sudo)"
 fi
-if command -v iptables >/dev/null 2>&1 && rules="$(root iptables -S INPUT)"; then
-    [[ "$rules" == *"-P INPUT DROP"* || "$rules" == *"-P INPUT REJECT"* ]] && ! grep -q -- "--dport $PORT" <<<"$rules" \
-        && bad "iptables INPUT policy drops traffic and has no rule for $PORT" "sudo iptables -I INPUT -p tcp --dport $PORT -j ACCEPT"
+# Rules are searched in every chain: ufw/firewalld keep their ACCEPTs in
+# their own chains (ufw-user-input, …) behind a default-DROP INPUT policy.
+if command -v iptables >/dev/null 2>&1 && rules="$(root iptables -S)"; then
+    if [[ "$rules" == *"-P INPUT DROP"* || "$rules" == *"-P INPUT REJECT"* ]] \
+        && ! grep -qE -- "--dport(s)? ([0-9,:]*[,])?$PORT([,:][0-9,:]*)? .*-j ACCEPT" <<<"$rules"; then
+        bad "iptables drops incoming traffic by default and no chain accepts port $PORT" "sudo iptables -I INPUT -p tcp --dport $PORT -j ACCEPT"
+    fi
 fi
-note "cloud firewall / security group (IBM Cloud, AWS, …) is outside this server: allow inbound TCP $PORT there too"
+note "your hosting provider's firewall (control panel / security group) is outside this server: allow inbound TCP $PORT there too if it has one"
 
-echo; echo "From your own computer:  curl -i http://${PUBLIC_IP:-<server-ip>}:$PORT/api/health"
+echo; echo "From your own computer:  curl -i http://$HINT_IP:$PORT/api/health"
