@@ -25,17 +25,11 @@
   padding: 0 var(--space-2) var(--space-5);
 }
 
-.sidebar-mark {
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-sm);
-  background: var(--gold-dim);
-  color: var(--gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 14px;
+.sidebar-logo {
+  display: block;
+  height: 60px;
+  width: auto;
+  max-width: 100%;
 }
 
 .sidebar-nav {

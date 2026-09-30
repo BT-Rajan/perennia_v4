@@ -18,18 +18,12 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
-.login-mark {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-sm);
-  background: var(--navy-950);
-  color: var(--gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-weight: 600;
-  font-size: 18px;
+/* 199×108 source: ≤72px tall keeps it crisp on high-density screens. */
+.login-logo {
+  display: block;
+  height: 72px;
+  width: auto;
+  align-self: flex-start;
 }
 
 .login-card h1 {

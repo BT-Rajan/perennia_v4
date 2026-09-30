@@ -3,6 +3,15 @@ import { adminApi, setCsrfToken } from "../api/client.js";
 
 const AuthContext = createContext(null);
 
+// Shown when the password was right but the browser dropped the session
+// cookie — almost always a Secure cookie on a plain-http:// address.
+const COOKIE_BLOCKED =
+  window.location.protocol === "http:"
+    ? "Signed in, but the browser refused the session cookie because this site is on plain http:// " +
+      "while the server requires HTTPS cookies. Open the site over https://, or on a test server " +
+      "re-run ./install.sh --public-ip=<server-ip>."
+    : "Signed in, but the browser did not keep the session cookie. Check that cookies are allowed for this site.";
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,6 +30,14 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (username, password) => {
     const data = await adminApi.login(username, password);
     setCsrfToken(data.csrf_token);
+    // Confirm the session cookie actually stuck before entering the
+    // dashboard; otherwise every page would bounce straight back to login.
+    try {
+      await adminApi.me();
+    } catch (err) {
+      setCsrfToken(null);
+      throw err.status === 401 ? new Error(COOKIE_BLOCKED) : err;
+    }
     setUser(data);
     return data;
   }, []);

@@ -253,6 +253,15 @@ def main() -> None:
             set_many(db, to_set, actor_id=None, actor_username="seed_script")
             print(f"Seeded copy blobs: {list(to_set)}.")
 
+        # --- logo: move off the old placeholder default ---
+        # Only when the stored value is exactly the old placeholder; a logo
+        # an admin chose in Settings is left alone.
+        logo = db.get(SiteSetting, "branding.logo_url")
+        if logo is not None and logo.value.strip('"') == "/static/logo.svg":
+            set_many(db, {"branding.logo_url": get_def("branding.logo_url").default},
+                     actor_id=None, actor_username="seed_script")
+            print("Updated branding.logo_url from the old placeholder to the Perennia logo.")
+
 
 if __name__ == "__main__":
     main()

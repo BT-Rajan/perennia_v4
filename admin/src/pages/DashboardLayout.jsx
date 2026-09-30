@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import logoUrl from "../assets/perennia-logo.png";
 import "./DashboardLayout.css";
 
 const NAV_ITEMS = [
@@ -25,8 +26,7 @@ export default function DashboardLayout() {
     <div className="dashboard-shell">
       <aside className="sidebar">
         <div className="sidebar-brand">
-          <span className="sidebar-mark">P</span>
-          <span>Perennia</span>
+          <img className="sidebar-logo" src={logoUrl} alt="Perennia" width="199" height="108" />
         </div>
         <nav className="sidebar-nav">
           {NAV_ITEMS.map((item) => (

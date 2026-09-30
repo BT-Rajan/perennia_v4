@@ -24,7 +24,8 @@ from app.models import AdminUser  # noqa: F401 — needed for Base.metadata
 
 def main() -> None:
     Base.metadata.create_all(bind=engine)
-    print(f"Tables created/verified against {settings.DATABASE_URL}")
+    # Never print the password from DATABASE_URL (install logs, pm2 logs).
+    print(f"Tables created/verified against {engine.url.render_as_string(hide_password=True)}")
 
     with session_scope() as db:
         existing = db.scalar(select(AdminUser).limit(1))
