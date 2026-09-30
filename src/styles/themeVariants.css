@@ -1,0 +1,268 @@
+/* ──────────────────────────────────────────────────────────
+   Whole-page style system — admin-configurable, cross-component
+   toggles (Settings > Theme). Each pass adds its own attribute here;
+   see applyTheme.js for how theme.* settings become these
+   [data-*] attributes on <html>. A style only ever changes fill/
+   border/shadow treatment — never layout, spacing, or content — so
+   switching one can't break anything structural.
+
+   Pass 1: surfaces (cards/panels) + buttons (CTAs/pills).
+   ────────────────────────────────────────────────────────── */
+
+/* ══ Surfaces — [data-surface-style] ══════════════════════════════
+   Covers every "card" surface: GlassPanel (ChatWidget popover,
+   BookingPanel), .hero-section (nav grid + its row/compact layout
+   variants), .hero-card (centered-card layout). "glass" (the default)
+   needs no rules here — it's what these elements already look like. */
+
+[data-surface-style="solid"] .glass-panel,
+[data-surface-style="solid"] .hero-section,
+[data-surface-style="solid"] .hero-card {
+  background: color-mix(in srgb, var(--brand-bg) 80%, white 6%);
+  border-color: color-mix(in srgb, var(--gold) 20%, transparent);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+[data-surface-style="outline"] .glass-panel,
+[data-surface-style="outline"] .hero-section,
+[data-surface-style="outline"] .hero-card {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--gold) 35%, transparent);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+[data-surface-style="outline"] .glass-panel:hover,
+[data-surface-style="outline"] .hero-section:hover {
+  box-shadow: none;
+}
+
+[data-surface-style="elevated"] .glass-panel,
+[data-surface-style="elevated"] .hero-section,
+[data-surface-style="elevated"] .hero-card {
+  background: color-mix(in srgb, var(--brand-bg) 78%, white 8%);
+  border-color: color-mix(in srgb, var(--gold) 15%, transparent);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+[data-surface-style="elevated"] .hero-section:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.55), 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* ══ Buttons — [data-button-style] ═════════════════════════════════
+   Covers CTA-style buttons/pills: .hero-button, .hero-card-pill, and
+   the two sticky buttons (.sticky-cta-btn — a plain global class
+   added alongside StickyChat's CSS-module classes, since module class
+   names are hashed at build time and can't be targeted from outside).
+   Deliberately NOT icon-only controls (send/mic/close) — those are a
+   different control category, not page CTAs.
+
+   "default" (no attribute rules needed) keeps each button's own
+   current look, since today's buttons are already NOT uniform: the
+   pills are outlined/glass, the sticky buttons are solid-filled. Any
+   other value makes all of them match ONE style, including color —
+   e.g. under "solid" the Appointments and AI Assistant buttons both
+   render in the same gold rather than keeping their separate accent
+   colors, since a single unified button style is the point of
+   choosing one. */
+
+[data-button-style="solid"] .hero-button,
+[data-button-style="solid"] .hero-card-pill,
+[data-button-style="solid"] .sticky-cta-btn {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--on-gold-text);
+}
+[data-button-style="solid"] .hero-button:hover,
+[data-button-style="solid"] .hero-card-pill:hover,
+[data-button-style="solid"] .sticky-cta-btn:hover {
+  filter: brightness(1.1);
+}
+
+[data-button-style="outline"] .hero-button,
+[data-button-style="outline"] .hero-card-pill,
+[data-button-style="outline"] .sticky-cta-btn {
+  background: transparent;
+  border: 1.5px solid var(--gold);
+  color: var(--gold);
+  box-shadow: none;
+}
+[data-button-style="outline"] .hero-button:hover,
+[data-button-style="outline"] .hero-card-pill:hover,
+[data-button-style="outline"] .sticky-cta-btn:hover,
+[data-button-style="outline"] .sticky-cta-btn.hovered {
+  background: color-mix(in srgb, var(--gold) 12%, transparent);
+  transform: none;
+  box-shadow: none;
+}
+
+[data-button-style="ghost"] .hero-button,
+[data-button-style="ghost"] .hero-card-pill,
+[data-button-style="ghost"] .sticky-cta-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--white-soft);
+  box-shadow: none;
+}
+[data-button-style="ghost"] .hero-button:hover,
+[data-button-style="ghost"] .hero-card-pill:hover,
+[data-button-style="ghost"] .sticky-cta-btn:hover,
+[data-button-style="ghost"] .sticky-cta-btn.hovered {
+  background: color-mix(in srgb, var(--white-soft) 10%, transparent);
+  transform: none;
+  box-shadow: none;
+}
+
+[data-button-style="gradient"] .hero-button,
+[data-button-style="gradient"] .hero-card-pill,
+[data-button-style="gradient"] .sticky-cta-btn {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-shade-2) 50%, var(--gold-shade-3) 100%);
+  border-color: transparent;
+  color: var(--on-gold-text);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--gold) 30%, transparent);
+}
+[data-button-style="gradient"] .hero-button:hover,
+[data-button-style="gradient"] .hero-card-pill:hover,
+[data-button-style="gradient"] .sticky-cta-btn:hover {
+  filter: brightness(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-surface-style="elevated"] .hero-section:hover { transform: none; }
+}
+
+/* ══ Pass 2: Typography — [data-type-scale] + [data-heading-case] ═══
+   Covers body/small/sub text and section-card headings site-wide via
+   the same tokens Hero.css/ChatWidget.css/etc. already read
+   (--fs-body, --fs-sm, --fs-sub, --fs-h2 — see tokens.css). Redefining
+   the custom properties here, scoped to the attribute, means every
+   consumer of those tokens picks up the new size automatically with
+   no changes needed at each call site. Deliberately does NOT touch
+   --fs-hero/--fs-tagline — the homepage headline sizes itself to fit
+   the page (see FitOneLine in HeroShared.jsx) and has its own style
+   picker (theme.headline_style); a second, independent size control
+   over the same text would just fight that logic. */
+
+[data-type-scale="compact"] {
+  --fs-sub: clamp(0.65rem, 0.4vw + 0.52rem, 0.78rem);
+  --fs-body: clamp(0.82rem, 0.25vw + 0.74rem, 0.92rem);
+  --fs-sm: clamp(0.72rem, 0.15vw + 0.68rem, 0.78rem);
+  --fs-h2: 1.15rem;
+}
+
+[data-type-scale="comfortable"] {
+  --fs-sub: clamp(0.75rem, 0.55vw + 0.58rem, 0.92rem);
+  --fs-body: clamp(1rem, 0.35vw + 0.88rem, 1.12rem);
+  --fs-sm: clamp(0.85rem, 0.25vw + 0.78rem, 0.94rem);
+  --fs-h2: 1.4rem;
+}
+
+[data-type-scale="large"] {
+  --fs-sub: clamp(0.8rem, 0.6vw + 0.62rem, 1rem);
+  --fs-body: clamp(1.1rem, 0.4vw + 0.96rem, 1.25rem);
+  --fs-sm: clamp(0.92rem, 0.3vw + 0.84rem, 1.02rem);
+  --fs-h2: 1.55rem;
+}
+
+/* "as-is" (default) needs no rules — .hero-section h3 is already
+   normal-case today. Uppercase-tracked headings read as oversized at
+   the same point-size as their normal-case equivalent (all-caps
+   glyphs are visually "louder"), so this pairs the transform with a
+   modest size reduction — a common pairing in editorial/corporate
+   type systems, not an independent, unrelated size change. */
+[data-heading-case="uppercase-tracked"] .hero-section h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: calc(var(--fs-h2) * 0.8);
+}
+[data-heading-case="sentence-case"] .hero-section h3 {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* ══ Pass 3: Background & texture — [data-background-style] +
+   [data-background-intensity] ═══════════════════════════════════════
+   Two independent axes: WHICH pattern renders behind all page content
+   (body::before, defined in global.css — "grid" is the base rule
+   there and needs no override here), and HOW STRONG it is
+   (--bg-texture-opacity, also read by that same rule). "solid" as a
+   pattern hides the overlay outright regardless of intensity; "off"
+   as an intensity hides whichever pattern is selected — the two
+   settings compose rather than duplicate each other. */
+
+[data-background-intensity="soft"] { --bg-texture-opacity: 0.045; }
+[data-background-intensity="bold"] { --bg-texture-opacity: 0.08; }
+[data-background-intensity="off"] { --bg-texture-opacity: 0; }
+
+[data-background-style="solid"] body::before {
+  display: none;
+}
+
+[data-background-style="dot-grid"] body::before {
+  background-image: radial-gradient(rgb(255 255 255 / var(--bg-texture-opacity)) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+}
+
+[data-background-style="radial-glow"] body::before {
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% 0%, color-mix(in srgb, var(--gold) calc(var(--bg-texture-opacity) * 900%), transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 45% at 85% 90%, color-mix(in srgb, var(--blue-light) calc(var(--bg-texture-opacity) * 700%), transparent) 0%, transparent 70%);
+  background-size: 100% 100%;
+  mask-image: none;
+}
+
+/* ══ Pass 4: Spacing & density — [data-density] + [data-section-rhythm]
+   ═══════════════════════════════════════════════════════════════════
+   Two independent axes, same relationship as background style/
+   intensity: [data-density] redefines the whole --space-1..--space-8
+   scale plus --line-height-scale (every component that reads those
+   tokens — cards, buttons, gaps, prose text — moves together);
+   [data-section-rhythm] separately controls just the breathing room
+   between major page blocks (--section-gap/--section-padding-block),
+   letting an admin pair e.g. compact card spacing with generous
+   section gaps rather than being forced to change both at once.
+   "comfortable" density and "standard" rhythm need no rules — they're
+   what tokens.css already defines. */
+
+[data-density="compact"] {
+  --space-1: 3px;
+  --space-2: 6px;
+  --space-3: 9px;
+  --space-4: 12px;
+  --space-5: 18px;
+  --space-6: 24px;
+  --space-7: 36px;
+  --space-8: 48px;
+  --line-height-scale: 0.92;
+}
+
+[data-density="spacious"] {
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 16px;
+  --space-4: 22px;
+  --space-5: 32px;
+  --space-6: 44px;
+  --space-7: 64px;
+  --space-8: 88px;
+  --line-height-scale: 1.12;
+}
+
+/* These override to a specific tier regardless of the density scale
+   above, since --section-gap/--section-padding-block's own default
+   (tokens.css) already tracks density proportionally via var(--space-
+   7)/var(--space-6) — "standard" rhythm at any density just means
+   "whatever this density's --space-6/7 currently are". Only "tight"/
+   "loose" need explicit values here, to actually diverge from that
+   proportional default. */
+[data-section-rhythm="tight"] {
+  --section-padding-block: var(--space-4);
+  --section-gap: var(--space-5);
+}
+[data-section-rhythm="loose"] {
+  --section-padding-block: var(--space-7);
+  --section-gap: var(--space-8);
+}

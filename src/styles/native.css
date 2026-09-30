@@ -1,0 +1,102 @@
+/* ──────────────────────────────────────────────────────────
+   Native-feel polish — one site (perennia.org) served identically to
+   desktop, iOS, and Android, but adapted at the CSS layer so each
+   feels appropriate on its own platform rather than like a plain
+   webpage stretched to fit. Two mechanisms:
+
+   1. Safe-area insets (env(safe-area-inset-*)) — universal, works on
+      any device with a notch/home-indicator/gesture-nav area,
+      regardless of platform. Applied directly to the fixed-position
+      chrome (TopBar, StickyChat, ChatWidget) in their own CSS files;
+      this file just documents the pattern and covers the parts that
+      aren't platform-specific.
+
+   2. [data-platform] attribute — set once at startup by
+      src/platform.js on <html>, based on the user agent. This is a
+      *feel* signal only (subtle motion/feedback differences), never
+      a feature gate — every platform gets the exact same
+      functionality; see the rules below for what actually differs.
+   ────────────────────────────────────────────────────────── */
+
+/* Prevents the classic double-tap-to-zoom ~300ms delay on touch
+   devices for anything meant to be tapped once, and removes iOS's
+   gray tap-highlight flash in favor of each element's own
+   :active state (buttons already have one — see IconButton.css,
+   global.css). */
+button, a, [role="button"], input, textarea, select {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Momentum scrolling on iOS Safari for the app's internal scroll
+   containers (chat transcript, editorial nav strip, etc.) — modern
+   iOS applies this by default, but older WebKit needs it explicit,
+   and it's harmless either way. */
+.chat-widget-conversation,
+.hero-editorial-strip,
+.hero-sections {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Stops a fast swipe inside a scrollable panel (chat transcript, nav
+   strip) from also dragging the whole page via browser overscroll/
+   pull-to-refresh — a common way a web app gives itself away as "not
+   native" on mobile. */
+.chat-widget-conversation {
+  overscroll-behavior: contain;
+}
+
+/* ── [data-platform="ios"] — iOS-flavored touch feedback: a gentle
+   opacity fade on press rather than a scale change, closer to
+   UIKit's default button highlight than the scale-based feedback
+   used elsewhere. Kept subtle and additive — every element still has
+   its existing :active behavior; this only adds the fade. */
+[data-platform="ios"] .icon-btn:active:not(:disabled),
+[data-platform="ios"] .hero-card-pill:active,
+[data-platform="ios"] .hero-button:active {
+  opacity: 0.6;
+}
+
+/* ── [data-platform="android"] — a soft radial "ripple" flash from
+   the center on press, evoking Material's ripple without pulling in
+   a JS ripple library. Pure CSS via a radial-gradient that expands
+   and fades on :active; reduced-motion users fall back to the plain
+   :active states everywhere else in the app (see global.css). */
+[data-platform="android"] .icon-btn,
+[data-platform="android"] .hero-card-pill,
+[data-platform="android"] .hero-section,
+[data-platform="android"] .hero-button {
+  position: relative;
+  overflow: hidden;
+}
+[data-platform="android"] .icon-btn::after,
+[data-platform="android"] .hero-card-pill::after,
+[data-platform="android"] .hero-section::after,
+[data-platform="android"] .hero-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle, color-mix(in srgb, var(--gold) 35%, transparent) 0%, transparent 70%);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.25s var(--ease), transform 0.35s var(--ease);
+  pointer-events: none;
+}
+[data-platform="android"] .icon-btn:active::after,
+[data-platform="android"] .hero-card-pill:active::after,
+[data-platform="android"] .hero-section:active::after,
+[data-platform="android"] .hero-button:active::after {
+  opacity: 1;
+  transform: scale(1);
+  transition-duration: 0.05s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-platform="android"] .icon-btn::after,
+  [data-platform="android"] .hero-card-pill::after,
+  [data-platform="android"] .hero-section::after,
+  [data-platform="android"] .hero-button::after {
+    display: none;
+  }
+}

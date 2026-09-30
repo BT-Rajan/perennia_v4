@@ -1,0 +1,71 @@
+.chat-input-area {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-top: 1px solid color-mix(in srgb, var(--gold) 10%, transparent);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--brand-bg) 20%, transparent) 100%);
+}
+
+.chat-input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  resize: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid color-mix(in srgb, var(--gold) 15%, transparent);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: var(--fs-body);
+  line-height: 1.4;
+  max-height: 120px;
+  color: var(--white-pure);
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all var(--dur-fast) var(--ease);
+}
+.chat-input::placeholder { 
+  color: var(--muted);
+}
+/* rows=1 gives the textarea a fixed one-line height; actual typed
+   text grows it via JS (see ChatInput.jsx handleInput), but the
+   placeholder never triggers that, so on a narrow box (e.g. the
+   hero's compact quick-chat composer on mobile) a placeholder too
+   long to fit on one line was wrapping to a second line and getting
+   clipped by that fixed height instead of shrinking to fit. Only
+   applies while the placeholder is actually showing — real input
+   still wraps/grows normally. */
+.chat-input:placeholder-shown {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chat-input:hover {
+  border-color: color-mix(in srgb, var(--gold) 20%, transparent);
+}
+.chat-input:focus { 
+  outline: none; 
+  border-color: color-mix(in srgb, var(--gold) 30%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--gold) 15%, transparent);
+}
+
+/* Mic button — sits between the textarea and send. Same IconButton
+   base as send, styled to read as "on" while actively listening. */
+.chat-input-mic-active {
+  background: var(--gold);
+  color: var(--on-gold-text);
+  border-color: var(--gold);
+  animation: chat-input-mic-pulse 1.3s ease-in-out infinite;
+}
+@keyframes chat-input-mic-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 45%, transparent); }
+  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--gold) 0%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-input-mic-active { animation: none; }
+}

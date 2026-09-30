@@ -1,0 +1,14 @@
+.bk-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--space-3); }
+.bk-field label { font-size: var(--fs-sm); color: var(--muted-strong); font-weight: 500; }
+.bk-field input,
+.bk-field textarea {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: var(--fs-body);
+  color: var(--white-pure);
+}
+.bk-field input::placeholder, .bk-field textarea::placeholder { color: var(--muted); }
+.bk-field input:focus, .bk-field textarea:focus { outline: none; border-color: var(--gold-border); }
+.bk-field input[type="date"] { color-scheme: dark; }

@@ -1,0 +1,84 @@
+.top-bar-header {
+  position: fixed;
+  /* Shifts the header down clear of an iOS notch / Android status-bar
+     cutout, rather than growing its own height — that way --header-h
+     (used everywhere else to size the page's top padding, e.g.
+     .hero-page, .content-page) stays a single source of truth and
+     doesn't need a matching safe-area adjustment at every call site.
+     The sliver above the header (y: 0 to the inset) shows the page's
+     own dark background, which already closely matches the header's
+     gradient. */
+  top: env(safe-area-inset-top);
+  left: 0;
+  right: 0;
+  height: var(--header-h);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-5);
+  /* Was a literal navy-blue rgba() left over from the site's old
+     palette, mismatched against the current near-black/gold tokens —
+     derived from --brand-bg instead so the header re-themes with
+     everything else. */
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand-bg) 95%, transparent) 0%, color-mix(in srgb, var(--brand-bg) 85%, transparent) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid color-mix(in srgb, var(--gold) 15%, transparent);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.top-bar-start {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.top-bar-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.top-bar-end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+[dir="rtl"] .top-bar-start .back-btn svg { transform: scaleX(-1); }
+
+.logo-btn {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Desktop (>1024px) — header grows to comfortably fit the large
+   87px logo (see Logo.css). Overrides the height property directly
+   rather than the --header-h custom property: applyTheme.js sets
+   --header-h as an *inline* style on <html> (it's admin-configurable
+   at runtime), and inline styles always beat stylesheet rules —
+   media-scoped or not — so a media query targeting the variable
+   itself would silently lose to that inline value. Same technique
+   the existing mobile override below already relies on. */
+@media (min-width: 1025px) {
+  .top-bar-header { height: 100px; }
+}
+
+@media (max-width: 767px) {
+  .top-bar-header {
+    padding: 0 var(--space-3);
+    height: 56px;
+  }
+  
+  .top-bar-start, .top-bar-end { gap: var(--space-2); }
+}

@@ -1,0 +1,48 @@
+/* Admin dashboard tokens. Distinct treatment from the public site on
+   purpose: a data-dense internal tool reads better on a light content
+   surface (tables, forms) with a fixed dark navy sidebar for
+   orientation, rather than the public site's fully-dark, atmospheric
+   look. The brand's navy/gold identity carries over so it still reads
+   as unmistakably Perennia — just tuned for scanning data instead of
+   greeting a visitor.
+
+   Signature element: appointment/lead IDs render in a monospace chip
+   throughout (JetBrains Mono) — a quiet, recurring nod to the
+   confirmation codes visitors receive on the public site, and a
+   genuinely useful convention for an admin scanning tables of them. */
+:root {
+  --navy-950: #0a0e27;
+  --navy-800: #141a3d;
+  --navy-700: #1d2550;
+  --gold: #fbbf24;
+  --gold-dim: #fbbf2422;
+
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --surface-hover: #f1f1ee;
+  --border: #e4e4e0;
+  --text: #17181c;
+  --text-muted: #6b6d76;
+  --text-faint: #9a9ba3;
+
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --warning: #d97706;
+  --warning-bg: #fffbeb;
+
+  --font-ui: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Consolas, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --sidebar-w: 240px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+}

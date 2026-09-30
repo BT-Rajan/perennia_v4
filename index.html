@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link id="favicon-link" rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- viewport-fit=cover lets the page draw under the iOS notch/home-
+         indicator and Android gesture-nav areas instead of leaving them
+         a plain black bar; components that sit at the true edges (see
+         env(safe-area-inset-*) in src/styles/native.css) pad themselves
+         clear of those areas explicitly. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta id="theme-color-meta" name="theme-color" content="#07060a" />
+    <!-- Lets someone add perennia.org to their home screen (iOS "Add to
+         Home Screen", Android's install prompt) and have it open full-
+         screen like a native app, still served from the same site —
+         no separate app store build. -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Perennia" />
+    <!-- Safari only accepts PNG for apple-touch-icon (SVG is silently
+         ignored, falling back to a screenshot) — this points at the
+         current SVG logo as a placeholder; swap in a real 180×180 PNG
+         once branding.logo_url has one, or iOS home-screen icons will
+         look wrong even though everything else here works. -->
+    <link rel="apple-touch-icon" href="/static/logo.svg" />
+    <title>Perennia</title>
+    <meta id="meta-description" name="description" content="Perennia — a technology partner for GCC businesses. Practical AI. Affordable Innovation." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      id="google-fonts-link"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Syne:wght@500;600;700;800&family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

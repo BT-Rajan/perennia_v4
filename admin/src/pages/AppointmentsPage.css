@@ -1,0 +1,98 @@
+.filters-row {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filters-row select,
+.filters-row input {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.clear-filter {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.table-empty {
+  text-align: center;
+  color: var(--text-faint);
+  padding: var(--space-6) !important;
+}
+
+.table-subtext {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.row-action {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.row-action:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+.row-action.danger:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.row-action.primary {
+  background: var(--navy-950);
+  color: var(--gold);
+  border-color: var(--navy-950);
+}
+.row-action.primary:hover {
+  color: var(--gold);
+  border-color: var(--navy-950);
+}
+
+.row-action:disabled {
+  opacity: 0.5;
+}
+
+.appt-pending-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* Was .appt-answers-row td, styling an inline expandable table row from
+   an earlier layout — appointment answers now render in
+   AppointmentDetailPanel.jsx's side panel instead, so that selector
+   never matched anything. Renamed to .appt-answers-list to match the
+   div AppointmentDetailPanel.jsx actually renders (it had drifted
+   out of sync, leaving that list completely unstyled). */
+.appt-answers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.appt-answer-item {
+  display: flex;
+  gap: var(--space-2);
+  font-size: 13px;
+}
+
+.appt-answer-label {
+  color: var(--text-faint);
+  min-width: 160px;
+}

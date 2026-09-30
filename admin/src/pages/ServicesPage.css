@@ -1,0 +1,23 @@
+@import "./AppointmentsPage.css";
+
+.services-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .services-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.services-table-wrap tbody tr.row-selected {
+  background: var(--gold-dim);
+}
+
+.mono-chip-inline {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}

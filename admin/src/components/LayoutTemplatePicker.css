@@ -1,0 +1,157 @@
+.layout-template-picker {
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.layout-template-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.layout-template-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+  width: 148px;
+}
+.layout-template-card:hover { border-color: var(--gold-border); }
+.layout-template-card.active {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold);
+}
+
+.layout-template-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.layout-template-desc {
+  margin: var(--space-3) 0 0;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  max-width: 560px;
+}
+
+/* ── Thumbnails — tiny, purely decorative CSS mockups. Not to scale,
+   not real copy; just enough shape to tell the four templates apart
+   at a glance. */
+.layout-thumb {
+  width: 100%;
+  height: 84px;
+  border-radius: calc(var(--radius-sm) - 2px);
+  border: 1px solid var(--border);
+  background: var(--bg-inset, rgba(255, 255, 255, 0.03));
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-sizing: border-box;
+}
+
+.layout-thumb-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--gold);
+  opacity: 0.85;
+}
+.layout-thumb-bar-lg { width: 70%; }
+.layout-thumb-bar-sm { width: 45%; opacity: 0.4; background: var(--text-muted); }
+.layout-thumb-bar-left { align-self: flex-start; }
+
+.layout-thumb-pill {
+  width: 50%;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-border);
+  margin-top: 2px;
+}
+.layout-thumb-pill-left { align-self: flex-start; }
+
+/* classic: bars centered, small card grid beneath */
+.layout-thumb-classic { justify-content: center; }
+.layout-thumb-grid {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  margin-top: 4px;
+}
+.layout-thumb-card-sm {
+  flex: 1;
+  height: 16px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* split: two columns side by side */
+.layout-thumb-split {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 6px;
+}
+.layout-thumb-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  justify-content: center;
+}
+.layout-thumb-col .layout-thumb-bar,
+.layout-thumb-col .layout-thumb-pill { width: 90%; }
+.layout-thumb-row {
+  width: 100%;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* centered-card: one bordered card holding everything */
+.layout-thumb-card {
+  justify-content: center;
+  align-items: center;
+}
+.layout-thumb-inner-card {
+  width: 88%;
+  height: 92%;
+  border-radius: 4px;
+  border: 1px solid var(--gold-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px;
+  box-sizing: border-box;
+}
+.layout-thumb-dots {
+  display: flex;
+  gap: 3px;
+  margin-top: 2px;
+}
+.layout-thumb-dot {
+  width: 12px;
+  height: 6px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-border);
+}
+
+/* editorial: left-aligned bars, horizontal strip of cards */
+.layout-thumb-editorial { align-items: flex-start; justify-content: center; }
+.layout-thumb-strip {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  margin-top: 4px;
+}
+.layout-thumb-strip .layout-thumb-card-sm { flex: 0 0 22px; }

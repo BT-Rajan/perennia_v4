@@ -1,0 +1,253 @@
+/* ──────────────────────────────────────────────────────────
+   Sticky Chat Button — floats at bottom-right corner
+   with smooth animations and enterprise styling
+   ────────────────────────────────────────────────────────── */
+
+.stickyContainer {
+  position: fixed;
+  /* calc(...) with env(safe-area-inset-*) keeps these clear of the
+     iOS home-indicator / Android gesture-nav bar on devices that have
+     one; env() resolves to 0 everywhere else (desktop, older devices),
+     so this is a no-op there — same 32px as before. */
+  bottom: calc(32px + env(safe-area-inset-bottom));
+  right: calc(32px + env(safe-area-inset-right));
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  /* Ensure it stays above everything except modals/dialogs */
+}
+
+.chatButtonWrap {
+  position: relative;
+}
+
+.chatButton {
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 28px;
+  min-width: 60px;
+  min-height: 60px;
+
+  /* Appearance — BOLD & AGGRESSIVE */
+  background: var(--brand-primary);
+  color: var(--brand-bg);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--brand-accent);  /* Bold border for extra punch */
+  cursor: pointer;
+  font-weight: 800;                       /* Ultra-bold text */
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  /* Shadows & depth — MORE aggressive */
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.4),
+    0 12px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  /* Transitions */
+  transition:
+    all var(--dur-med) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+
+  /* Type rendering */
+  font-family: var(--font-body);
+}
+
+/* Hover: DRAMATIC scale & elevation */
+.chatButton:hover,
+.chatButton.hovered {
+  transform: translateY(-6px) scale(1.12);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.5),
+    0 16px 48px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Focus: visible outline */
+.chatButton:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Appointments button — secondary to the AI Assistant per the brief:
+   noticeably smaller and icon-led (label only via title/aria on
+   hover-equivalent, not painted on-screen) so it reads as a quiet
+   secondary action rather than a second, equally-weighted CTA. */
+.booking {
+  background: color-mix(in srgb, var(--brand-accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--brand-accent) 45%, transparent);
+  color: var(--brand-accent);
+  padding: 12px;
+  min-width: 46px;
+  min-height: 46px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.booking .label {
+  display: none;
+}
+.booking:hover,
+.booking.hovered {
+  transform: translateY(-3px) scale(1.06);
+  background: color-mix(in srgb, var(--brand-accent) 22%, transparent);
+}
+.booking:focus-visible {
+  outline-color: var(--brand-accent);
+}
+
+/* Online indicator on the AI Assistant button — mirrors k-g-i.com's
+   agent-online-dot. Rendered only while the widget is closed (see
+   StickyChat.jsx, which conditionally includes .onlineDot alongside
+   .pulse). */
+.onlineDot {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-success);
+  border: 2px solid var(--brand-bg);
+  z-index: 1;
+}
+
+/* Icon styling */
+.icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  transition: transform var(--dur-med) var(--ease);
+}
+
+.chatButton:hover .icon,
+.chatButton.hovered .icon {
+  transform: scale(1.15);
+}
+
+/* Label — always visible (k-g-i.com keeps "Talk to Sulaiman" on-screen
+   at all times rather than reveal-on-hover), collapses on small screens
+   where the icon alone reads clearly. */
+.label {
+  white-space: nowrap;
+  font-weight: 600;
+  opacity: 1;
+  transition: opacity var(--dur-med) var(--ease);
+  text-transform: none;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+}
+
+@media (max-width: 480px) {
+  .label {
+    display: none;
+  }
+}
+
+/* Pulse animation: draws attention on initial load */
+.pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--brand-primary);
+  opacity: 0;
+  animation: pulse-ring 2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+/* Mobile: smaller, fixed position adjustment */
+@media (max-width: 480px) {
+  .stickyContainer {
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    right: calc(24px + env(safe-area-inset-right));
+  }
+
+  .chatButton {
+    padding: 12px 16px;
+    min-width: 52px;
+    min-height: 52px;
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  /* Stays smaller than the assistant button even after the shared
+     .chatButton mobile rule above (same specificity, later in the
+     cascade) would otherwise re-widen it back to 52px. */
+  .booking {
+    padding: 10px;
+    min-width: 42px;
+    min-height: 42px;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Hide pulse on mobile to reduce animation overhead */
+  .pulse {
+    display: none;
+  }
+}
+
+/* Tablet adjustments. max-width: 767px (not 768px) to match the
+   mobile cutoff used everywhere else in this app (TopBar.css,
+   Logo.css, BookingPanel.css, ContentPage.css) — a stray 768px here
+   previously meant this file disagreed with the rest of the app by
+   exactly 1px, right at the width of an iPad in portrait. */
+@media (max-width: 767px) {
+  .stickyContainer {
+    bottom: calc(28px + env(safe-area-inset-bottom));
+    right: calc(28px + env(safe-area-inset-right));
+  }
+
+  .chatButton:hover,
+  .chatButton.hovered {
+    transform: translateY(-2px) scale(1.05);
+  }
+
+  /* Home page only (see StickyChat.jsx's isHome prop): Hero already
+     renders its own in-flow quick-chat box on this page, close enough
+     to this fixed button on a small screen to visually collide with
+     it. Hidden here rather than not rendered at all in JS, so it
+     still mounts (and un-hides) cleanly if the viewport grows past
+     this breakpoint without a remount. Only the AI Assistant button —
+     the Appointments button isn't duplicated anywhere on the page, so
+     it keeps showing here same as everywhere else. */
+  .homeMobileHidden {
+    display: none;
+  }
+}
+
+/* Prevent animation if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .chatButton,
+  .icon,
+  .pulse {
+    animation: none;
+    transition: none;
+  }
+
+  .chatButton:hover,
+  .chatButton.hovered {
+    transform: none;
+  }
+}

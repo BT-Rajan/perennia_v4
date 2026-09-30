@@ -1,0 +1,137 @@
+.leads-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .leads-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leads-table-wrap tbody tr.row-selected {
+  background: var(--gold-dim);
+}
+
+.lead-panel {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: sticky;
+  top: var(--space-6);
+}
+
+.lead-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.lead-panel-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.lead-panel-email {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.lead-panel-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--text-faint);
+  line-height: 1;
+}
+.lead-panel-close:hover {
+  color: var(--text);
+}
+
+.lead-panel-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.lead-panel-row span:first-child {
+  color: var(--text-faint);
+}
+
+.lead-panel-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-faint);
+  margin-top: var(--space-2);
+}
+
+.lead-panel select,
+.lead-panel textarea {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+  width: 100%;
+  resize: vertical;
+}
+
+.lead-panel-save {
+  align-self: flex-start;
+  background: var(--navy-950);
+  color: var(--gold);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.lead-panel-save:disabled {
+  opacity: 0.4;
+}
+
+.lead-panel-error {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.lead-transcript {
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.lead-transcript-entry {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.lead-transcript-meta {
+  font-size: 11px;
+  color: var(--text-faint);
+  text-transform: capitalize;
+  margin-bottom: 2px;
+}
+
+.lead-panel-delete {
+  margin-top: var(--space-2);
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--danger);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.lead-panel-delete:hover {
+  border-color: var(--danger);
+  background: var(--danger-bg);
+}

@@ -1,0 +1,69 @@
+/* Two classes (.glass-panel.booking-panel) so this background wins over
+   the shared, near-transparent glass-panel default regardless of CSS
+   import order — otherwise the chat transcript behind shows through
+   and its text visually collides with the booking form's text. */
+.glass-panel.booking-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  padding: var(--space-5);
+  overflow-y: auto;
+  /* Was a literal navy-blue rgba() left over from the site's old dark-
+     navy palette — reads as a mismatched, third-party-feeling widget
+     against the current near-black/gold design system. Derived from
+     --brand-bg instead, so it re-themes along with everything else. */
+  background: color-mix(in srgb, var(--brand-bg) 97%, transparent);
+  backdrop-filter: blur(28px) saturate(140%);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
+  animation: bk-in 0.25s var(--ease);
+}
+
+.booking-close {
+  position: absolute;
+  top: var(--space-3);
+  inset-inline-end: var(--space-3);
+  color: var(--muted-strong);
+  font-size: 1.1rem;
+}
+
+.booking-badge { font-size: 1.6rem; margin-bottom: var(--space-2); }
+.booking-panel h3 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; }
+[dir="rtl"] .booking-panel h3 { font-family: var(--font-ar); font-weight: 500; }
+.booking-sub { color: var(--muted-strong); font-size: var(--fs-sm); margin-top: 4px; }
+.booking-head-divider { height: 1px; background: var(--glass-border); margin: var(--space-4) 0; }
+
+.bk-tabs { display: flex; gap: var(--space-2); margin-bottom: var(--space-4); }
+.bk-tab {
+  flex: 1;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.bk-tab.active { background: var(--gold-dim); border-color: var(--gold-border); color: var(--gold); }
+
+.bk-err { color: var(--color-danger); font-size: var(--fs-sm); margin-bottom: var(--space-3); }
+.booking-foot { display: flex; gap: var(--space-2); margin-top: var(--space-2); }
+
+.bk-appt-summary {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+  font-size: var(--fs-body);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+@keyframes bk-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 767px) {
+  .booking-panel { border-radius: 0; }
+}

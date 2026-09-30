@@ -1,0 +1,15 @@
+{
+  "name": "Perennia",
+  "short_name": "Perennia",
+  "description": "Perennia — AI-powered technology & innovation.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#07060a",
+  "theme_color": "#07060a",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/static/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

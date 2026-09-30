@@ -1,0 +1,29 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid color-mix(in srgb, var(--gold) 15%, transparent);
+  color: var(--white-soft);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all var(--dur-fast) var(--ease);
+  text-align: start;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.chip:hover { 
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+  border-color: color-mix(in srgb, var(--gold) 25%, transparent);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--gold) 15%, transparent);
+}
+.chip-active { 
+  background: color-mix(in srgb, var(--gold) 20%, transparent);
+  border-color: color-mix(in srgb, var(--gold) 35%, transparent);
+  color: var(--gold);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--gold) 20%, transparent);
+}
+.chip-icon { line-height: 0; }

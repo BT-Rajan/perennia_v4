@@ -1,0 +1,147 @@
+.webhook-panel {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  position: sticky;
+  top: var(--space-6);
+  max-height: calc(100vh - var(--space-6) * 2);
+  overflow-y: auto;
+}
+
+.webhook-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-2);
+}
+
+.webhook-panel-title {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.webhook-panel-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--text-faint);
+  line-height: 1;
+}
+.webhook-panel-close:hover {
+  color: var(--text);
+}
+
+.webhook-secret-banner {
+  background: var(--gold-dim);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.webhook-secret-banner-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #92650a;
+  margin-bottom: 6px;
+}
+
+.webhook-secret-value {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  word-break: break-all;
+  user-select: all;
+}
+
+.webhook-panel-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-faint);
+  margin-top: var(--space-2);
+}
+
+.webhook-panel input[type="text"],
+.webhook-panel input:not([type]) {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+  width: 100%;
+}
+
+.webhook-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: var(--space-1);
+}
+
+.webhook-panel-check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: var(--space-2);
+}
+.webhook-panel-check input {
+  width: auto;
+}
+
+.webhook-panel-save {
+  align-self: flex-start;
+  background: var(--navy-950);
+  color: var(--gold);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: var(--space-3);
+}
+.webhook-panel-save:disabled {
+  opacity: 0.4;
+}
+
+.webhook-panel-error {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.webhook-panel-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: var(--space-3);
+}
+
+.webhook-deliveries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: var(--space-1);
+}
+
+.webhook-delivery-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 12.5px;
+}
+
+.webhook-delivery-ok {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.webhook-delivery-fail {
+  color: var(--danger);
+  font-weight: 600;
+}

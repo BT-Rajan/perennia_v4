@@ -1,0 +1,59 @@
+.rhythm-picker {
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.rhythm-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.rhythm-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+  width: 108px;
+}
+.rhythm-card:hover { border-color: var(--gold-border); }
+.rhythm-card.active {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold);
+}
+
+.rhythm-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.rhythm-desc {
+  margin: var(--space-3) 0 0;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  max-width: 560px;
+}
+
+.rhythm-thumb {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 48px;
+  border-radius: calc(var(--radius-sm) - 2px);
+  background: #0a0e27;
+  padding: 6px 10px;
+  box-sizing: border-box;
+}
+.rhythm-thumb-block {
+  height: 8px;
+  border-radius: 2px;
+  background: rgba(251, 191, 36, 0.5);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+}
+.rhythm-thumb-spacer { flex-shrink: 0; }

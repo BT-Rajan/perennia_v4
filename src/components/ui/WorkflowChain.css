@@ -1,0 +1,23 @@
+.workflow-chain {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.workflow-chain li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--white-soft);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.workflow-chain li + li::before {
+  content: "→";
+  color: var(--gold);
+  font-weight: 400;
+}
+[dir="rtl"] .workflow-chain li + li::before { content: "←"; }

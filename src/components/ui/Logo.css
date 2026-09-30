@@ -1,0 +1,46 @@
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.logo-img {
+  /* --logo-scale is set inline per the branding.logo_scale admin
+     setting — lets a logo with a lot of built-in padding be sized up
+     to actually read next to the header text, without a rebuild. */
+
+  /* Desktop (>1024px) — matched to the 100px desktop --header-h in
+     tokens.css, with headroom above/below so it reads as a real logo
+     rather than a small icon in a tall bar. */
+  height: calc(87px * var(--logo-scale, 1));
+  width: auto; /* let width follow the image's natural aspect ratio */
+  max-height: 87px;
+  max-width: 380px;
+  flex: none;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  transition: height 0.2s ease, max-height 0.2s ease, max-width 0.2s ease;
+}
+
+.logo-word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+  color: var(--white-pure);
+  white-space: nowrap;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+}
+[dir="rtl"] .logo-word { font-family: var(--font-ar); font-weight: 600; }
+
+/* Tablet (768px–1024px) */
+@media (max-width: 1024px) {
+  .logo-img { height: calc(40px * var(--logo-scale, 1)); width: auto; max-height: 44px; max-width: 120px; }
+  .logo-word { font-size: 1.1rem; }
+}
+
+/* Mobile (<768px) */
+@media (max-width: 767px) {
+  .logo-img { height: calc(36px * var(--logo-scale, 1)); width: auto; max-height: 40px; max-width: 110px; }
+  .logo-word { font-size: 1.05rem; }
+}

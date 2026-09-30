@@ -1,0 +1,122 @@
+.appointments-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .appointments-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.appointments-table-wrap tbody tr.row-selected {
+  background: var(--gold-dim);
+}
+
+.appt-panel {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: sticky;
+  top: var(--space-6);
+}
+
+.appt-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.appt-panel-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.appt-panel-code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.appt-panel-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--text-faint);
+  line-height: 1;
+}
+.appt-panel-close:hover {
+  color: var(--text);
+}
+
+.appt-panel-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.appt-panel-row span:first-child {
+  color: var(--text-faint);
+}
+
+.appt-panel-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-faint);
+  margin-top: var(--space-2);
+}
+
+.appt-answers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.appt-panel-error {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.appt-panel-drift {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent);
+  border-radius: var(--radius-sm, 8px);
+  padding: var(--space-2);
+}
+
+.appt-panel-reschedule {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--space-2);
+  background: var(--surface-2, rgba(0, 0, 0, 0.02));
+  border-radius: var(--radius-sm, 8px);
+}
+.appt-panel-reschedule input {
+  padding: 6px 8px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.appt-panel-reschedule-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: 4px;
+}
+
+.appt-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}

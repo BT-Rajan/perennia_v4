@@ -1,0 +1,73 @@
+.content-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-top: calc(var(--header-h) + var(--space-4));
+  padding-left: var(--space-5);
+  padding-right: var(--space-5);
+  padding-bottom: var(--space-6);
+  animation: content-fade-in 0.5s var(--ease);
+}
+
+/* Matches the 100px desktop header override in TopBar.css — see the
+   comment there on why this can't just go through --header-h. */
+@media (min-width: 1025px) {
+  .content-page { padding-top: calc(100px + var(--space-4)); }
+}
+
+.content-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  max-width: var(--content-max);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.content-tagline {
+  text-align: center;
+  /* same flex-item max-content sizing issue as .chat-tagline — see
+     ChatPage.css */
+  width: 100%;
+  max-width: 60ch;
+}
+.content-tagline-main {
+  font-family: var(--font-display);
+  font-size: var(--fs-tagline);
+  font-weight: 600;
+}
+[dir="rtl"] .content-tagline-main { font-family: var(--font-ar); font-weight: 500; }
+.content-tagline-main .gold { color: var(--gold); }
+.content-tagline-divider { width: 48px; height: 2px; background: var(--gold); margin: var(--space-2) auto; }
+.content-tagline-sub { font-size: var(--fs-sub); letter-spacing: 0.12em; color: var(--muted-strong); }
+
+.content-shell {
+  width: 100%;
+  padding: var(--space-6);
+}
+
+.content-footer {
+  text-align: center;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  border-top: 1px solid color-mix(in srgb, var(--gold) 10%, transparent);
+  margin-top: var(--space-3);
+  background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--brand-bg) 30%, transparent) 100%);
+}
+
+@keyframes content-fade-in {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+@media (max-width: 767px) {
+  .content-page {
+    padding-top: calc(56px + var(--space-3));
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+    padding-bottom: var(--space-4);
+  }
+  .content-shell { padding: var(--space-4); }
+}

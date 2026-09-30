@@ -1,0 +1,12 @@
+.bk-slots { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.bk-slot {
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  font-size: var(--fs-sm);
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.bk-slot:hover { background: var(--glass-strong); }
+.bk-slot-active { background: var(--gold-dim); border-color: var(--gold-border); color: var(--gold); }
+.bk-slots-empty { font-size: var(--fs-sm); color: var(--muted); padding: var(--space-2) 0; }

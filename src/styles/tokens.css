@@ -1,0 +1,136 @@
+/* ──────────────────────────────────────────────────────────
+   Design tokens — single source of truth for the whole app.
+
+   The variables in the first block are the only ones an admin
+   actually configures (see theme.* in backend/app/settings_registry.py,
+   applied at runtime by src/theme/applyTheme.js). Everything below that
+   — the navy scale, glass surfaces, gold gradient shades, derived radii
+   — is computed FROM those few values with color-mix()/calc(), so a
+   full re-theme only ever requires changing the base tokens, never
+   hunting down every place a shade was hand-picked.
+
+   The literal values here are just the *fallback* — what renders
+   before (or without) a backend connection; see LangContext.jsx /
+   applyTheme.js for how these get overridden at runtime.
+   ────────────────────────────────────────────────────────── */
+:root {
+  /* ---- Base tokens (admin-configurable) --------------------------- */
+  /* Gold-on-near-black editorial palette, matched to k-g-i.com's design
+     language (single gold accent family rather than a separate hue,
+     serif display + geometric sans body) — set here as the fallback
+     so it flows through every component that already reads these vars
+     (buttons, chips, panels, chat), not just the chat widget. */
+  --brand-bg: #07060a;        /* theme.background_color */
+  --brand-primary: #c9a84c;   /* theme.primary_color — gold */
+  --brand-accent: #e8c96a;    /* theme.accent_color — gold2, lighter gold instead of a second hue */
+  --brand-text: #f5f0e8;      /* theme.text_color */
+
+  --font-display: "Cormorant Garamond", Georgia, serif;                 /* theme.font_display */
+  --font-body: "Syne", system-ui, -apple-system, sans-serif;            /* theme.font_body */
+  --font-ar: "Noto Kufi Arabic", "Arial Unicode MS", sans-serif;        /* theme.font_ar */
+
+  --header-h: 64px;       /* theme.header_height_px */
+  --content-max: 1180px;  /* theme.content_max_width_px */
+  --radius-md: 10px;      /* theme.corner_radius_px — sharper, more editorial than the old 16px */
+
+  /* ---- Derived: dark surface scale (each step lightens the base) -- */
+  --navy-1: var(--brand-bg);
+  --navy-2: color-mix(in srgb, var(--brand-bg) 92%, white);
+  --navy-3: color-mix(in srgb, var(--brand-bg) 85%, white);
+  --navy-4: color-mix(in srgb, var(--brand-bg) 78%, white);
+  --navy-5: color-mix(in srgb, var(--brand-bg) 65%, white);
+  --navy-6: color-mix(in srgb, var(--brand-bg) 55%, white);
+
+  /* ---- Derived: primary (gold) gradient shades -------------------- */
+  --gold: var(--brand-primary);
+  --gold-shade-2: color-mix(in srgb, var(--brand-primary) 82%, black);
+  --gold-shade-3: color-mix(in srgb, var(--brand-primary) 64%, black);
+  --gold-dim: color-mix(in srgb, var(--brand-primary) 16%, transparent);
+  --gold-border: color-mix(in srgb, var(--brand-primary) 30%, transparent);
+  /* Text placed on top of a solid gold surface — always the background
+     color itself, so it stays legible whatever primary color is chosen. */
+  --on-gold-text: var(--brand-bg);
+
+  /* ---- Derived: accent (blue) shades ------------------------------- */
+  --blue-mid: color-mix(in srgb, var(--brand-accent) 90%, black);
+  --blue-light: var(--brand-accent);
+
+  /* ---- Derived: text/surface ---------------------------------------- */
+  --white-soft: var(--brand-text);
+  --white-pure: #ffffff;
+
+  /* Secondary accents used sparingly for visual richness in gradients —
+     deliberately not admin-configurable (see PASS3_NOTES.md): these are
+     decorative variety, not brand identity, and exposing every gradient
+     stop would turn the admin theme form into dozens of color pickers
+     for no real customization value. */
+  --accent-purple: #a78bfa;
+  --accent-cyan: #06b6d4;
+  --accent-emerald: #10b981;
+  --accent-rose: #f43f5e;
+
+  /* Semantic (non-brand) status colors — not admin-configurable for the
+     same reason: "success green" / "danger red" are conventional, not
+     a brand choice, and changing them would work against recognizability. */
+  --color-success: #4ade80;
+  --color-danger: #ff9b9b;
+
+  --glass: color-mix(in srgb, white 5.5%, transparent);
+  --glass-strong: color-mix(in srgb, white 9%, transparent);
+  --glass-border: color-mix(in srgb, white 10%, transparent);
+  --muted: color-mix(in srgb, white 50%, transparent);
+  --muted-strong: color-mix(in srgb, white 70%, transparent);
+
+  /* Body background texture opacity — theme.background_intensity,
+     admin-configurable (Settings > Theme). Read by body::before in
+     global.css; overridden per-intensity in themeVariants.css. This
+     value is the "subtle" default, matching today's exact look. */
+  --bg-texture-opacity: 0.022;
+
+  /* Fluid type scale — clamp() keeps this "native" across phone/tablet/desktop
+     instead of relying on breakpoint-by-breakpoint font-size overrides. */
+  --fs-hero: clamp(2rem, 5vw + 1rem, 4rem);
+  --fs-tagline: clamp(1.5rem, 3vw + 1rem, 2.75rem);
+  --fs-sub: clamp(0.7rem, 0.5vw + 0.55rem, 0.85rem);
+  --fs-body: clamp(0.9rem, 0.3vw + 0.8rem, 1rem);
+  --fs-sm: clamp(0.78rem, 0.2vw + 0.72rem, 0.85rem);
+  --fs-h2: 1.3rem;
+
+  /* Spacing scale — theme.density, admin-configurable (Settings >
+     Theme). Redefined wholesale per density level in
+     themeVariants.css; every component that reads --space-N picks up
+     the new scale automatically, no per-component changes needed. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Prose line-height multiplier — bundled into theme.density above
+     (tighter density pairs with tighter line-height, looser with
+     looser) rather than a separate setting; each prose element keeps
+     its own base ratio (e.g. 1.6, 1.5) and multiplies it by this
+     scale, so the default (1) reproduces those exact values. */
+  --line-height-scale: 1;
+
+  /* Rhythm between major stacked page sections/blocks (e.g. the gap
+     before the homepage's nav-card grid, or its own outer top/bottom
+     padding) — theme.section_rhythm, admin-configurable, independent
+     of theme.density above. Defaults to whatever --space-6/--space-7
+     currently resolve to, so "standard" rhythm scales proportionally
+     with density automatically; picking "tight" or "loose" overrides
+     to a specific tier regardless of density (see themeVariants.css). */
+  --section-padding-block: var(--space-6);
+  --section-gap: var(--space-7);
+
+  /* Radii (derived from the single configurable --radius-md) + motion */
+  --radius-sm: calc(var(--radius-md) * 0.625);
+  --radius-lg: calc(var(--radius-md) * 1.5);
+  --radius-pill: 999px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 0.18s;
+  --dur-med: 0.32s;
+}

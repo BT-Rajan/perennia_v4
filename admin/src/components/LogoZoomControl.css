@@ -1,0 +1,86 @@
+.logo-zoom-field {
+  max-width: 420px;
+}
+
+.logo-zoom-preview-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 64px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--navy-950);
+  margin-bottom: var(--space-3);
+  overflow: hidden;
+}
+
+.logo-zoom-preview-img {
+  /* Mirrors the public site's Logo.css sizing formula (40px base ×
+     --logo-scale, capped) so the preview matches what actually
+     renders in the header. */
+  height: calc(40px * var(--logo-scale, 1));
+  width: calc(40px * var(--logo-scale, 1));
+  max-height: 52px;
+  max-width: 140px;
+  flex: none;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+}
+
+.logo-zoom-preview-empty {
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+
+.logo-zoom-preview-text {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.logo-zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.logo-zoom-btn {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.logo-zoom-btn:hover:not(:disabled) {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.logo-zoom-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.logo-zoom-slider {
+  flex: 1;
+  accent-color: var(--gold);
+}
+
+.logo-zoom-pct {
+  flex: none;
+  width: 44px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text-muted);
+}

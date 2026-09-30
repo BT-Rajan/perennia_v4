@@ -1,0 +1,19 @@
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--white-pure);
+  transition: background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  flex: none;
+}
+.icon-btn:hover:not(:disabled) { background: var(--glass-strong); }
+.icon-btn:active:not(:disabled) { transform: scale(0.94); }
+.icon-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.icon-btn svg { width: 46%; height: 46%; }
+
+.icon-btn-sm { width: 32px; height: 32px; }
+.icon-btn-md { width: 42px; height: 42px; }
+.icon-btn-lg { width: 52px; height: 52px; }
