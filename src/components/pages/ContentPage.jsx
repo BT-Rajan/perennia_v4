@@ -5,6 +5,7 @@ import SiteFooter from "../layout/SiteFooter.jsx";
 import GlassPanel from "../ui/GlassPanel.jsx";
 import Markdown from "../ui/Markdown.jsx";
 import { COPY } from "../../data/content.js";
+import { PAGE_ILLUSTRATIONS } from "../../data/pageIllustrations.js";
 import "./ContentPage.css";
 
 /**
@@ -31,6 +32,7 @@ export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick
   }, [pageId]);
 
   if (!meta) return null; // an admin-removed or not-yet-loaded page id; nothing to render
+  const illustration = PAGE_ILLUSTRATIONS[pageId];
 
   return (
     <div className="content-page">
@@ -46,6 +48,19 @@ export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick
           <div className="content-tagline-sub">{meta.sub}</div>
         </div>
 
+        {illustration && (
+          <figure className="content-illustration">
+            <img
+              src={illustration.src}
+              srcSet={illustration.srcSet}
+              sizes="(max-width: 1240px) calc(100vw - 48px), 1180px"
+              width={illustration.width}
+              height={illustration.height}
+              alt={illustration.alt[lang] ?? illustration.alt.en}
+              decoding="async"
+            />
+          </figure>
+        )}
 
         <GlassPanel className="content-shell" as="section">
           <Markdown source={meta.body} cta={cta} />
