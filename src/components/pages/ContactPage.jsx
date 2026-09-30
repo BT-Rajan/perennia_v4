@@ -15,7 +15,7 @@ import "./ContactPage.css";
  * no separate route needed for scheduling a call.
  */
 export default function ContactPage({ onBack, onNavigate, onBookingClick }) {
-  const { copy, pages, features, contact } = useLang();
+  const { copy, pages, features, contact, lang } = useLang();
   const meta = pages.contact;
 
   const [bookingOpen, setBookingOpen] = useState(false);
@@ -58,7 +58,10 @@ export default function ContactPage({ onBack, onNavigate, onBookingClick }) {
                 <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
               )}
               {contact.phone && (
-                <li><a href={`tel:${contact.phone}`}>{contact.phone}</a></li>
+                <li>
+                  {lang === "ar" ? "الجوال: " : "Mobile: "}
+                  <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} dir="ltr">{contact.phone}</a>
+                </li>
               )}
               {whatsappDigits && (
                 <li><a href={`https://wa.me/${whatsappDigits}`} target="_blank" rel="noopener noreferrer">WhatsApp: {contact.whatsappNumber}</a></li>

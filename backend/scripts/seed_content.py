@@ -253,6 +253,13 @@ def main() -> None:
             set_many(db, to_set, actor_id=None, actor_username="seed_script")
             print(f"Seeded copy blobs: {list(to_set)}.")
 
+        # --- contact phone: fill in if still empty ---
+        phone = db.get(SiteSetting, "contact.phone")
+        if phone is not None and not phone.value.strip('" '):
+            set_many(db, {"contact.phone": get_def("contact.phone").default},
+                     actor_id=None, actor_username="seed_script")
+            print("Set contact.phone (was empty).")
+
         # --- logo: move off the old placeholder default ---
         # Only when the stored value is exactly the old placeholder; a logo
         # an admin chose in Settings is left alone.
