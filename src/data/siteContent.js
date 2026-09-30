@@ -165,20 +165,25 @@ export function isSafeHref(url) {
 // Fallback theme — mirrors tokens.css's own literal defaults exactly,
 // so there's no visual "pop" if these get overridden a moment later
 // once the live backend theme arrives.
+// Must equal the backend's theme.* defaults (settings_registry.py), the
+// tokens.css literals and the font stylesheet preloaded in index.html:
+// this is what the first render applies, so any drift here makes every
+// page load swap stylesheets (downloading fonts it never uses) and
+// flash the wrong colours before the live theme arrives.
 const FALLBACK_THEME = {
-  backgroundColor: "#0c0a16",
-  primaryColor: "#ff7a45",
-  accentColor: "#a855f7",
-  textColor: "#f4f0fa",
-  fontDisplay: '"Space Grotesk", system-ui, -apple-system, sans-serif',
-  fontBody: '"Inter", system-ui, -apple-system, sans-serif',
+  backgroundColor: "#07060a",
+  primaryColor: "#c9a84c",
+  accentColor: "#e8c96a",
+  textColor: "#f5f0e8",
+  fontDisplay: '"Cormorant Garamond", Georgia, serif',
+  fontBody: '"Syne", system-ui, -apple-system, sans-serif',
   fontAr: '"Noto Kufi Arabic", "Arial Unicode MS", sans-serif',
   googleFontsUrl:
-    "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700" +
-    "&family=Space+Grotesk:wght@500;600;700&family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700" +
+    "&family=Syne:wght@500;600;700;800&family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap",
   headerHeightPx: 64,
   contentMaxWidthPx: 1180,
-  cornerRadiusPx: 16,
+  cornerRadiusPx: 10,
   heroAutoAdvanceSeconds: 7,
   // Falls back to "classic"/"ripple-gradient" — the site's original/
   // only homepage layout and headline treatment before these settings

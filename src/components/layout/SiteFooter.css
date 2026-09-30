@@ -65,6 +65,13 @@
   color: var(--muted);
   font-size: var(--fs-sm);
 }
+@media (max-width: 760px), (pointer: coarse) {
+  /* Footer links were ~15px tall on phones — give each a proper tap
+     target without changing how they look. */
+  .site-footer-col ul { gap: 0; }
+  .site-footer-col li button,
+  .site-footer-col li a { display: inline-block; padding: 11px 0; }
+}
 @media (max-width: 760px) {
   /* Clear the floating sticky buttons (StickyChat) at the page bottom. */
   .site-footer { padding-bottom: 88px; }

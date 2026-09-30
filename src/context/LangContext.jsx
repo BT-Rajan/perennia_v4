@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { buildFallbackSite, dirFor, loadSiteContent } from "../data/siteContent.js";
 import { applyTheme } from "../theme/applyTheme.js";
 
@@ -33,7 +33,33 @@ function resolveContact(contact, lang, defaultLanguage) {
 // first render uses, so there's no loading spinner and no flash of
 // empty UI while the backend request (kicked off in the effect below)
 // is still in flight.
-const FALLBACK_SITE = buildFallbackSite();
+// The last theme the live backend returned, remembered in this browser
+// so a returning visitor's first render already uses the site's real
+// colours and fonts — no default-then-live theme flash, and no extra
+// font stylesheet swap. A missing/blocked localStorage just means the
+// bundled defaults are used, exactly as before.
+const THEME_CACHE_KEY = "perennia.theme";
+function readCachedTheme() {
+  try {
+    const cached = JSON.parse(window.localStorage.getItem(THEME_CACHE_KEY));
+    return cached && typeof cached === "object" && !Array.isArray(cached) ? cached : null;
+  } catch {
+    return null;
+  }
+}
+function writeCachedTheme(theme) {
+  try {
+    window.localStorage.setItem(THEME_CACHE_KEY, JSON.stringify(theme));
+  } catch {
+    // storage full/blocked — nothing to do; next visit uses the defaults
+  }
+}
+
+const FALLBACK_SITE = (() => {
+  const site = buildFallbackSite();
+  const cachedTheme = readCachedTheme();
+  return cachedTheme ? { ...site, theme: { ...site.theme, ...cachedTheme } } : site;
+})();
 
 export function LangProvider({ children }) {
   const [site, setSite] = useState(FALLBACK_SITE);
@@ -47,6 +73,7 @@ export function LangProvider({ children }) {
     let cancelled = false;
     loadSiteContent().then((loaded) => {
       if (cancelled) return;
+      if (loaded.source === "api") writeCachedTheme(loaded.theme);
       setSite(loaded);
       // Only re-pick the language if the language the visitor is
       // currently on isn't actually supported by the live config —
@@ -68,7 +95,10 @@ export function LangProvider({ children }) {
     [site, lang]
   );
 
-  useEffect(() => {
+  // Layout effect (not a plain effect): applied before the browser
+  // paints, so the very first frame already uses the remembered live
+  // theme instead of flashing the bundled defaults for one frame.
+  useLayoutEffect(() => {
     document.documentElement.lang = lang;
     document.documentElement.dir = dirFor(lang);
     applyTheme(site.theme, resolvedBranding);

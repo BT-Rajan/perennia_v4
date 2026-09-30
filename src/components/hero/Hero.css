@@ -1230,3 +1230,9 @@
 @media (prefers-reduced-motion: reduce) {
   .hero-page { animation: none; }
 }
+
+/* Touch sizing: the example-question chips were ~27px tall on phones —
+   too small to tap reliably. Same look, larger hit area. */
+@media (max-width: 760px), (pointer: coarse) {
+  .hero-example-prompt { min-height: 40px; padding: 8px 14px; white-space: normal; }
+}
