@@ -7,6 +7,8 @@ import ContactPage from "./components/pages/ContactPage.jsx";
 import StickyChat from "./components/StickyChat.jsx";
 import BookingPanel from "./components/booking/BookingPanel.jsx";
 import Toast from "./components/ui/Toast.jsx";
+import { COPY } from "./data/content.js";
+import { applyPageMeta, describeMarkdown, pageFromPath, pathForPage } from "./seo/pageMeta.js";
 
 // Pages with dedicated components — every other page id routes through
 // the generic, Markdown-driven ContentPage, so an admin can add a new
@@ -16,8 +18,11 @@ const SPECIAL_PAGE_IDS = new Set(["home", "contact"]);
 // Needs useLang() (for features.bookingEnabled), which only works
 // inside LangProvider — see the default export below.
 function AppShell() {
-  const { features } = useLang();
-  const [page, setPage] = useState("home"); // "home" | "contact" | any configured page slug
+  const { features, pages, copy, lang, branding } = useLang();
+  // "home" | "contact" | any configured page slug. Each page also has
+  // its own URL (/<slug>, home at /) so it can be linked, bookmarked and
+  // indexed — see src/seo/pageMeta.js and /sitemap.xml.
+  const [page, setPage] = useState(() => pageFromPath(window.location.pathname));
   // Chat floats as a popover (see ChatWidget) instead of a routed
   // page, mirroring k-g-i.com's "Talk to Sulaiman" widget — it stays
   // mounted over whatever page is behind it rather than replacing it.
@@ -40,6 +45,8 @@ function AppShell() {
   const [scrollTarget, setScrollTarget] = useState(null);
 
   function navigate(id) {
+    const path = pathForPage(id);
+    if (window.location.pathname !== path) window.history.pushState({ page: id }, "", path);
     if (id === "work") {
       setPage("home");
       setScrollTarget("work");
@@ -49,14 +56,53 @@ function AppShell() {
     setPage(id);
   }
 
+  // Browser back/forward: follow the URL.
   useEffect(() => {
-    if (!scrollTarget || page !== "home") return;
+    function onPopState() {
+      setScrollTarget(null);
+      setPage(pageFromPath(window.location.pathname));
+    }
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  // A URL for a page that doesn't exist (or isn't loaded yet) shows the
+  // homepage rather than a blank screen; an admin-added page appears as
+  // soon as the live content arrives.
+  const shownPage = page === "home" || pages?.[page] ? page : "home";
+
+  // Per-page <title>, description, canonical and share tags. Runs after
+  // LangContext's theme/branding effect, so it wins over the site-wide
+  // defaults set there.
+  useEffect(() => {
+    const siteName = branding?.siteName || "Perennia";
+    const home = { ...(COPY[lang] ?? COPY.en).home, ...copy.home };
+    if (shownPage === "home") {
+      const headline = [home.taglineLine1, home.taglineLine2].filter(Boolean).join(" ");
+      applyPageMeta({
+        title: headline ? `${siteName} — ${headline}` : siteName,
+        description: branding?.metaDescription || home.supportingText,
+        path: "/",
+      });
+    } else {
+      const meta = pages?.[shownPage];
+      const name = `${meta?.line1 || ""}${meta?.line2 || ""}`.trim();
+      applyPageMeta({
+        title: name ? `${name} · ${siteName}` : siteName,
+        description: describeMarkdown(meta?.body) || meta?.sub || branding?.metaDescription,
+        path: pathForPage(shownPage),
+      });
+    }
+  }, [shownPage, pages, copy, lang, branding]);
+
+  useEffect(() => {
+    if (!scrollTarget || shownPage !== "home") return;
     const id = requestAnimationFrame(() => {
       document.getElementById(scrollTarget)?.scrollIntoView({ behavior: "smooth", block: "start" });
       setScrollTarget(null);
     });
     return () => cancelAnimationFrame(id);
-  }, [page, scrollTarget]);
+  }, [shownPage, scrollTarget]);
 
   // The one booking entry point for header/page CTAs: the existing
   // BookingPanel, or the Contact page when booking is switched off.
@@ -88,10 +134,10 @@ function AppShell() {
           fixed popover's box happens to land on top of in-flow
           content. */}
       <div className={`app-page-content ${chatOpen ? "app-page-content-dimmed" : ""}`.trim()}>
-        {page === "home" && <Hero onEnter={handleHeroEnter} onNavigate={navigate} onBookingClick={() => setBookingOpen(true)} />}
-        {page === "contact" && <ContactPage onBack={() => navigate("home")} onNavigate={navigate} onBookingClick={openBooking} />}
-        {!SPECIAL_PAGE_IDS.has(page) && (
-          <ContentPage pageId={page} onBack={() => navigate("home")} onNavigate={navigate} onBookingClick={() => setBookingOpen(true)} />
+        {shownPage === "home" && <Hero onEnter={handleHeroEnter} onNavigate={navigate} onBookingClick={() => setBookingOpen(true)} />}
+        {shownPage === "contact" && <ContactPage onBack={() => navigate("home")} onNavigate={navigate} onBookingClick={openBooking} />}
+        {!SPECIAL_PAGE_IDS.has(shownPage) && (
+          <ContentPage pageId={shownPage} onBack={() => navigate("home")} onNavigate={navigate} onBookingClick={() => setBookingOpen(true)} />
         )}
       </div>
 
@@ -107,7 +153,7 @@ function AppShell() {
         onBookingClick={() => setBookingOpen(true)}
         showBooking={features.bookingEnabled}
         chatOpen={chatOpen}
-        isHome={page === "home"}
+        isHome={shownPage === "home"}
       />
 
       <ChatWidget

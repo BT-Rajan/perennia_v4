@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+from html import escape
 from pathlib import Path
+from urllib.parse import quote
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -29,6 +31,7 @@ from app.routers import (
     public_chat,
     public_config,
     public_content,
+    public_seo,
 )
 
 # repo_root/backend/app/main.py -> repo_root
@@ -90,6 +93,7 @@ def create_app() -> FastAPI:
     app.include_router(admin_knowledge.router)
     app.include_router(public_config.router)
     app.include_router(public_content.router)
+    app.include_router(public_seo.router)  # /robots.txt, /sitemap.xml — before the SPA catch-all
     app.include_router(public_booking.router)
     app.include_router(public_chat.router)
 
@@ -148,11 +152,20 @@ def create_app() -> FastAPI:
 
         @app.get("/", include_in_schema=False)
         @app.get("/{full_path:path}", include_in_schema=False)
-        async def public_spa(full_path: str = "") -> FileResponse:
+        async def public_spa(request: Request, full_path: str = ""):
             candidate = PUBLIC_DIST / full_path
             if full_path and candidate.is_file():
                 return FileResponse(candidate)
-            return FileResponse(PUBLIC_DIST / "index.html")
+            # index.html carries __SITE_URL__/__PAGE_URL__ placeholders in
+            # its canonical, Open Graph and JSON-LD tags (link previews
+            # need absolute URLs and don't run JavaScript); fill them from
+            # this request's scheme + host so no domain is hardcoded.
+            # Escaped: both come from the request (path, Host header).
+            site = str(request.base_url).rstrip("/")
+            page = f"{site}/{quote(full_path.strip('/'))}"
+            html = (PUBLIC_DIST / "index.html").read_text(encoding="utf-8")
+            html = html.replace("__PAGE_URL__", escape(page)).replace("__SITE_URL__", escape(site))
+            return HTMLResponse(html)
 
     return app
 

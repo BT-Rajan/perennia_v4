@@ -25,8 +25,56 @@
          once branding.logo_url has one, or iOS home-screen icons will
          look wrong even though everything else here works. -->
     <link rel="apple-touch-icon" href="/static/logo.svg" />
-    <title>Perennia</title>
+    <title>Perennia — Practical AI. Affordable Innovation.</title>
     <meta id="meta-description" name="description" content="Perennia — a technology partner for GCC businesses. Practical AI. Affordable Innovation." />
+    <!-- Search / link-preview tags. __SITE_URL__ and __PAGE_URL__ are
+         filled in per request by the backend (public_spa in
+         backend/app/main.py) from the request's own scheme + host, so no
+         domain is hardcoded; src/seo/pageMeta.js then keeps title,
+         description, canonical and og:/twitter: text in step with the
+         page being viewed. -->
+    <link rel="canonical" href="__PAGE_URL__" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Perennia" />
+    <meta property="og:title" content="Perennia — Practical AI. Affordable Innovation." />
+    <meta property="og:description" content="Perennia — a technology partner for GCC businesses. Practical AI. Affordable Innovation." />
+    <meta property="og:url" content="__PAGE_URL__" />
+    <meta property="og:image" content="__SITE_URL__/static/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Perennia — Practical AI. Affordable Innovation." />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ar_KW" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Perennia — Practical AI. Affordable Innovation." />
+    <meta name="twitter:description" content="Perennia — a technology partner for GCC businesses. Practical AI. Affordable Innovation." />
+    <meta name="twitter:image" content="__SITE_URL__/static/og-image.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "__SITE_URL__/#organization",
+            "name": "Perennia",
+            "url": "__SITE_URL__/",
+            "logo": "__SITE_URL__/static/logo.svg",
+            "description": "A technology partner for GCC businesses. Practical AI. Affordable Innovation.",
+            "address": { "@type": "PostalAddress", "addressCountry": "KW" },
+            "areaServed": ["Kuwait", "GCC"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "__SITE_URL__/#website",
+            "name": "Perennia",
+            "url": "__SITE_URL__/",
+            "inLanguage": ["en", "ar"],
+            "publisher": { "@id": "__SITE_URL__/#organization" }
+          }
+        ]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -37,6 +85,18 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <h1>Perennia — Practical AI. Affordable Innovation.</h1>
+      <p>A technology partner for GCC businesses. Start with the business. Build the technology around it.</p>
+      <ul>
+        <li><a href="/services">Solutions</a></li>
+        <li><a href="/products">Products</a></li>
+        <li><a href="/labs">Labs</a></li>
+        <li><a href="/jdk-factory-erp">JDK Factory ERP case study</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact — book a 30-minute discovery meeting</a></li>
+      </ul>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
