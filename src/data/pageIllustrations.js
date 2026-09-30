@@ -15,11 +15,14 @@
 
 export const PAGE_ILLUSTRATIONS = {
   services: {
-    placement: "banner",
+    // The wide team scene recomposed as a portrait (left group above,
+    // right group below) so it sits beside the text like the others.
+    placement: "aside",
+    portrait: true,
     src: "/static/illustrations/what-we-do.webp",
-    srcSet: "/static/illustrations/what-we-do-992.webp 992w, /static/illustrations/what-we-do.webp 1983w",
-    width: 1983,
-    height: 620,
+    srcSet: "/static/illustrations/what-we-do-420.webp 420w, /static/illustrations/what-we-do.webp 840w",
+    width: 840,
+    height: 1130,
     alt: {
       en: "A team in Kuwait working together on a business dashboard connected to cloud, AI, data and automation.",
       ar: "فريق في الكويت يعمل معًا على لوحة معلومات أعمال متصلة بالسحابة والذكاء الاصطناعي والبيانات والأتمتة.",
