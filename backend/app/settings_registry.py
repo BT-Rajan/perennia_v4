@@ -435,9 +435,9 @@ _DEFS: list[SettingDef] = [
                validator=_int_range(3, 100)),
     SettingDef("chat.turn_limit_message", "chat", "Turn-limit message", SettingType.TEXT, {
         "en": "You've reached the message limit for this session. We'd love to keep the conversation "
-              "going directly — please book a quick call with our team.",
+              "going directly — please book a 30-minute discovery meeting with our team.",
         "ar": "لقد وصلت إلى الحد الأقصى لعدد الرسائل في هذه الجلسة. يسعدنا مواصلة الحديث مباشرة — "
-              "احجز موعداً سريعاً مع فريقنا.",
+              "احجز اجتماعًا استكشافيًا لمدة 30 دقيقة مع فريقنا.",
     }, i18n=True, help_text="Shown once a visitor exceeds the max exchanges above, in place of a real reply."),
 
     # calendar_sync — Pass 12 (docs/CALENDAR_MODULE_PLAN.md): Google
@@ -634,7 +634,7 @@ _DEFS: list[SettingDef] = [
             "case_heading": "JDK Factory ERP: one system around a manufacturing workflow.",
             "case_body": "We mapped how a manufacturing business actually runs — "
                          "from sales and feasibility through procurement, production, delivery and payment — and built its ERP around that workflow.",
-            "case_link": "Read the case study",
+            "case_link": "View Case Study",
             "case_image_alt": "The completed sales order in JDK Factory ERP, linked to its quotation, finance record and deliveries",
             "trust_kicker": "What sets Perennia apart",
             "trust_heading": "Reliable technology induction for your business.",
@@ -698,7 +698,7 @@ _DEFS: list[SettingDef] = [
             "case_heading": "نظام ERP لمصنع JDK: نظام واحد حول سير عمل تصنيعي.",
             "case_body": "رسمنا طريقة عمل شركة تصنيع فعليًا — "
                          "من المبيعات والجدوى إلى المشتريات والإنتاج والتسليم والدفع — وبنينا نظام ERP الخاص بها حول سير العمل هذا.",
-            "case_link": "اقرأ دراسة الحالة",
+            "case_link": "عرض دراسة الحالة",
             "case_image_alt": "أمر بيع مكتمل في نظام ERP لمصنع JDK، مرتبط بعرض السعر والسجل المالي والتسليمات",
             "trust_kicker": "ما يميّز بيرينيا",
             "trust_heading": "إدخال موثوق للتقنية إلى أعمالك.",
@@ -758,9 +758,11 @@ _DEFS: list[SettingDef] = [
                           "{id}/{date}/{time} placeholders."),
     SettingDef("copy.common", "copy", "Shared accessibility labels", SettingType.JSON, {
         "en": {"close": "Close", "back": "Back", "send": "Send", "quick_menu": "Quick menu",
-               "primary_nav": "Primary", "go_home": "Go to home", "assistant_typing": "Assistant is typing"},
+               "primary_nav": "Primary", "go_home": "Go to home", "assistant_typing": "Assistant is typing",
+               "footer_explore": "Explore", "footer_contact": "Get in touch", "footer_rights": "All rights reserved."},
         "ar": {"close": "إغلاق", "back": "رجوع", "send": "إرسال", "quick_menu": "قائمة سريعة",
-               "primary_nav": "الأساسية", "go_home": "الذهاب إلى الرئيسية", "assistant_typing": "المساعد يكتب"},
+               "primary_nav": "الأساسية", "go_home": "الذهاب إلى الرئيسية", "assistant_typing": "المساعد يكتب",
+               "footer_explore": "استكشف", "footer_contact": "تواصل معنا", "footer_rights": "جميع الحقوق محفوظة."},
     }, i18n=True,
                help_text="Screen-reader labels used across multiple screens (close/back/send buttons, nav "
                           "landmarks) — not visible text, but still shown to assistive-technology users in "

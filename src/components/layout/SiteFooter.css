@@ -1,0 +1,73 @@
+.site-footer {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: var(--space-6) auto 0;
+  padding: var(--space-6) 0 var(--space-4);
+  border-top: 1px solid color-mix(in srgb, var(--gold) 12%, transparent);
+  text-align: start;
+}
+.site-footer-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-6);
+}
+.site-footer-name {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  color: var(--white-soft);
+}
+[dir="rtl"] .site-footer-name { font-family: var(--font-ar); }
+.site-footer-tagline { margin: 0; color: var(--muted); font-size: var(--fs-sm); }
+.site-footer-col h2 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+[dir="rtl"] .site-footer-col h2 { letter-spacing: 0; text-transform: none; }
+.site-footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.site-footer-col li button,
+.site-footer-col li a {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: var(--fs-sm);
+  color: var(--muted-strong);
+  text-decoration: none;
+  cursor: pointer;
+  text-align: start;
+}
+.site-footer-col li button:hover,
+.site-footer-col li a:hover { color: var(--gold); }
+.site-footer-col li button:focus-visible,
+.site-footer-col li a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.site-footer-col .site-footer-cta.btn {
+  margin-top: var(--space-3);
+  padding: 9px 16px;
+  font-size: var(--fs-sm);
+  white-space: normal;
+  text-align: center;
+}
+.site-footer-legal {
+  margin: var(--space-5) 0 0;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+@media (max-width: 760px) {
+  /* Clear the floating sticky buttons (StickyChat) at the page bottom. */
+  .site-footer { padding-bottom: 88px; }
+  .site-footer-inner { grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+  .site-footer-brand { grid-column: 1 / -1; }
+}

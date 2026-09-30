@@ -916,16 +916,6 @@
   transform: scaleX(-1) translateX(4px);
 }
 
-.hero-footer {
-  padding: var(--space-4) 0;
-  font-size: var(--fs-sm);
-  color: var(--muted);
-  border-top: 1px solid color-mix(in srgb, var(--gold) 10%, transparent);
-  margin-top: var(--space-6);
-  width: 100%;
-  text-align: center;
-  background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--brand-bg) 30%, transparent) 100%);
-}
 
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(6px); }

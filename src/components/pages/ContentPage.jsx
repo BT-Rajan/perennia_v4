@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLang } from "../../context/LangContext.jsx";
 import TopBar from "../layout/TopBar.jsx";
+import SiteFooter from "../layout/SiteFooter.jsx";
 import GlassPanel from "../ui/GlassPanel.jsx";
 import Markdown from "../ui/Markdown.jsx";
 import { COPY } from "../../data/content.js";
@@ -15,7 +16,7 @@ import "./ContentPage.css";
  * renders inside the shell.
  */
 export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick }) {
-  const { pages, branding, copy, lang, features } = useLang();
+  const { pages, copy, lang, features } = useLang();
   const meta = pages[pageId];
   // For a `[[cta]]` block in the page body (e.g. a case study): the same
   // label and booking panel as the homepage's primary CTA, falling back
@@ -51,7 +52,7 @@ export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick
         </GlassPanel>
       </main>
 
-      <footer className="content-footer">© {new Date().getFullYear()} {branding.siteName}. All rights reserved.</footer>
+      <SiteFooter onNavigate={onNavigate} onBook={cta.onClick} />
     </div>
   );
 }

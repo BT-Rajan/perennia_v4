@@ -328,6 +328,7 @@ export const COPY = {
     common: {
       close: "Close", back: "Back", send: "Send", quickMenu: "Quick menu",
       primaryNav: "Primary", goHome: "Go to home", assistantTyping: "Assistant is typing",
+      footerExplore: "Explore", footerContact: "Get in touch", footerRights: "All rights reserved.",
     },
     home: {
       welcome: "Welcome to Perennia",
@@ -356,7 +357,7 @@ export const COPY = {
       caseKicker: "Featured work",
       caseHeading: "JDK Factory ERP: one system around a manufacturing workflow.",
       caseBody: "We mapped how a manufacturing business actually runs — from sales and feasibility through procurement, production, delivery and payment — and built its ERP around that workflow.",
-      caseLink: "Read the case study",
+      caseLink: "View Case Study",
       caseImageAlt: "The completed sales order in JDK Factory ERP, linked to its quotation, finance record and deliveries",
       trustKicker: "What sets Perennia apart",
       trustHeading: "Reliable technology induction for your business.",
@@ -466,6 +467,7 @@ export const COPY = {
     common: {
       close: "إغلاق", back: "رجوع", send: "إرسال", quickMenu: "قائمة سريعة",
       primaryNav: "الأساسية", goHome: "الذهاب إلى الرئيسية", assistantTyping: "المساعد يكتب",
+      footerExplore: "استكشف", footerContact: "تواصل معنا", footerRights: "جميع الحقوق محفوظة.",
     },
     home: {
       welcome: "مرحبا بك في بيرينيا",
@@ -492,7 +494,7 @@ export const COPY = {
       caseKicker: "عمل مميز",
       caseHeading: "نظام ERP لمصنع JDK: نظام واحد حول سير عمل تصنيعي.",
       caseBody: "رسمنا طريقة عمل شركة تصنيع فعليًا — من المبيعات والجدوى إلى المشتريات والإنتاج والتسليم والدفع — وبنينا نظام ERP الخاص بها حول سير العمل هذا.",
-      caseLink: "اقرأ دراسة الحالة",
+      caseLink: "عرض دراسة الحالة",
       caseImageAlt: "أمر بيع مكتمل في نظام ERP لمصنع JDK، مرتبط بعرض السعر والسجل المالي والتسليمات",
       trustKicker: "ما يميّز بيرينيا",
       trustHeading: "إدخال موثوق للتقنية إلى أعمالك.",

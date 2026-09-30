@@ -56,7 +56,7 @@ PAGE_META = {
                "tagline_line1": "ماذا ", "tagline_line2": "نقدّم", "tagline_sub": "الحلول"},
     },
     "contact": {
-        "en": {"nav_label": "Contact Us", "section_title": "Contact Us",
+        "en": {"nav_label": "Contact", "section_title": "Contact Us",
                "section_body": "Ready to talk? Use \"Book a 30-Minute Discovery Meeting\" to pick a time directly, or start a chat below and our assistant will connect you with the right person.",
                "tagline_line1": "Let's ", "tagline_line2": "Talk", "tagline_sub": "GET IN TOUCH"},
         "ar": {"nav_label": "تواصل معنا", "section_title": "تواصل معنا",
@@ -144,7 +144,7 @@ COPY_HOME = {
            "case_heading": "JDK Factory ERP: one system around a manufacturing workflow.",
            "case_body": "We mapped how a manufacturing business actually runs — "
                         "from sales and feasibility through procurement, production, delivery and payment — and built its ERP around that workflow.",
-           "case_link": "Read the case study",
+           "case_link": "View Case Study",
            "case_image_alt": "The completed sales order in JDK Factory ERP, linked to its quotation, finance record and deliveries",
            "trust_kicker": "What sets Perennia apart",
            "trust_heading": "Reliable technology induction for your business.",
@@ -202,7 +202,7 @@ COPY_HOME = {
            "case_heading": "نظام ERP لمصنع JDK: نظام واحد حول سير عمل تصنيعي.",
            "case_body": "رسمنا طريقة عمل شركة تصنيع فعليًا — "
                         "من المبيعات والجدوى إلى المشتريات والإنتاج والتسليم والدفع — وبنينا نظام ERP الخاص بها حول سير العمل هذا.",
-           "case_link": "اقرأ دراسة الحالة",
+           "case_link": "عرض دراسة الحالة",
            "case_image_alt": "أمر بيع مكتمل في نظام ERP لمصنع JDK، مرتبط بعرض السعر والسجل المالي والتسليمات",
            "trust_kicker": "ما يميّز بيرينيا",
            "trust_heading": "إدخال موثوق للتقنية إلى أعمالك.",

@@ -48,15 +48,6 @@
   padding: var(--space-6);
 }
 
-.content-footer {
-  text-align: center;
-  padding: var(--space-3) var(--space-4);
-  font-size: var(--fs-sm);
-  color: var(--muted);
-  border-top: 1px solid color-mix(in srgb, var(--gold) 10%, transparent);
-  margin-top: var(--space-3);
-  background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--brand-bg) 30%, transparent) 100%);
-}
 
 @keyframes content-fade-in {
   from { opacity: 0; } to { opacity: 1; }

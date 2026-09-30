@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLang } from "../../context/LangContext.jsx";
 import TopBar from "../layout/TopBar.jsx";
+import SiteFooter from "../layout/SiteFooter.jsx";
 import GlassPanel from "../ui/GlassPanel.jsx";
 import Button from "../ui/Button.jsx";
 import Markdown from "../ui/Markdown.jsx";
@@ -9,12 +10,12 @@ import "./ContentPage.css";
 import "./ContactPage.css";
 
 /**
- * The Contact Us page: the same shell as ContentPage, plus a "Talk to
+ * The Contact page: the same shell as ContentPage, plus a "Book a
  * Us" call-to-action that opens the existing booking flow in place —
  * no separate route needed for scheduling a call.
  */
 export default function ContactPage({ onBack, onNavigate, onBookingClick }) {
-  const { copy, pages, branding, features, contact } = useLang();
+  const { copy, pages, features, contact } = useLang();
   const meta = pages.contact;
 
   const [bookingOpen, setBookingOpen] = useState(false);
@@ -84,7 +85,7 @@ export default function ContactPage({ onBack, onNavigate, onBookingClick }) {
         </GlassPanel>
       </main>
 
-      <footer className="content-footer">© {new Date().getFullYear()} {branding.siteName}. All rights reserved.</footer>
+      <SiteFooter onNavigate={onNavigate} onBook={onBookingClick} />
     </div>
   );
 }

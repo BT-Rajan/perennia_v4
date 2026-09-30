@@ -56,7 +56,7 @@ export default function StickyChat({ onChatClick, onBookingClick, showBooking = 
     <div className={styles.stickyContainer}>
       {showBooking && (
         <StickyButton
-          label="Appointments"
+          label={copy.booking?.title || "Appointments"}
           variant="booking"
           onClick={() => onBookingClick?.()}
           icon={

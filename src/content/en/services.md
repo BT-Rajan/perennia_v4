@@ -18,4 +18,6 @@ From first commit to production deployment — frontend, backend, data, and infr
 
 Post-launch, we stay available for monitoring, iteration, and scaling as your usage grows, on a schedule that matches your needs — from light-touch retainer support to fully embedded team members.
 
-Not sure what you need yet? **Book a 30-Minute Discovery Meeting** from the Contact page — we understand the problem before deciding what to build.
+Not sure what you need yet? Let's understand the problem before deciding what to build.
+
+[[cta]]

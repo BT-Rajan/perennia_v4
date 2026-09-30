@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLang } from "../../context/LangContext.jsx";
 import { COPY, HOME_CAPABILITIES, HOME_SECTORS, HOME_CASE_STAGES, HOME_OTHER_WORK, HOME_LOCAL_POINTS, HOME_PROCESS, HOME_TOPICS, HOME_TRUST_POINTS } from "../../data/content.js";
 import TopBar from "../layout/TopBar.jsx";
+import SiteFooter from "../layout/SiteFooter.jsx";
 import ClassicLayout from "./layouts/ClassicLayout.jsx";
 import SplitLayout from "./layouts/SplitLayout.jsx";
 import CenteredCardLayout from "./layouts/CenteredCardLayout.jsx";
@@ -172,7 +173,7 @@ export default function Hero({ onEnter, onNavigate, onBookingClick }) {
         onTopicClick={handleTopicClick}
       />
 
-      <footer className="hero-footer">© {new Date().getFullYear()} {branding.siteName}</footer>
+      <SiteFooter onNavigate={onNavigate} onBook={handleCtaPrimary} />
     </div>
   );
 }

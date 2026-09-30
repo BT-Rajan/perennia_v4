@@ -83,17 +83,20 @@
   .top-bar-start, .top-bar-end { gap: var(--space-2); }
 }
 
-/* Primary booking CTA in the header (TopBar onBook). Compact so it sits
-   in the header height; hidden below 1024px, where the same CTA appears
-   inside the mobile nav drawer instead (NavMenu .nav-mobile-cta). */
+/* Booking CTA in the header (TopBar onBook) — same action and wording
+   as the primary CTA, but an outline treatment so it never competes
+   with the page's own solid primary button (hero / discovery panel).
+   Hidden below 1024px, where the same CTA appears inside the mobile nav
+   drawer instead (NavMenu .nav-mobile-cta). */
 .top-bar-cta.btn {
   padding: 9px 18px;
   font-size: var(--fs-sm);
-  box-shadow: 0 4px 14px color-mix(in srgb, var(--gold) 22%, transparent);
+  border-color: color-mix(in srgb, var(--gold) 55%, transparent);
+  color: var(--white-soft);
 }
 .top-bar-cta.btn:not(:disabled):hover {
-  transform: none;
-  box-shadow: 0 4px 14px color-mix(in srgb, var(--gold) 30%, transparent);
+  border-color: var(--gold);
+  color: var(--gold);
 }
 @media (max-width: 1023px) {
   .top-bar-cta.btn { display: none; }
