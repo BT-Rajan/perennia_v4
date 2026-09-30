@@ -84,7 +84,7 @@ err()  { printf '\033[1;31mERROR: %s\033[0m\n' "$1" >&2; }
 die()  { err "$1"; exit 1; }
 require_cmd() { command -v "$1" >/dev/null 2>&1; }
 
-trap 'err "install.sh failed at line $LINENO (exit $?)."' ERR
+trap 'rc=$?; [[ -n "${_ERR_SHOWN:-}" ]] || { _ERR_SHOWN=1; err "install.sh failed at line $LINENO (exit $rc)."; }' ERR
 
 usage() { sed -n '4,50p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 
@@ -145,6 +145,11 @@ elif require_cmd mysql; then DB_CLIENT="mysql"
 else die "Neither the mysql nor the mariadb client is installed."
 fi
 log "Found: git, $(python3 -V), $($DB_CLIENT --version | head -c 60)"
+# MariaDB 11.4+ clients warn "--ssl-verify-server-cert is disabled ...
+# insecure passwordless login" on every local login; the server is on
+# this machine, so turn the check off explicitly where the client has it.
+DB_TLS=()
+"$DB_CLIENT" --help 2>/dev/null | grep -q -- '--ssl-verify-server-cert' && DB_TLS=(--disable-ssl-verify-server-cert)
 
 export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 # shellcheck disable=SC1091
@@ -195,8 +200,11 @@ admin_sql() {   # SQL on stdin; extra args (e.g. -N) go to the client
     case "$ADMIN_MODE" in
         socket) "$DB_CLIENT" -u root "$@" ;;
         sudo)   sudo -n "$DB_CLIENT" -u root "$@" ;;
-        creds)  MYSQL_PWD="$DB_ADMIN_PASSWORD" "$DB_CLIENT" --protocol=tcp -h "$DB_HOST" -P "$DB_PORT" -u "$DB_ADMIN_USER" "$@" ;;
+        creds)  MYSQL_PWD="$DB_ADMIN_PASSWORD" "$DB_CLIENT" ${DB_TLS[@]+"${DB_TLS[@]}"} --protocol=tcp -h "$DB_HOST" -P "$DB_PORT" -u "$DB_ADMIN_USER" "$@" ;;
     esac
+}
+app_sql() {     # SQL on stdin, run as app_user on the app database
+    MYSQL_PWD="$DB_PASSWORD" "$DB_CLIENT" ${DB_TLS[@]+"${DB_TLS[@]}"} --protocol=tcp -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" "$DB_NAME" "$@"
 }
 if [[ -z "$DB_ADMIN_USER" ]]; then
     if "$DB_CLIENT" -u root -e 'SELECT 1' >/dev/null 2>&1; then ADMIN_MODE="socket"
@@ -236,6 +244,9 @@ PY
 )"
 fi
 DB_PASSWORD="${DB_PASSWORD:-$EXISTING_DB_PASSWORD}"
+if [[ -z "$DB_PASSWORD" && "$ADMIN_MODE" == "creds" && "$DB_ADMIN_USER" == "$DB_USER" ]]; then
+    DB_PASSWORD="$DB_ADMIN_PASSWORD"
+fi
 
 USER_HOSTS="$(echo "SELECT Host FROM mysql.user WHERE User='$(sql_escape "$DB_USER")';" | admin_sql -N 2>/dev/null || true)"
 if [[ -z "$USER_HOSTS" ]]; then
@@ -255,20 +266,40 @@ CREATE USER '$DB_USER'@'127.0.0.1' IDENTIFIED BY '$PW_SQL';
 SQL
     USER_HOSTS=$'localhost\n127.0.0.1'
 else
-    log "MySQL user '$DB_USER' already exists — keeping its password, adding the grant only"
+    log "MySQL user '$DB_USER' already exists — keeping its password"
     if [[ -z "$DB_PASSWORD" ]]; then
         $ASSUME_YES && die "'$DB_USER' already exists; set DB_PASSWORD to its current password."
         read -r -s -p "Current password for existing MySQL user '$DB_USER': " DB_PASSWORD; echo
     fi
 fi
 
-while IFS= read -r host; do
-    [[ -n "$host" ]] || continue
-    echo "GRANT ALL PRIVILEGES ON \`$DB_NAME\`.* TO '$DB_USER'@'$(sql_escape "$host")';" | admin_sql
-done <<< "$USER_HOSTS"
-echo "FLUSH PRIVILEGES;" | admin_sql
+# The app needs to create/alter tables. If app_user can already do that
+# in the database (e.g. it has global privileges, or it was the admin
+# user that just created the database), no GRANT is needed — and a user
+# without GRANT OPTION couldn't issue one anyway.
+app_can_build() {
+    app_sql >/dev/null 2>&1 <<'SQL'
+CREATE TABLE IF NOT EXISTS _install_check (id INT);
+ALTER TABLE _install_check ADD COLUMN c INT;
+DROP TABLE _install_check;
+SQL
+}
+app_login() { MYSQL_PWD="$DB_PASSWORD" "$DB_CLIENT" ${DB_TLS[@]+"${DB_TLS[@]}"} --protocol=tcp -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -e 'SELECT 1;' >/dev/null 2>&1; }
+app_login || die "'$DB_USER' cannot log in over TCP with the given password. Check the password (DB_PASSWORD) — this script never resets an existing user's password."
+if app_can_build; then
+    log "'$DB_USER' already has full access to '$DB_NAME' — no GRANT needed"
+else
+    while IFS= read -r host; do
+        [[ -n "$host" ]] || continue
+        GRANT_SQL="GRANT ALL PRIVILEGES ON \`$DB_NAME\`.* TO '$DB_USER'@'$(sql_escape "$host")';"
+        echo "$GRANT_SQL" | admin_sql || die "Could not grant '$DB_USER' access to '$DB_NAME'. The MySQL admin user needs GRANT rights — re-run and answer 'root' (or another admin) at the admin-user prompt, or run this once as root and re-run the installer:
+    $GRANT_SQL"
+    done <<< "$USER_HOSTS"
+    echo "FLUSH PRIVILEGES;" | admin_sql
+    app_can_build || die "'$DB_USER' still cannot create tables in '$DB_NAME' after the GRANT."
+fi
 
-MYSQL_PWD="$DB_PASSWORD" "$DB_CLIENT" --protocol=tcp -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" "$DB_NAME" -e 'SELECT 1;' >/dev/null 2>&1 \
+app_sql -e 'SELECT 1;' >/dev/null 2>&1 \
     || die "'$DB_USER' cannot log in to '$DB_NAME' over TCP with the given password. Check the password (DB_PASSWORD) — this script never resets an existing user's password."
 log "Verified: '$DB_USER' can connect to '$DB_NAME'"
 
