@@ -141,7 +141,7 @@ export default function Hero({ onEnter, onNavigate, onBookingClick }) {
 
   return (
     <div className="hero-page">
-      <TopBar onNavigate={onNavigate} />
+      <TopBar onNavigate={onNavigate} onBook={handleCtaPrimary} />
 
       <Layout
         copy={copy}

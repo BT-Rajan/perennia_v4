@@ -75,7 +75,7 @@ export function HeroWork({ kicker, heading, intro, featured, otherLabel, needLab
   const showFeatured = featured?.heading && featured?.onOpen;
   if (!showFeatured && !otherItems?.length) return null;
   return (
-    <section className={`hero-block hero-work ${className || ""}`.trim()} aria-labelledby="hero-work-heading">
+    <section id="work" className={`hero-block hero-work ${className || ""}`.trim()} aria-labelledby="hero-work-heading">
       <HeroBlockHead id="hero-work-heading" kicker={kicker} heading={heading} intro={intro} />
       {showFeatured && (
         <GlassPanel className="hero-case-panel">

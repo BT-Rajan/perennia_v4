@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LangProvider, useLang } from "./context/LangContext.jsx";
 import Hero from "./components/hero/Hero.jsx";
 import ChatWidget from "./components/chat/ChatWidget.jsx";
@@ -34,6 +34,34 @@ function AppShell() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
+  // Section to scroll to once the target page has rendered — set by
+  // navigate("work"), which lands on the homepage's "Our work" section
+  // (id="work") instead of a separate page.
+  const [scrollTarget, setScrollTarget] = useState(null);
+
+  function navigate(id) {
+    if (id === "work") {
+      setPage("home");
+      setScrollTarget("work");
+      return;
+    }
+    setScrollTarget(null);
+    setPage(id);
+  }
+
+  useEffect(() => {
+    if (!scrollTarget || page !== "home") return;
+    const id = requestAnimationFrame(() => {
+      document.getElementById(scrollTarget)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setScrollTarget(null);
+    });
+    return () => cancelAnimationFrame(id);
+  }, [page, scrollTarget]);
+
+  // The one booking entry point for header/page CTAs: the existing
+  // BookingPanel, or the Contact page when booking is switched off.
+  const openBooking = features.bookingEnabled ? () => setBookingOpen(true) : () => navigate("contact");
+
   const handleStickyChat = () => setChatOpen((o) => !o);
 
   const handleHeroEnter = (initialMessage) => {
@@ -60,10 +88,10 @@ function AppShell() {
           fixed popover's box happens to land on top of in-flow
           content. */}
       <div className={`app-page-content ${chatOpen ? "app-page-content-dimmed" : ""}`.trim()}>
-        {page === "home" && <Hero onEnter={handleHeroEnter} onNavigate={setPage} onBookingClick={() => setBookingOpen(true)} />}
-        {page === "contact" && <ContactPage onBack={() => setPage("home")} onNavigate={setPage} />}
+        {page === "home" && <Hero onEnter={handleHeroEnter} onNavigate={navigate} onBookingClick={() => setBookingOpen(true)} />}
+        {page === "contact" && <ContactPage onBack={() => navigate("home")} onNavigate={navigate} onBookingClick={openBooking} />}
         {!SPECIAL_PAGE_IDS.has(page) && (
-          <ContentPage pageId={page} onBack={() => setPage("home")} onNavigate={setPage} onBookingClick={() => setBookingOpen(true)} />
+          <ContentPage pageId={page} onBack={() => navigate("home")} onNavigate={navigate} onBookingClick={() => setBookingOpen(true)} />
         )}
       </div>
 

@@ -48,12 +48,12 @@ PAGE_META = {
                "tagline_line1": "ماذا ", "tagline_line2": "نبني", "tagline_sub": "المنتجات والمنصات"},
     },
     "services": {
-        "en": {"nav_label": "Services", "section_title": "Services",
+        "en": {"nav_label": "Solutions", "section_title": "Solutions",
                "section_body": "Consulting, product design, and full-cycle engineering. We embed with your team or run the build end-to-end, whichever fits your roadmap.",
-               "tagline_line1": "How We ", "tagline_line2": "Work", "tagline_sub": "CONSULTING & ENGINEERING"},
-        "ar": {"nav_label": "الخدمات", "section_title": "الخدمات",
+               "tagline_line1": "What We ", "tagline_line2": "Do", "tagline_sub": "SOLUTIONS"},
+        "ar": {"nav_label": "الحلول", "section_title": "الحلول",
                "section_body": "استشارات، وتصميم منتجات، وهندسة متكاملة. نندمج مع فريقك أو ننفذ المشروع بالكامل، وفق ما يناسب خطتك.",
-               "tagline_line1": "كيف ", "tagline_line2": "نعمل", "tagline_sub": "استشارات وهندسة"},
+               "tagline_line1": "ماذا ", "tagline_line2": "نقدّم", "tagline_sub": "الحلول"},
     },
     "contact": {
         "en": {"nav_label": "Contact Us", "section_title": "Contact Us",
@@ -62,6 +62,14 @@ PAGE_META = {
         "ar": {"nav_label": "تواصل معنا", "section_title": "تواصل معنا",
                "section_body": "جاهز للتحدث؟ استخدم \"احجز اجتماعًا استكشافيًا لمدة 30 دقيقة\" لاختيار موعد مباشرة، أو ابدأ محادثة أدناه وسيقوم مساعدنا بتوصيلك بالشخص المناسب.",
                "tagline_line1": "لنتحدث", "tagline_line2": "", "tagline_sub": "تواصل معنا"},
+    },
+    "labs": {
+        "en": {"nav_label": "Labs", "section_title": "Labs",
+               "section_body": "Experiments and free AI utilities, kept separate from client work and products.",
+               "tagline_line1": "Perennia ", "tagline_line2": "Labs", "tagline_sub": "EXPERIMENTS & OPEN WORK"},
+        "ar": {"nav_label": "المختبر", "section_title": "المختبر",
+               "section_body": "تجارب وأدوات ذكاء اصطناعي مجانية، منفصلة عن أعمال العملاء والمنتجات.",
+               "tagline_line1": "مختبر ", "tagline_line2": "بيرينيا", "tagline_sub": "تجارب وأعمال مفتوحة"},
     },
     # Case study: reached from the homepage teaser, not the top nav (see
     # NOT_IN_NAV below). Its section_* fields are required by the page
@@ -77,6 +85,12 @@ PAGE_META = {
 }
 
 NOT_IN_NAV = {"jdk-factory-erp"}
+
+# Nav order for a fresh install: Solutions, Products, Labs, About,
+# Contact ("Work" is injected client-side after Solutions — see
+# withWorkNav in src/data/siteContent.js). Existing installs keep
+# whatever order an admin has set.
+PAGE_ORDER = ["services", "products", "labs", "about", "contact", "jdk-factory-erp"]
 
 FAQ_SEED = [
     {"en": {"q": "What services does Perennia offer?",
@@ -321,7 +335,8 @@ def main() -> None:
 
     with session_scope() as db:
         # --- pages ---
-        for order, (slug, per_lang) in enumerate(PAGE_META.items()):
+        for order, slug in enumerate(PAGE_ORDER):
+            per_lang = PAGE_META[slug]
             if db.get(ContentPage, slug) is not None:
                 print(f"Page '{slug}' already exists — skipping.")
                 continue

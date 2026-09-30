@@ -32,6 +32,18 @@ function toCamel(value) {
   return value;
 }
 
+// "Work" isn't a content page: it jumps to the homepage "Our work"
+// section (see App.jsx navigate), so the portfolio lives in one place.
+// Injected into every nav — API-driven or fallback — right after
+// Solutions ("services"), or first if that page is missing.
+const WORK_NAV_LABEL = { en: "Work", ar: "أعمالنا" };
+function withWorkNav(items, lang) {
+  const work = { id: "work", label: WORK_NAV_LABEL[lang] ?? WORK_NAV_LABEL.en };
+  const rest = items.filter((i) => i.id !== "work");
+  const at = rest.findIndex((i) => i.id === "services");
+  return at === -1 ? [work, ...rest] : [...rest.slice(0, at + 1), work, ...rest.slice(at + 1)];
+}
+
 function fillTemplate(template, vars) {
   return Object.entries(vars).reduce((s, [k, v]) => s.replaceAll(`{${k}}`, v), template ?? "");
 }
@@ -55,7 +67,7 @@ function buildFromLocalFallback(supportedLanguages) {
   const copy = {}, nav = {}, sections = {}, faq = {}, pages = {};
   for (const lang of supportedLanguages) {
     copy[lang] = localCopyForLang(lang);
-    nav[lang] = NAV[lang];
+    nav[lang] = withWorkNav(NAV[lang], lang);
     sections[lang] = SECTIONS[lang];
     faq[lang] = FAQ[lang];
     pages[lang] = Object.fromEntries(
@@ -109,7 +121,7 @@ function buildFromApi(publicConfig, contentPages, faqItems, supportedLanguages) 
   for (const lang of supportedLanguages) {
     copy[lang] = apiCopyForLang(publicConfig, lang);
 
-    nav[lang] = navPages.map((p) => ({ id: p.slug, label: p.translations[lang]?.nav_label ?? p.slug }));
+    nav[lang] = withWorkNav(navPages.map((p) => ({ id: p.slug, label: p.translations[lang]?.nav_label ?? p.slug })), lang);
 
     sections[lang] = Object.fromEntries(
       navPages.map((p) => [p.slug, {

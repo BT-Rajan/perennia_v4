@@ -163,3 +163,17 @@
     transition: none;
   }
 }
+
+/* Booking CTA at the foot of the mobile drawer (NavMenu onBook). */
+.nav-mobile-cta {
+  padding: var(--space-3) var(--space-2) var(--space-2);
+  margin-top: var(--space-2);
+  border-top: 1px solid color-mix(in srgb, var(--gold) 15%, transparent);
+}
+.nav-mobile-cta .btn { white-space: normal; text-align: center; }
+
+/* Small desktops (1024–1279px): six nav links plus the header booking
+   CTA share the bar, so tighten the gaps rather than let them touch. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .nav-menu { gap: var(--space-4); }
+}

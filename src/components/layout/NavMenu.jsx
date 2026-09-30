@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLang } from "../../context/LangContext.jsx";
+import Button from "../ui/Button.jsx";
 import "./NavMenu.css";
 
 const HOME_ICON = (
@@ -23,13 +24,18 @@ const HOME_ICON = (
  * same Home + page links instead of dropping navigation entirely on
  * small screens.
  */
-export default function NavMenu({ onNavigate }) {
+export default function NavMenu({ onNavigate, onBook, bookLabel }) {
   const { nav, copy } = useLang();
   const [open, setOpen] = useState(false);
 
   function handleClick(id) {
     setOpen(false);
     onNavigate?.(id);
+  }
+
+  function handleBook() {
+    setOpen(false);
+    onBook?.();
   }
 
   return (
@@ -87,6 +93,11 @@ export default function NavMenu({ onNavigate }) {
             {item.label}
           </button>
         ))}
+        {onBook && bookLabel && (
+          <div className="nav-mobile-cta">
+            <Button variant="primary" fullWidth onClick={handleBook}>{bookLabel}</Button>
+          </div>
+        )}
       </nav>
     </>
   );

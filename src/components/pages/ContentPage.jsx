@@ -33,7 +33,7 @@ export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick
 
   return (
     <div className="content-page">
-      <TopBar onNavigate={onNavigate} onLogoClick={onBack} />
+      <TopBar onNavigate={onNavigate} onLogoClick={onBack} onBook={cta.onClick} />
 
       <main className="content-main">
         <div className="content-tagline">

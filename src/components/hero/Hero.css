@@ -1235,3 +1235,7 @@
   .hero-sectors-list,
   .hero-situations-aside .hero-sectors-list { grid-template-columns: 1fr; gap: var(--space-4); }
 }
+/* "Work" in the nav scrolls here (App.jsx navigate) — keep the section
+   heading clear of the fixed header. */
+#work { scroll-margin-top: calc(var(--header-h) + var(--space-4)); }
+@media (min-width: 1025px) { #work { scroll-margin-top: calc(100px + var(--space-4)); } }

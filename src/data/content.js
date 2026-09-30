@@ -14,15 +14,17 @@ export const BRAND = {
 // in-chat quick-access tray so both stay in sync from one place.
 export const NAV = {
   en: [
-    { id: "about", label: "About" },
+    { id: "services", label: "Solutions" },
     { id: "products", label: "Products" },
-    { id: "services", label: "Services" },
-    { id: "contact", label: "Contact Us" },
+    { id: "labs", label: "Labs" },
+    { id: "about", label: "About" },
+    { id: "contact", label: "Contact" },
   ],
   ar: [
-    { id: "about", label: "من نحن" },
+    { id: "services", label: "الحلول" },
     { id: "products", label: "المنتجات" },
-    { id: "services", label: "الخدمات" },
+    { id: "labs", label: "المختبر" },
+    { id: "about", label: "من نحن" },
     { id: "contact", label: "تواصل معنا" },
   ],
 };

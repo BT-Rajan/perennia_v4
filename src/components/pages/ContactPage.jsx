@@ -13,7 +13,7 @@ import "./ContactPage.css";
  * Us" call-to-action that opens the existing booking flow in place —
  * no separate route needed for scheduling a call.
  */
-export default function ContactPage({ onBack, onNavigate }) {
+export default function ContactPage({ onBack, onNavigate, onBookingClick }) {
   const { copy, pages, branding, features, contact } = useLang();
   const meta = pages.contact;
 
@@ -36,7 +36,7 @@ export default function ContactPage({ onBack, onNavigate }) {
 
   return (
     <div className="content-page">
-      <TopBar onNavigate={onNavigate} onLogoClick={onBack} />
+      <TopBar onNavigate={onNavigate} onLogoClick={onBack} onBook={onBookingClick} />
 
       <main className="content-main">
         <div className="content-tagline">
