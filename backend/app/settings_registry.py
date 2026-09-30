@@ -169,7 +169,7 @@ _DEFS: list[SettingDef] = [
                help_text="Shown in the header, browser tab, and emails. Per-language, since a wordmark "
                           "often isn't a literal translation."),
     SettingDef("branding.tagline", "branding", "Tagline", SettingType.STRING, {"en": "", "ar": ""}, i18n=True),
-    SettingDef("branding.logo_url", "branding", "Logo", SettingType.IMAGE, "/static/logo.svg"),
+    SettingDef("branding.logo_url", "branding", "Logo", SettingType.IMAGE, "/static/perennia-logo.png"),
     SettingDef("branding.logo_scale", "branding", "Logo zoom", SettingType.FLOAT, 1.0,
                help_text="Display size of the logo image relative to its default — logos with a lot "
                           "of built-in padding often look small next to the header text at 1.0x.",

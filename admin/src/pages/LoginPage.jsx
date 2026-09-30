@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import logoUrl from "../assets/perennia-logo.png";
 import "./LoginPage.css";
 
 export default function LoginPage() {
@@ -28,7 +29,7 @@ export default function LoginPage() {
   return (
     <div className="login-screen">
       <form className="login-card" onSubmit={handleSubmit}>
-        <div className="login-mark">P</div>
+        <img className="login-logo" src={logoUrl} alt="Perennia" width="199" height="108" />
         <h1>Perennia Admin</h1>
         <p className="login-sub">Sign in to manage bookings, leads, and site settings.</p>
 

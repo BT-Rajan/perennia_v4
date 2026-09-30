@@ -217,7 +217,7 @@ export function buildFallbackSite() {
     contact: FALLBACK_CONTACT,
     branding: {
       siteNameByLang: { en: BRAND.name, ar: BRAND.wordmarkAr },
-      logoUrl: "/static/logo.svg",
+      logoUrl: "/static/perennia-logo.png",
       logoScale: 1,
       faviconUrl: "/favicon.svg",
       metaDescriptionByLang: {
@@ -313,7 +313,7 @@ export async function loadSiteContent() {
     contact: haveFullApiData ? apiContact(publicConfig) : FALLBACK_CONTACT,
     branding: {
       siteNameByLang: publicConfig?.["branding.site_name"] ?? { en: BRAND.name, ar: BRAND.wordmarkAr },
-      logoUrl: publicConfig?.["branding.logo_url"] ?? "/static/logo.svg",
+      logoUrl: publicConfig?.["branding.logo_url"] ?? "/static/perennia-logo.png",
       logoScale: publicConfig?.["branding.logo_scale"] ?? 1,
       faviconUrl: publicConfig?.["branding.favicon_url"] ?? "/favicon.svg",
       metaDescriptionByLang: publicConfig?.["branding.meta_description"] ?? { en: "", ar: "" },

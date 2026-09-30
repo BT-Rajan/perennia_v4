@@ -51,6 +51,12 @@ async function request(path, options = {}) {
   const res = await fetch(`/${path}`, { credentials: "include", ...options, headers });
 
   if (res.status === 401) {
+    // On the login call a 401 means wrong credentials, not an expired
+    // session — show the server's own message for it.
+    if (path === "admin/api/auth/login") {
+      const body = await parseJsonSafe(res).catch(() => null);
+      throw new ApiError(body?.detail || "Invalid username or password.", 401);
+    }
     throw new ApiError("Session expired — please log in again.", 401);
   }
   if (!res.ok) {
