@@ -31,6 +31,7 @@ set -Eeuo pipefail
 # Usage:
 #   ./install.sh                       interactive
 #   ./install.sh --yes                 non-interactive (see env vars below)
+#   ./install.sh --public-ip=169.58.13.213   reachable at http://IP:5960
 #
 # Options:
 #   --yes                  Never prompt. Missing passwords are generated
@@ -44,6 +45,10 @@ set -Eeuo pipefail
 #                          (first install only; default "admin").
 #   --http-cookies         Allow admin login over plain HTTP (no TLS).
 #                          Testing only — runs the app in development mode.
+#   --public-ip=IP         Serve directly on http://IP:PORT with no reverse
+#                          proxy: binds 0.0.0.0, implies --http-cookies,
+#                          opens PORT in ufw/firewalld if one is active,
+#                          and checks the site answers on that IP.
 #   --skip-build           Skip npm install/build (backend-only redeploy).
 #
 # Secrets are read from environment variables, never from the command
@@ -67,6 +72,7 @@ DB_ADMIN_USER=""
 ADMIN_USERNAME="admin"
 HTTP_COOKIES=false
 SKIP_BUILD=false
+PUBLIC_IP=""
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKEND_DIR="$ROOT_DIR/backend"
@@ -115,6 +121,7 @@ for arg in "$@"; do
         --db-admin-user=*)   DB_ADMIN_USER="${arg#*=}" ;;
         --admin-user=*)      ADMIN_USERNAME="${arg#*=}" ;;
         --http-cookies)      HTTP_COOKIES=true ;;
+        --public-ip=*)       PUBLIC_IP="${arg#*=}" ;;
         --skip-build)        SKIP_BUILD=true ;;
         -h|--help)           usage; exit 0 ;;
         *)                   die "Unknown option: $arg (see --help)" ;;
@@ -122,6 +129,11 @@ for arg in "$@"; do
 done
 
 [[ "$APP_PORT" =~ ^[0-9]+$ ]] || die "--port must be a number (got '$APP_PORT')."
+if [[ -n "$PUBLIC_IP" ]]; then
+    [[ "$PUBLIC_IP" =~ ^[0-9A-Za-z.:-]+$ ]] || die "--public-ip must be an IP address or host name (got '$PUBLIC_IP')."
+    APP_HOST="0.0.0.0"      # listen on every interface, not just loopback
+    HTTP_COOKIES=true       # no TLS on a bare IP, so cookies can't be Secure
+fi
 [[ -f "$BACKEND_DIR/requirements.txt" && -f "$ROOT_DIR/package.json" ]] \
     || die "Run this from the root of the Perennia checkout (backend/ and package.json not found next to install.sh)."
 
@@ -322,7 +334,7 @@ if $HTTP_COOKIES; then ENVIRONMENT="development"; COOKIE_SECURE="false"; else EN
 # characters like @ # : / can't break the DATABASE_URL.
 ENV_FILE="$ENV_FILE" FIRST_INSTALL="$FIRST_INSTALL" \
 DB_USER="$DB_USER" DB_PASSWORD="$DB_PASSWORD" DB_HOST="$DB_HOST" DB_PORT="$DB_PORT" DB_NAME="$DB_NAME" \
-APP_HOST="$APP_HOST" APP_PORT="$APP_PORT" ENVIRONMENT="$ENVIRONMENT" COOKIE_SECURE="$COOKIE_SECURE" \
+APP_HOST="$APP_HOST" APP_PORT="$APP_PORT" ENVIRONMENT="$ENVIRONMENT" COOKIE_SECURE="$COOKIE_SECURE" HTTP_COOKIES="$HTTP_COOKIES" \
 python3 - <<'PY'
 import os, re
 from pathlib import Path
@@ -331,8 +343,10 @@ e = os.environ
 url = "mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4".format(
     quote(e["DB_USER"], safe=""), quote(e["DB_PASSWORD"], safe=""), e["DB_HOST"], e["DB_PORT"], quote(e["DB_NAME"], safe=""))
 values = {"DATABASE_URL": url, "HOST": e["APP_HOST"], "PORT": e["APP_PORT"]}
+if e["FIRST_INSTALL"] == "true" or e["HTTP_COOKIES"] == "true":
+    values.update({"ENVIRONMENT": e["ENVIRONMENT"], "COOKIE_SECURE": e["COOKIE_SECURE"]})
 if e["FIRST_INSTALL"] == "true":
-    values.update({"ENVIRONMENT": e["ENVIRONMENT"], "COOKIE_SECURE": e["COOKIE_SECURE"], "ALLOWED_ORIGINS": ""})
+    values["ALLOWED_ORIGINS"] = ""
 p = Path(e["ENV_FILE"])
 content = p.read_text()
 for key, value in values.items():
@@ -396,6 +410,21 @@ fi
 # 7. pm2
 # ----------------------------------------------------------------------------
 
+if [[ -n "$PUBLIC_IP" ]]; then
+    log "Opening port $APP_PORT/tcp in the host firewall (if one is active)"
+    as_root() { if [[ $EUID -eq 0 ]]; then "$@"; else sudo -n "$@"; fi; }
+    if require_cmd ufw && as_root ufw status 2>/dev/null | grep -q "Status: active"; then
+        as_root ufw allow "$APP_PORT/tcp" >/dev/null && log "ufw: allowed $APP_PORT/tcp" \
+            || warn "Could not change ufw. Run: sudo ufw allow $APP_PORT/tcp"
+    elif require_cmd firewall-cmd && as_root firewall-cmd --state >/dev/null 2>&1; then
+        { as_root firewall-cmd --permanent --add-port="$APP_PORT/tcp" && as_root firewall-cmd --reload; } >/dev/null \
+            && log "firewalld: allowed $APP_PORT/tcp" \
+            || warn "Could not change firewalld. Run: sudo firewall-cmd --permanent --add-port=$APP_PORT/tcp && sudo firewall-cmd --reload"
+    else
+        log "No active ufw/firewalld found (or no sudo) — nothing to open here"
+    fi
+fi
+
 log "Starting '$APP_NAME' under pm2 on $APP_HOST:$APP_PORT"
 
 # Port must be free (or held by our own pm2 process, which is replaced).
@@ -444,6 +473,14 @@ done
 $HEALTHY || die "No response from http://127.0.0.1:$APP_PORT/api/health within 20s (commit $DEPLOYED_COMMIT). Check: pm2 logs $APP_NAME"
 curl -fsS "http://127.0.0.1:$APP_PORT/" | grep -q 'id="root"' || warn "API is up but the public site didn't load — check that dist/ was built."
 curl -fsS "http://127.0.0.1:$APP_PORT/admin" | grep -q 'id="root"' || warn "API is up but the admin dashboard didn't load — check that admin/dist/ was built."
+if [[ -n "$PUBLIC_IP" ]]; then
+    if curl -fsS -m 8 "http://$PUBLIC_IP:$APP_PORT/api/health" >/dev/null 2>&1; then
+        log "Reachable on the public address: http://$PUBLIC_IP:$APP_PORT/"
+    else
+        warn "The app answers on 127.0.0.1 but not on http://$PUBLIC_IP:$APP_PORT from this server."
+        warn "If the IP is right, port $APP_PORT is most likely blocked by the cloud provider's firewall / security group — allow inbound TCP $APP_PORT there. Then run ./diagnose.sh $PUBLIC_IP"
+    fi
+fi
 
 cat <<DONE
 
@@ -452,13 +489,14 @@ $(printf '\033[1;32m')Perennia v4 is running.$(printf '\033[0m')
   Commit           $DEPLOYED_COMMIT
   pm2 process      $APP_NAME
   Listening on     http://$APP_HOST:$APP_PORT
-  Public site      http://$APP_HOST:$APP_PORT/
-  Admin dashboard  http://$APP_HOST:$APP_PORT/admin
+  Public site      http://${PUBLIC_IP:-$APP_HOST}:$APP_PORT/
+  Admin dashboard  http://${PUBLIC_IP:-$APP_HOST}:$APP_PORT/admin
   Database         $DB_NAME  (user $DB_USER @ $DB_HOST:$DB_PORT)
 
   pm2 status
   pm2 logs $APP_NAME
   pm2 restart $APP_NAME
+  ./diagnose.sh ${PUBLIC_IP:-}        check pm2, port, curl and firewall
 
 To survive a reboot, run once (as the user that owns pm2):  pm2 startup
 DONE
@@ -466,5 +504,5 @@ if [[ "$APP_HOST" == "127.0.0.1" ]]; then
     echo "The app listens on 127.0.0.1 only — point your HTTPS reverse proxy (e.g. nginx) at http://127.0.0.1:$APP_PORT."
 fi
 if $HTTP_COOKIES; then
-    warn "--http-cookies: running in development mode with insecure cookies. Re-install without it once HTTPS is in place (edit ENVIRONMENT/COOKIE_SECURE in backend/.env)."
+    warn "Plain-HTTP mode: development mode, non-Secure cookies, API docs at /api/docs. Fine for testing on an IP; once a domain with HTTPS is in place, re-run without --public-ip/--http-cookies and set ENVIRONMENT=production, COOKIE_SECURE=true in backend/.env."
 fi
