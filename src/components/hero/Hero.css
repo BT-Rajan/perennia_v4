@@ -412,11 +412,6 @@
 }
 .hero-ctas-left { justify-content: flex-start; }
 .hero-ctas .btn { white-space: normal; text-align: center; }
-/* Softer than the shared .btn-primary glow — restrained, not neon. */
-.hero-ctas .btn-primary,
-.hero-ctas .btn-primary:not(:disabled):hover {
-  box-shadow: 0 6px 18px color-mix(in srgb, var(--gold) 22%, transparent);
-}
 
 /* ── Principles (HeroPrinciples) — quiet, dot-marked context line,
    deliberately not styled as buttons or chips. */
@@ -826,9 +821,9 @@
   border-radius: var(--radius-lg);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
   border: 1px solid color-mix(in srgb, var(--gold) 20%, transparent);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  transition: all var(--dur-med) var(--ease);
+  /* No backdrop blur: these cards sit on the flat page background, so a
+     blur had nothing to blur — it only cost GPU work on every card. */
+  transition: border-color var(--dur-med) var(--ease), background var(--dur-med) var(--ease);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -1229,3 +1224,9 @@
    heading clear of the fixed header. */
 #work { scroll-margin-top: calc(var(--header-h) + var(--space-4)); }
 @media (min-width: 1025px) { #work { scroll-margin-top: calc(100px + var(--space-4)); } }
+
+/* Respect reduced-motion for the page entrance too (the headline and
+   sticky buttons already do). */
+@media (prefers-reduced-motion: reduce) {
+  .hero-page { animation: none; }
+}

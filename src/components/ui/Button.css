@@ -18,12 +18,11 @@
 .btn-primary {
   background: linear-gradient(135deg, var(--gold) 0%, var(--gold-shade-2) 50%, var(--gold-shade-3) 100%);
   color: var(--on-gold-text);
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--gold) 35%, transparent), 0 0 12px color-mix(in srgb, var(--gold) 15%, transparent);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--gold) 22%, transparent);
 }
 .btn-primary:not(:disabled):hover { 
-  filter: brightness(1.12);
-  box-shadow: 0 12px 32px color-mix(in srgb, var(--gold) 45%, transparent), 0 0 16px color-mix(in srgb, var(--gold) 25%, transparent);
-  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--gold) 28%, transparent);
 }
 
 .btn-ghost {

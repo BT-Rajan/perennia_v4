@@ -33,22 +33,20 @@
   min-width: 60px;
   min-height: 60px;
 
-  /* Appearance — BOLD & AGGRESSIVE */
-  background: var(--brand-primary);
-  color: var(--brand-bg);
+  /* Appearance — a clear, always-available entry point, but visually
+     secondary to the page's primary CTA (Book a 30-Minute Discovery
+     Meeting): dark surface, gold outline and icon, no solid gold fill. */
+  background: color-mix(in srgb, var(--gold) 12%, var(--brand-bg) 88%);
+  color: var(--white-soft);
   border-radius: var(--radius-lg);
-  border: 2px solid var(--brand-accent);  /* Bold border for extra punch */
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
   cursor: pointer;
-  font-weight: 800;                       /* Ultra-bold text */
+  font-weight: 600;
   font-size: 15px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 
-  /* Shadows & depth — MORE aggressive */
-  box-shadow:
-    0 6px 16px rgba(0, 0, 0, 0.4),
-    0 12px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 
   /* Transitions */
   transition:
@@ -59,14 +57,12 @@
   font-family: var(--font-body);
 }
 
-/* Hover: DRAMATIC scale & elevation */
+/* Hover: a small lift and a stronger outline — no dramatic scaling. */
 .chatButton:hover,
 .chatButton.hovered {
-  transform: translateY(-6px) scale(1.12);
-  box-shadow:
-    0 10px 28px rgba(0, 0, 0, 0.5),
-    0 16px 48px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
 }
 
 /* Focus: visible outline */
@@ -93,7 +89,7 @@
 }
 .booking:hover,
 .booking.hovered {
-  transform: translateY(-3px) scale(1.06);
+  transform: translateY(-2px);
   background: color-mix(in srgb, var(--brand-accent) 22%, transparent);
 }
 .booking:focus-visible {
@@ -124,10 +120,7 @@
   transition: transform var(--dur-med) var(--ease);
 }
 
-.chatButton:hover .icon,
-.chatButton.hovered .icon {
-  transform: scale(1.15);
-}
+.chatButton .icon { color: var(--gold); }
 
 /* Label — always visible (k-g-i.com keeps "Talk to Sulaiman" on-screen
    at all times rather than reveal-on-hover), collapses on small screens
@@ -148,14 +141,15 @@
   }
 }
 
-/* Pulse animation: draws attention on initial load */
+/* Pulse: draws attention on initial load only — a few rings, then it
+   stops, rather than pulsing for as long as the page is open. */
 .pulse {
   position: absolute;
   inset: -4px;
   border-radius: var(--radius-lg);
-  border: 2px solid var(--brand-primary);
+  border: 1px solid var(--gold);
   opacity: 0;
-  animation: pulse-ring 2s ease-out infinite;
+  animation: pulse-ring 2s ease-out 3;
   pointer-events: none;
 }
 
