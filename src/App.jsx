@@ -7,6 +7,7 @@ import ContactPage from "./components/pages/ContactPage.jsx";
 import StickyChat from "./components/StickyChat.jsx";
 import BookingPanel from "./components/booking/BookingPanel.jsx";
 import Toast from "./components/ui/Toast.jsx";
+import LogoIntro from "./components/ui/LogoIntro.jsx";
 import { COPY } from "./data/content.js";
 import { applyPageMeta, describeMarkdown, pageFromPath, pathForPage } from "./seo/pageMeta.js";
 
@@ -162,6 +163,8 @@ function AppShell() {
       )}
 
       {toastMessage && <Toast message={toastMessage} onDismiss={() => setToastMessage("")} />}
+
+      <LogoIntro />
     </>
   );
 }
