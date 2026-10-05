@@ -217,18 +217,6 @@
   .chatButton.hovered {
     transform: translateY(-2px) scale(1.05);
   }
-
-  /* Home page only (see StickyChat.jsx's isHome prop): Hero already
-     renders its own in-flow quick-chat box on this page, close enough
-     to this fixed button on a small screen to visually collide with
-     it. Hidden here rather than not rendered at all in JS, so it
-     still mounts (and un-hides) cleanly if the viewport grows past
-     this breakpoint without a remount. Only the AI Assistant button —
-     the Appointments button isn't duplicated anywhere on the page, so
-     it keeps showing here same as everywhere else. */
-  .homeMobileHidden {
-    display: none;
-  }
 }
 
 /* Prevent animation if user prefers reduced motion */

@@ -1,12 +1,12 @@
-import { HeroButtons, HeroCapabilities, HeroProcess, HeroChatComposer, HeroCtas, HeroDiscovery, HeroEyebrow, HeroExamplePrompts, HeroHeadline, HeroLocal, HeroTrust, HeroWork, HeroSituations, HeroSupportingText } from "../HeroShared.jsx";
+import { HeroButtons, HeroCapabilities, HeroProcess, HeroCtas, HeroDiscovery, HeroEyebrow, HeroHeadline, HeroLocal, HeroTrust, HeroWork, HeroSituations, HeroSupportingText } from "../HeroShared.jsx";
 
 /**
- * "split" — two-column: headline, tagline, and the quick-chat box
+ * "split" — two-column: headline, tagline, and CTAs
  * left-aligned on one side, page-navigation cards stacked as a list
  * on the other. Stacks to a single column (main content first, then
  * nav) below the tablet breakpoint — see .hero-split-* in Hero.css.
  */
-export default function SplitLayout({ home, heroButtons, lang, quickDraft, setQuickDraft, onQuickSend, onExamplePick, onCtaPrimary, onCtaSecondary, copy, homeTopics, homeCapabilities, homeSectors, homeLocalPoints, homeProcess, homeTrustPoints, homeCaseStages, homeOtherWork, onOpenCaseStudy, onTopicClick, headlineTypingSpeedCps }) {
+export default function SplitLayout({ home, heroButtons, lang, onCtaPrimary, onCtaSecondary, homeTopics, homeCapabilities, homeSectors, homeLocalPoints, homeProcess, homeTrustPoints, homeCaseStages, homeOtherWork, onOpenCaseStudy, onTopicClick, headlineTypingSpeedCps }) {
   return (
     <>
       <div className="hero-split-wrap">
@@ -22,16 +22,6 @@ export default function SplitLayout({ home, heroButtons, lang, quickDraft, setQu
           <HeroSupportingText text={home.supportingText} className="hero-supporting-left" />
           <HeroCtas primaryLabel={home.ctaPrimary} secondaryLabel={home.ctaSecondary} onPrimary={onCtaPrimary} onSecondary={onCtaSecondary} className="hero-ctas-left" />
           {heroButtons?.length > 0 && <HeroButtons buttons={heroButtons} lang={lang} />}
-
-          <HeroChatComposer
-            value={quickDraft}
-            onChange={setQuickDraft}
-            onSend={onQuickSend}
-            placeholder={copy.chat.inputPlaceholder}
-            sendLabel={copy.common.send}
-            label={home.assistantLabel}
-          />
-          <HeroExamplePrompts prompts={home.examplePrompts} onPick={onExamplePick} className="hero-example-prompts-left" />
         </div>
 
         {/* No section CTA here — this column sits right beside the hero's

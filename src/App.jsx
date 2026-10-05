@@ -125,8 +125,8 @@ function AppShell() {
       {/* Desktop has no in-flow "page vs widget" scroll separation like
           mobile does, so the fixed-position ChatWidget popover (bottom-
           right, up to 380x600) can sit directly over the home page's
-          own centered hero content at ordinary laptop widths — two
-          chat inputs, and often headline text, visibly overlapping.
+          own centered hero content at ordinary laptop widths — often
+          headline text visibly overlapping.
           Dimming + disabling the page behind it while open (rather
           than only suppressing StickyChat, which is mobile-home-
           specific — see below) removes the collision on any page, any
@@ -141,19 +141,12 @@ function AppShell() {
         )}
       </div>
 
-      {/* Sticky action buttons — visible on all pages. The AI Assistant
-          button is additionally suppressed on mobile on the home page
-          specifically (isHome), since Hero already renders its own
-          in-flow quick-chat box there — on a small screen the two sat
-          close enough to collide. Desktop keeps both; every other page
-          keeps the sticky button as-is (it's the only chat entry point
-          there). */}
+      {/* Sticky action buttons — visible on all pages. */}
       <StickyChat
         onChatClick={handleStickyChat}
         onBookingClick={() => setBookingOpen(true)}
         showBooking={features.bookingEnabled}
         chatOpen={chatOpen}
-        isHome={shownPage === "home"}
       />
 
       <ChatWidget

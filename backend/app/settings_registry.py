@@ -228,7 +228,7 @@ _DEFS: list[SettingDef] = [
                help_text="How long the home screen waits before auto-continuing into chat.",
                validator=_int_range(2, 60)),
     # Which homepage layout arrangement to render — purely a client-side
-    # choice of *structure* (how the same headline/tagline/quick-chat/nav
+    # choice of *structure* (how the same headline/tagline/CTA/nav
     # pieces are composed on the page), never colors/fonts (those stay
     # theme.primary_color etc. above) and never which features exist.
     # "classic" is both the default and the site's original/only layout
@@ -237,7 +237,7 @@ _DEFS: list[SettingDef] = [
     # to it (see src/components/hero/Hero.jsx).
     SettingDef("theme.layout_template", "theme", "Homepage layout", SettingType.ENUM, "classic",
                choices=("classic", "split", "centered-card", "editorial"),
-               help_text="How the homepage headline, quick-chat box, and page-navigation cards are arranged. "
+               help_text="How the homepage headline, CTAs, and page-navigation cards are arranged. "
                           "Colors and fonts are unaffected — set those above."),
     # Purely the headline's text *treatment* (fill/animation) — never
     # its content (that's copy.home.welcome) and never layout (that's
@@ -405,14 +405,12 @@ _DEFS: list[SettingDef] = [
                validator=_int_range(16, 4096)),
     SettingDef("chat.temperature", "chat", "Temperature", SettingType.FLOAT, 0.7,
                validator=_float_range(0.0, 1.0)),
-    # Shown next to the assistant in both the sticky widget (ChatWidget)
-    # and the homepage quick-chat box (Hero) — the same image in both
-    # places, so the two entry points read as one assistant rather than
-    # two different ones. Blank falls back to a plain initial-letter
+    # Shown next to the assistant in the sticky widget (ChatWidget).
+    # Blank falls back to a plain initial-letter
     # avatar (see src/components/chat/ChatWidget.jsx).
     SettingDef("chat.avatar_url", "chat", "Assistant avatar", SettingType.IMAGE, "",
-               help_text="Shown next to the assistant in the AI Assistant widget and the homepage "
-                          "quick-chat box. Leave blank to use a plain initial-letter avatar instead."),
+               help_text="Shown next to the assistant in the AI Assistant widget. "
+                          "Leave blank to use a plain initial-letter avatar instead."),
     SettingDef("chat.system_prompt", "chat", "System prompt", SettingType.TEXT, {
         "en": "You are Perennia's AI assistant. Be warm, concise, and professional. Early in the "
               "conversation, ask the visitor's name so you can personalize the chat and so the team can "
@@ -610,7 +608,6 @@ _DEFS: list[SettingDef] = [
             "welcome": "Welcome to Perennia",
             "tagline": "Visit our V-Lounge for more",
             "hero_statement": "", "eyebrow": "Practical AI. Affordable Innovation.",
-            "assistant_label": "Try the bilingual assistant we built — the same kind of tool we build for clients.",
             "tagline_line1": "Technology that moves",
             "tagline_line2": "your business forward.",
             "supporting_text": "Perennia helps GCC businesses adopt, build and scale technology — from their "
@@ -845,9 +842,6 @@ _DEFS: list[SettingDef] = [
             "process_heading": "Start with the business. Build the technology around it.",
             "process_intro": "We normally take responsibility for the whole journey — from the first conversation "
                              "to the solution in operation — so you are not left coordinating several vendors.",
-            "example_prompts": ["Where should my business start with technology?",
-                                 "Where could AI genuinely help my business?",
-                                 "What happens in a discovery meeting?"],
             "hint": "Start chatting",
             "lang_switch": "AR | عربي",
         },
@@ -855,7 +849,6 @@ _DEFS: list[SettingDef] = [
             "welcome": "مرحبا بك في بيرينيا",
             "tagline": "زوروا V-Lounge الخاص بنا لمزيد من المعلومات",
             "hero_statement": "", "eyebrow": "ذكاء اصطناعي عملي. ابتكار في المتناول.",
-            "assistant_label": "جرّب المساعد ثنائي اللغة الذي بنيناه — من نوع الأدوات التي نبنيها لعملائنا.",
             "tagline_line1": "تقنية تدفع",
             "tagline_line2": "أعمالك إلى الأمام.",
             "supporting_text": "تساعد بيرينيا الشركات في دول الخليج على تبنّي التقنية وبنائها وتوسيعها — من أول "
@@ -1089,14 +1082,12 @@ _DEFS: list[SettingDef] = [
             "process_heading": "ابدأ بالأعمال. وابنِ التقنية حولها.",
             "process_intro": "نتحمّل عادةً مسؤولية الرحلة كاملة — من المحادثة الأولى حتى تشغيل الحل — فلا تضطر "
                              "إلى التنسيق بين عدة موردين.",
-            "example_prompts": ["من أين تبدأ أعمالي مع التقنية؟", "أين يمكن للذكاء الاصطناعي أن يفيد أعمالي فعلًا؟",
-                                 "ماذا يحدث في الاجتماع الاستكشافي؟"],
             "hint": "ابدأ المحادثة",
             "lang_switch": "EN | English",
         },
     }, i18n=True,
                help_text="welcome, tagline, hint, lang_switch, hero_statement, tagline_line1, tagline_line2, "
-                          "eyebrow, supporting_text, cta_primary, cta_secondary, assistant_label, example_prompts, "
+                          "eyebrow, supporting_text, cta_primary, cta_secondary, "
                           "situations_kicker, situations_heading, situations_intro, sectors_heading, sectors_note "
                           "(the who-we-work-with section under the hero), "
                           "capabilities_heading, capabilities_intro, capabilities_roles, "

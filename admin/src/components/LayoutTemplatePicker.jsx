@@ -9,17 +9,17 @@ const LAYOUTS = [
   {
     id: "classic",
     name: "Classic",
-    description: "Centered headline, quick-chat box, and a card grid of page links below. The original layout.",
+    description: "Centered headline, CTAs, and a card grid of page links below. The original layout.",
   },
   {
     id: "split",
     name: "Split",
-    description: "Headline and quick-chat on one side, page links stacked as a list on the other.",
+    description: "Headline and CTAs on one side, page links stacked as a list on the other.",
   },
   {
     id: "centered-card",
     name: "Centered card",
-    description: "Everything — headline, quick-chat, and page links — inside one bordered card. Compact and boutique.",
+    description: "Everything — headline, CTAs, and page links — inside one bordered card. Compact and boutique.",
   },
   {
     id: "editorial",
@@ -102,7 +102,7 @@ export default function LayoutTemplatePicker({ value, onChange }) {
     <div className="layout-template-picker">
       <label className="setting-label">Homepage layout</label>
       <p className="setting-help">
-        How the homepage headline, quick-chat box, and page links are arranged. Colors and fonts come
+        How the homepage headline, CTAs, and page links are arranged. Colors and fonts come
         from the theme preset above — this only changes structure. Nothing goes live until you hit Save.
       </p>
 

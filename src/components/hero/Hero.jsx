@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useLang } from "../../context/LangContext.jsx";
 import { COPY } from "../../data/content.js";
 import TopBar from "../layout/TopBar.jsx";
@@ -14,8 +13,8 @@ import "./Hero.css";
 // an unset or unrecognized template can never fail to render — it
 // just renders the site's original layout. Every layout receives the
 // exact same props/data and calls the exact same onNavigate/onEnter
-// handlers — only the arrangement of headline, tagline, quick-chat
-// box, and nav cards differs between them. None of them touch chat,
+// handlers — only the arrangement of headline, tagline, CTAs and
+// nav cards differs between them. None of them touch chat,
 // booking, or voice functionality, which all live in ChatWidget.
 const LAYOUTS = {
   classic: ClassicLayout,
@@ -25,15 +24,14 @@ const LAYOUTS = {
 };
 
 /**
- * Landing page. Entry into the chat assistant is either straight from
- * the quick-start chat box (which hands the typed message off to the
- * sticky AI Assistant widget — see onEnter/App.jsx) or via the
- * always-visible sticky button itself. Which arrangement the headline/
- * tagline/quick-chat/nav-cards render in is chosen by the admin (see
+ * Landing page. Entry into the chat assistant is either via a topic
+ * card (which hands its preset question off to the sticky AI Assistant
+ * widget — see onEnter/App.jsx) or via the always-visible sticky button
+ * itself. Which arrangement the headline/tagline/CTAs/nav-cards render in is chosen by the admin (see
  * Settings > Theme > Homepage layout) — see LAYOUTS above.
  */
 // The new hero-hierarchy fields (heroStatement/taglineLine1/taglineLine2/
-// supportingText/examplePrompts) live inside the same free-form
+// supportingText) live inside the same free-form
 // copy.home JSON blob as the rest of the homepage text, so an admin
 // who hasn't touched Settings > On-screen text yet simply won't have
 // them in the live backend response. Falling back per-field (not
@@ -47,7 +45,6 @@ function withHomeFallbacks(home, lang) {
     taglineLine1: home.taglineLine1 ?? fallback.taglineLine1,
     taglineLine2: home.taglineLine2 ?? fallback.taglineLine2,
     supportingText: home.supportingText ?? fallback.supportingText,
-    examplePrompts: home.examplePrompts ?? fallback.examplePrompts,
     eyebrow: home.eyebrow ?? fallback.eyebrow,
     situations: home.situations ?? fallback.situations,
     sectors: home.sectors ?? fallback.sectors,
@@ -59,7 +56,6 @@ function withHomeFallbacks(home, lang) {
     trustPoints: home.trustPoints ?? fallback.trustPoints,
     casePageSlug: home.casePageSlug ?? fallback.casePageSlug,
     caseImageUrl: home.caseImageUrl ?? fallback.caseImageUrl,
-    assistantLabel: home.assistantLabel ?? fallback.assistantLabel,
     ctaPrimary: home.ctaPrimary ?? fallback.ctaPrimary,
     ctaSecondary: home.ctaSecondary ?? fallback.ctaSecondary,
     situationsKicker: home.situationsKicker ?? fallback.situationsKicker,
@@ -102,22 +98,7 @@ function withHomeFallbacks(home, lang) {
 
 export default function Hero({ onEnter, onNavigate, onBookingClick }) {
   const { copy, sections, nav, branding, heroButtons, lang, theme, pages, features } = useLang();
-  const [quickDraft, setQuickDraft] = useState("");
   const home = withHomeFallbacks(copy.home, lang);
-
-  function handleQuickSend() {
-    const text = quickDraft.trim();
-    if (!text) return;
-    setQuickDraft("");
-    onEnter(text);
-  }
-
-  // Same direct handoff to the AI Assistant as the topic buttons below
-  // — an example prompt is a suggestion, not text the visitor typed,
-  // so it skips the quick-chat draft state entirely.
-  function handleExamplePick(prompt) {
-    onEnter(prompt);
-  }
 
   // Primary CTA opens the same booking panel as the sticky Appointments
   // button; with booking switched off it falls back to the Contact page
@@ -134,7 +115,7 @@ export default function Hero({ onEnter, onNavigate, onBookingClick }) {
 
   // The homepage situation cards (Starting Digital / Making AI
   // Practical / Scaling Technology) aren't page links — clicking one hands its preset question straight to the
-  // AI Assistant, the same handoff the quick-chat box uses above.
+  // AI Assistant.
   const homeTopics = home.situations || [];
   function handleTopicClick(topicId) {
     const topic = homeTopics.find((t) => t.id === topicId);
@@ -163,10 +144,6 @@ export default function Hero({ onEnter, onNavigate, onBookingClick }) {
         heroButtons={heroButtons}
         lang={lang}
         onNavigate={onNavigate}
-        quickDraft={quickDraft}
-        setQuickDraft={setQuickDraft}
-        onQuickSend={handleQuickSend}
-        onExamplePick={handleExamplePick}
         onCtaPrimary={handleCtaPrimary}
         onCtaSecondary={handleCtaSecondary}
         headlineStyle={theme?.headlineStyle}
