@@ -1,0 +1,43 @@
+/* First-load logo intro — see LogoIntro.jsx. */
+
+.logo-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  cursor: pointer;
+}
+
+.logo-intro-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 55%),
+    var(--brand-bg);
+}
+
+.logo-intro-mark {
+  position: absolute;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.logo-intro-mark img {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0; /* revealed by the intro animation once the image is ready */
+  will-change: transform, clip-path, opacity;
+}
+
+/* While the intro owns the screen, the header's real logo and nav are
+   hidden; they fade back in as it hands over. The transition lives on
+   the base state so removing the class animates. */
+.top-bar-header .logo,
+.top-bar-header .top-bar-center,
+.top-bar-header .top-bar-end {
+  transition: opacity 0.7s ease;
+}
+.logo-intro-active .top-bar-header .logo { opacity: 0; transition: none; }
+.logo-intro-active .top-bar-header .top-bar-center,
+.logo-intro-active .top-bar-header .top-bar-end { opacity: 0; }
+.logo-intro-active body { overflow: hidden; }
