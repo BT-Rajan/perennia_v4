@@ -62,9 +62,8 @@ export default function ChatWidget({ open, onClose, onBookingClick, initialMessa
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
-  // Sends the hero's quick-start message (from the quick-chat box, a
-  // topic card, or an example prompt — see Hero.jsx handleTopicClick /
-  // handleExamplePick) once the widget is actually open and a message
+  // Sends the hero's quick-start message (from a topic card — see
+  // Hero.jsx handleTopicClick) once the widget is actually open and a message
   // is waiting. This has to be its own effect: the hero handoff only
   // flips `open` and `initialMessage`, it never touches `lang`, so
   // folding this into the effect above (which only watched `lang`)

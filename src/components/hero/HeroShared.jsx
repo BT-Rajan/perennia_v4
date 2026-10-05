@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { isSafeHref } from "../../data/siteContent.js";
-import ChatInput from "../chat/ChatInput.jsx";
 import Button from "../ui/Button.jsx";
 import GlassPanel from "../ui/GlassPanel.jsx";
 import WorkflowChain from "../ui/WorkflowChain.jsx";
@@ -342,38 +341,13 @@ export function HeroButtons({ buttons, lang }) {
 /**
  * Small circular avatar — an uploaded image (chat.avatar_url, admin-
  * configurable, Settings > Chat / AI assistant) if set, otherwise a
- * plain initial letter. Used by both HeroChatComposer here and
- * ChatWidget's header, so the homepage entry point and the sticky
- * popover always show the same face rather than looking like two
- * different assistants.
+ * plain initial letter. Used by ChatWidget's header.
  */
 export function ChatAvatar({ avatarUrl, initial, className }) {
   return (
     <span className={`chat-avatar ${className || ""}`.trim()} aria-hidden="true">
       {avatarUrl ? <img src={avatarUrl} alt="" /> : (initial || "A")}
     </span>
-  );
-}
-
-/**
- * The homepage's quick-start entry into the AI Assistant — a plain
- * single-line text composer (no avatar here; ChatWidget's own header
- * still shows one once the conversation opens). Deliberately kept
- * text-only (no mic here, unlike the sticky ChatWidget popover, which
- * also supports voice) and this compact: it's meant to read as a fast
- * way in to the *same* assistant, not as a second, competing chat
- * surface with its own message history and status states.
- */
-export function HeroChatComposer({ value, onChange, onSend, placeholder, sendLabel, label, className }) {
-  return (
-    <>
-      {/* Optional caption (copy.home.assistant_label) framing the box as
-          a working example of what Perennia builds, not a gimmick. */}
-      {label && <p className="hero-quick-chat-label">{label}</p>}
-      <div className={`hero-quick-chat ${className || ""}`.trim()}>
-        <ChatInput value={value} onChange={onChange} onSend={onSend} placeholder={placeholder} sendLabel={sendLabel} />
-      </div>
-    </>
   );
 }
 
@@ -533,24 +507,4 @@ export function HeroHeadline({ statement, taglineLine1, taglineLine2, className,
 export function HeroSupportingText({ text, className }) {
   if (!text) return null;
   return <p className={`hero-supporting ${className || ""}`.trim()}>{text}</p>;
-}
-
-/**
- * Subtle example-prompt chips under the quick-chat composer — tapping
- * one hands the preset question straight to onPick (same handoff the
- * composer's own Send button and the topic cards use). Kept as plain
- * text chips, deliberately quieter than the hero buttons/CTAs, so they
- * read as suggestions rather than another row of calls to action.
- */
-export function HeroExamplePrompts({ prompts, onPick, className }) {
-  if (!prompts?.length) return null;
-  return (
-    <div className={`hero-example-prompts ${className || ""}`.trim()}>
-      {prompts.map((prompt, i) => (
-        <button key={i} type="button" className="hero-example-prompt" onClick={() => onPick(prompt)}>
-          {prompt}
-        </button>
-      ))}
-    </div>
-  );
 }

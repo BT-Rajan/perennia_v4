@@ -1,13 +1,13 @@
-import { HeroButtons, HeroChatComposer, HeroCtas, HeroDiscovery, HeroEyebrow, HeroExamplePrompts, HeroHeadline, HeroLocal, HeroCapabilities, HeroProcess, HeroTrust, HeroWork, HeroSituations, HeroSupportingText } from "../HeroShared.jsx";
+import { HeroButtons, HeroCtas, HeroDiscovery, HeroEyebrow, HeroHeadline, HeroLocal, HeroCapabilities, HeroProcess, HeroTrust, HeroWork, HeroSituations, HeroSupportingText } from "../HeroShared.jsx";
 
 /**
  * "classic" — the site's original, and default, homepage body:
- * centered headline/tagline/quick-chat stacked above a grid of nav
+ * centered headline/tagline/CTAs stacked above a grid of nav
  * cards. This is exactly the markup that existed before the layout
  * template setting did, so picking "classic" (or leaving the setting
  * unset) can never look different from what's already live.
  */
-export default function ClassicLayout({ home, heroButtons, lang, quickDraft, setQuickDraft, onQuickSend, onExamplePick, onCtaPrimary, onCtaSecondary, copy, homeTopics, homeCapabilities, homeSectors, homeLocalPoints, homeProcess, homeTrustPoints, homeCaseStages, homeOtherWork, onOpenCaseStudy, onTopicClick, headlineTypingSpeedCps }) {
+export default function ClassicLayout({ home, heroButtons, lang, onCtaPrimary, onCtaSecondary, homeTopics, homeCapabilities, homeSectors, homeLocalPoints, homeProcess, homeTrustPoints, homeCaseStages, homeOtherWork, onOpenCaseStudy, onTopicClick, headlineTypingSpeedCps }) {
   return (
     <>
       <div className="hero-center">
@@ -16,16 +16,6 @@ export default function ClassicLayout({ home, heroButtons, lang, quickDraft, set
         <HeroSupportingText text={home.supportingText} />
         <HeroCtas primaryLabel={home.ctaPrimary} secondaryLabel={home.ctaSecondary} onPrimary={onCtaPrimary} onSecondary={onCtaSecondary} />
         {heroButtons?.length > 0 && <HeroButtons buttons={heroButtons} lang={lang} />}
-
-        <HeroChatComposer
-          value={quickDraft}
-          onChange={setQuickDraft}
-          onSend={onQuickSend}
-          placeholder={copy.chat.inputPlaceholder}
-          sendLabel={copy.common.send}
-          label={home.assistantLabel}
-        />
-        <HeroExamplePrompts prompts={home.examplePrompts} onPick={onExamplePick} />
       </div>
 
       <HeroSituations

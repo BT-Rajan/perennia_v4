@@ -42,14 +42,8 @@ function StickyButton({ label, icon, onClick, variant }) {
  * @param {function} onBookingClick - Callback when the Appointments button is clicked
  * @param {boolean} showBooking - Whether the Appointments button renders at all
  * @param {boolean} chatOpen - Whether the ChatWidget popover is currently open
- * @param {boolean} isHome - True on the home page, where Hero already renders
- *   its own in-flow quick-chat box. On mobile that box sits close enough to
- *   this fixed button to collide, so the AI Assistant button (only — the
- *   Appointments button has no such duplicate) is hidden there below 768px;
- *   see .homeMobileHidden in StickyChat.module.css. Desktop is unaffected,
- *   and every other page keeps the sticky button exactly as before.
  */
-export default function StickyChat({ onChatClick, onBookingClick, showBooking = true, chatOpen = false, isHome = false }) {
+export default function StickyChat({ onChatClick, onBookingClick, showBooking = true, chatOpen = false }) {
   const { copy } = useLang();
 
   return (
@@ -69,7 +63,7 @@ export default function StickyChat({ onChatClick, onBookingClick, showBooking = 
           }
         />
       )}
-      <div className={`${styles.chatButtonWrap} ${isHome ? styles.homeMobileHidden : ""}`}>
+      <div className={styles.chatButtonWrap}>
         <StickyButton
           label={chatOpen ? copy.common.close : copy.chat.header}
           onClick={() => onChatClick?.()}

@@ -35,7 +35,7 @@
 /* rows=1 gives the textarea a fixed one-line height; actual typed
    text grows it via JS (see ChatInput.jsx handleInput), but the
    placeholder never triggers that, so on a narrow box (e.g. the
-   hero's compact quick-chat composer on mobile) a placeholder too
+   chat widget on a phone) a placeholder too
    long to fit on one line was wrapping to a second line and getting
    clipped by that fixed height instead of shrinking to fit. Only
    applies while the placeholder is actually showing — real input
