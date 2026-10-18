@@ -483,6 +483,11 @@ _DEFS: list[SettingDef] = [
     SettingDef("notifications.from_email", "notifications", "From address", SettingType.EMAIL, ""),
     SettingDef("notifications.from_name", "notifications", "From name", SettingType.STRING, "",
                help_text="Falls back to the site name if left blank."),
+    SettingDef("notifications.attach_calendar_invite", "notifications", "Attach calendar invite (.ics)",
+               SettingType.BOOL, True,
+               help_text="Booking confirmation, reschedule and cancellation emails carry a calendar invite, "
+                         "so the visitor and the internal alert email get the meeting added, moved or removed "
+                         "in their own calendar (Gmail, Outlook, Apple)."),
     SettingDef("notifications.admin_alert_email", "notifications", "Internal alert email", SettingType.EMAIL, "",
                help_text="Where new-booking and new-lead alerts are sent. Leave blank to disable."),
     SettingDef("notifications.admin_alert_whatsapp_number", "notifications", "Internal alert WhatsApp number",
@@ -543,6 +548,16 @@ _DEFS: list[SettingDef] = [
     SettingDef("templates.new_booking_admin_alert", "templates", "New booking — internal alert", SettingType.JSON, {
         "en": {"subject": "New booking: {name} — {date} {time}",
                "body": "{name} ({email}) booked {date} at {time}.\nService: {service}\nCode: {id}"},
+    }, help_text="Internal alert, English only by default — this is for staff, not visitors."),
+    SettingDef("templates.booking_cancelled_admin_alert", "templates", "Booking cancelled — internal alert",
+               SettingType.JSON, {
+        "en": {"subject": "Cancelled: {name} — {date} {time}",
+               "body": "{name} ({email}) — appointment on {date} at {time} was cancelled.\nService: {service}\nCode: {id}"},
+    }, help_text="Internal alert, English only by default — this is for staff, not visitors."),
+    SettingDef("templates.booking_rescheduled_admin_alert", "templates", "Booking rescheduled — internal alert",
+               SettingType.JSON, {
+        "en": {"subject": "Rescheduled: {name} — now {date} {time}",
+               "body": "{name} ({email}) — appointment moved to {date} at {time}.\nService: {service}\nCode: {id}"},
     }, help_text="Internal alert, English only by default — this is for staff, not visitors."),
     SettingDef("templates.new_lead_admin_alert", "templates", "New lead — internal alert", SettingType.JSON, {
         "en": {"subject": "New lead from chat: {email}",

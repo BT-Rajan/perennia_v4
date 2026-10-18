@@ -18,7 +18,7 @@ from email.utils import formataddr, formatdate, make_msgid
 
 from sqlalchemy.orm import Session
 
-from app import whatsapp_client
+from app import calendar_invite, whatsapp_client
 from app.settings_service import get_setting
 
 logger = logging.getLogger("perennia.notifications")
@@ -56,7 +56,8 @@ SMTPS_PORT = 465
 SMTP_TIMEOUT_SECONDS = 15
 
 
-def _build_message(db: Session, *, to_email: str, subject: str, body_text: str) -> EmailMessage:
+def _build_message(db: Session, *, to_email: str, subject: str, body_text: str,
+                   invite: tuple[str, str] | None = None) -> EmailMessage:
     from_email = get_setting(db, "notifications.from_email")
     from_name = get_setting(db, "notifications.from_name") or _lang_value(get_setting(db, "branding.site_name"), "en")
 
@@ -70,10 +71,18 @@ def _build_message(db: Session, *, to_email: str, subject: str, body_text: str) 
     msg["Date"] = formatdate(localtime=True)
     msg["Message-ID"] = make_msgid(domain=from_email.rpartition("@")[2] or None)
     msg.set_content(body_text, charset="utf-8")
+    if invite:
+        # (method, ics_text). text/calendar with a method= parameter is
+        # what makes Gmail/Outlook show "Add to calendar" / update or
+        # remove the existing entry, rather than a plain file download.
+        method, ics = invite
+        msg.add_attachment(ics.encode("utf-8"), maintype="text", subtype="calendar",
+                           filename="invite.ics", params={"method": method, "charset": "utf-8"})
     return msg
 
 
-def deliver_email(db: Session, *, to_email: str, subject: str, body_text: str) -> None:
+def deliver_email(db: Session, *, to_email: str, subject: str, body_text: str,
+                  invite: tuple[str, str] | None = None) -> None:
     """Sends one email with the configured SMTP settings and RAISES on
     any failure (EmailNotConfigured, smtplib.SMTPException, OSError).
     Ignores notifications.email_enabled, so an admin can verify the
@@ -88,7 +97,7 @@ def deliver_email(db: Session, *, to_email: str, subject: str, body_text: str) -
     use_tls = get_setting(db, "notifications.smtp_use_tls")
     username = get_setting(db, "notifications.smtp_username")
     password = get_setting(db, "notifications.smtp_password")
-    msg = _build_message(db, to_email=to_email, subject=subject, body_text=body_text)
+    msg = _build_message(db, to_email=to_email, subject=subject, body_text=body_text, invite=invite)
 
     context = ssl.create_default_context()
     if port == SMTPS_PORT:
@@ -103,14 +112,15 @@ def deliver_email(db: Session, *, to_email: str, subject: str, body_text: str) -
         server.send_message(msg)
 
 
-def send_email(db: Session, *, to_email: str, subject: str, body_text: str) -> bool:
+def send_email(db: Session, *, to_email: str, subject: str, body_text: str,
+               invite: tuple[str, str] | None = None) -> bool:
     """Best-effort send used by every notification: returns False
     (and logs) instead of raising, and does nothing unless email
     notifications are enabled."""
     if not get_setting(db, "notifications.email_enabled"):
         return False
     try:
-        deliver_email(db, to_email=to_email, subject=subject, body_text=body_text)
+        deliver_email(db, to_email=to_email, subject=subject, body_text=body_text, invite=invite)
         return True
     except EmailNotConfigured:
         logger.info("Email notification skipped: SMTP not fully configured")
@@ -158,17 +168,36 @@ def send_whatsapp(db: Session, *, to_number: str, message: str) -> bool:
 
 # ── Booking notifications ────────────────────────────────────────────
 
-def _notify_booking(db: Session, appt: dict, *, email_template_key: str, whatsapp_template_key: str) -> None:
+def _service_label(appt: dict, fallback: str) -> str:
+    return appt.get("service_name") or appt.get("service") or fallback
+
+
+def _invite(db: Session, appt: dict, method: str | None) -> tuple[str, str] | None:
+    """The .ics attachment for a booking email, or None when invites are
+    switched off or this email shouldn't carry one. Never raises — a
+    bad date or timezone just means the email goes without it."""
+    if not method or not get_setting(db, "notifications.attach_calendar_invite"):
+        return None
+    try:
+        return method, calendar_invite.build_invite(db, appt, method=method)
+    except Exception:
+        logger.exception("Calendar invite failed for appointment %s", appt.get("id"))
+        return None
+
+
+def _notify_booking(db: Session, appt: dict, *, email_template_key: str, whatsapp_template_key: str,
+                    invite_method: str | None = None) -> None:
     try:
         ctx = {
             "name": appt["name"], "date": appt["date"], "time": appt["time"],
-            "id": appt["id"], "service": appt.get("service") or "your enquiry",
+            "id": appt["id"], "service": _service_label(appt, "your enquiry"),
         }
         lang = appt.get("lang", "en")
 
         email_tpl = get_setting(db, email_template_key)
         rendered = render(email_tpl, lang, **ctx)
-        send_email(db, to_email=appt["email"], subject=rendered["subject"], body_text=rendered["body"])
+        send_email(db, to_email=appt["email"], subject=rendered["subject"], body_text=rendered["body"],
+                   invite=_invite(db, appt, invite_method))
 
         if appt.get("phone"):
             wa_tpl = get_setting(db, whatsapp_template_key)
@@ -183,18 +212,23 @@ def _notify_booking(db: Session, appt: dict, *, email_template_key: str, whatsap
 
 def notify_booking_confirmed(db: Session, appt: dict) -> None:
     _notify_booking(db, appt, email_template_key="templates.booking_confirmed_email",
-                     whatsapp_template_key="templates.booking_confirmed_whatsapp")
-    _notify_admin_new_booking(db, appt)
+                     whatsapp_template_key="templates.booking_confirmed_whatsapp",
+                     invite_method=calendar_invite.REQUEST)
+    _notify_admin(db, appt, "templates.new_booking_admin_alert", invite_method=calendar_invite.REQUEST)
 
 
 def notify_booking_cancelled(db: Session, appt: dict) -> None:
     _notify_booking(db, appt, email_template_key="templates.booking_cancelled_email",
-                     whatsapp_template_key="templates.booking_cancelled_whatsapp")
+                     whatsapp_template_key="templates.booking_cancelled_whatsapp",
+                     invite_method=calendar_invite.CANCEL)
+    _notify_admin(db, appt, "templates.booking_cancelled_admin_alert", invite_method=calendar_invite.CANCEL)
 
 
 def notify_booking_rescheduled(db: Session, appt: dict) -> None:
     _notify_booking(db, appt, email_template_key="templates.booking_rescheduled_email",
-                     whatsapp_template_key="templates.booking_rescheduled_whatsapp")
+                     whatsapp_template_key="templates.booking_rescheduled_whatsapp",
+                     invite_method=calendar_invite.REQUEST)
+    _notify_admin(db, appt, "templates.booking_rescheduled_admin_alert", invite_method=calendar_invite.REQUEST)
 
 
 # ── Confirmation workflow (Pass 10) ──────────────────────────────────
@@ -216,7 +250,7 @@ def notify_booking_requested(db: Session, appt: dict) -> None:
     being unconfigured or failing never blocks the other."""
     ctx = {
         "name": appt["name"], "email": appt["email"], "date": appt["date"], "time": appt["time"],
-        "id": appt["id"], "service": appt.get("service_name") or appt.get("service") or "general enquiry",
+        "id": appt["id"], "service": _service_label(appt, "general enquiry"),
     }
 
     to_email = _admin_email(db)
@@ -238,7 +272,9 @@ def notify_booking_requested(db: Session, appt: dict) -> None:
 
 def notify_booking_accepted(db: Session, appt: dict) -> None:
     _notify_booking(db, appt, email_template_key="templates.booking_accepted_email",
-                     whatsapp_template_key="templates.booking_accepted_whatsapp")
+                     whatsapp_template_key="templates.booking_accepted_whatsapp",
+                     invite_method=calendar_invite.REQUEST)
+    _notify_admin(db, appt, "templates.new_booking_admin_alert", invite_method=calendar_invite.REQUEST)
 
 
 def notify_booking_declined(db: Session, appt: dict, *, reason: str = "") -> None:
@@ -251,7 +287,7 @@ def notify_booking_declined(db: Session, appt: dict, *, reason: str = "") -> Non
         reason = (reason or "").strip()
         ctx = {
             "name": appt["name"], "date": appt["date"], "time": appt["time"],
-            "id": appt["id"], "service": appt.get("service") or "your enquiry",
+            "id": appt["id"], "service": _service_label(appt, "your enquiry"),
             "reason": f" Reason: {reason}" if reason else "",
         }
         lang = appt.get("lang", "en")
@@ -273,18 +309,22 @@ def _admin_email(db: Session) -> str:
     return get_setting(db, "notifications.admin_alert_email")
 
 
-def _notify_admin_new_booking(db: Session, appt: dict) -> None:
+def _notify_admin(db: Session, appt: dict, template_key: str, *, invite_method: str | None = None) -> None:
+    """Staff copy of a booking change, with the same calendar invite the
+    visitor gets — so the internal alert inbox's calendar stays in step
+    with the appointments list without any calendar integration."""
     to = _admin_email(db)
     if not to:
         return
     try:
-        rendered = render(get_setting(db, "templates.new_booking_admin_alert"), "en", **{
+        rendered = render(get_setting(db, template_key), "en", **{
             "name": appt["name"], "email": appt["email"], "date": appt["date"], "time": appt["time"],
-            "id": appt["id"], "service": appt.get("service") or "general enquiry",
+            "id": appt["id"], "service": _service_label(appt, "general enquiry"),
         })
-        send_email(db, to_email=to, subject=rendered["subject"], body_text=rendered["body"])
+        send_email(db, to_email=to, subject=rendered["subject"], body_text=rendered["body"],
+                   invite=_invite(db, appt, invite_method))
     except Exception:
-        logger.exception("New-booking admin alert failed for appointment %s", appt.get("id"))
+        logger.exception("Admin alert %s failed for appointment %s", template_key, appt.get("id"))
 
 
 def notify_admin_new_lead(db: Session, *, email: str, message: str) -> None:
