@@ -93,7 +93,7 @@ export default function ContactPage({ onBack, onNavigate, onBookingClick }) {
         </GlassPanel>
       </main>
 
-      <SiteFooter onNavigate={onNavigate} onBook={onBookingClick} />
+      <SiteFooter onNavigate={onNavigate} />
     </div>
   );
 }

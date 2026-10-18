@@ -32,7 +32,7 @@ const CATEGORY_LABELS = {
   locale: "Language",
   contact: "Contact",
   features: "Features",
-  booking: "Booking",
+  booking: "Appointments",
   chat: "Chat / AI assistant",
   notifications: "Notifications",
   templates: "Message templates",

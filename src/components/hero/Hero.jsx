@@ -161,7 +161,7 @@ export default function Hero({ onEnter, onNavigate, onBookingClick }) {
         onTopicClick={handleTopicClick}
       />
 
-      <SiteFooter onNavigate={onNavigate} onBook={handleCtaPrimary} />
+      <SiteFooter onNavigate={onNavigate} />
     </div>
   );
 }

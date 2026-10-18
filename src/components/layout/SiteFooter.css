@@ -53,12 +53,10 @@
 .site-footer-col li a:hover { color: var(--gold); }
 .site-footer-col li button:focus-visible,
 .site-footer-col li a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.site-footer-col .site-footer-cta.btn {
-  margin-top: var(--space-3);
-  padding: 9px 16px;
-  font-size: var(--fs-sm);
-  white-space: normal;
-  text-align: center;
+.site-footer-col ul.site-footer-explore {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  column-gap: var(--space-6);
 }
 .site-footer-legal {
   margin: var(--space-5) 0 0;
@@ -68,8 +66,8 @@
 .site-footer-legal-link {
   margin-inline-start: var(--space-4);
   color: var(--muted);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
+  white-space: nowrap;
 }
 .site-footer-legal-link:hover { color: var(--gold); }
 .site-footer-legal-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }

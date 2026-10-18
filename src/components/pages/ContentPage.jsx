@@ -67,7 +67,7 @@ export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick
         )}
       </main>
 
-      <SiteFooter onNavigate={onNavigate} onBook={cta.onClick} />
+      <SiteFooter onNavigate={onNavigate} />
     </div>
   );
 }

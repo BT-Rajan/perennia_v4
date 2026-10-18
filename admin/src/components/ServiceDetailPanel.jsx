@@ -204,7 +204,7 @@ function QuestionsEditor({ service, onSessionExpired, onChanged }) {
 
   return (
     <>
-      <label className="service-panel-label">Booking questions</label>
+      <label className="service-panel-label">Appointment questions</label>
       {error && <div className="service-panel-error">{error}</div>}
 
       {service.questions.length === 0 && !adding && (

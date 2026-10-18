@@ -31,7 +31,7 @@ export default function LoginPage() {
       <form className="login-card" onSubmit={handleSubmit}>
         <img className="login-logo" src={logoUrl} alt="Perennia" width="199" height="108" />
         <h1>Perennia Admin</h1>
-        <p className="login-sub">Sign in to manage bookings, leads, and site settings.</p>
+        <p className="login-sub">Sign in to manage appointments, leads, and site settings.</p>
 
         <label>
           Username

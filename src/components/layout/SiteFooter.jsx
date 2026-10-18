@@ -1,6 +1,5 @@
 import { useLang } from "../../context/LangContext.jsx";
 import { COPY } from "../../data/content.js";
-import Button from "../ui/Button.jsx";
 import { pathForPage } from "../../seo/pageMeta.js";
 import "./SiteFooter.css";
 
@@ -8,16 +7,14 @@ import "./SiteFooter.css";
  * The one footer every page renders (Home, content pages, Contact):
  * the brand line, the same destinations as the header nav (so Solutions,
  * Work, Products, Labs, About and Contact are always reachable from the
- * bottom of a page), configured contact details, and the discovery
- * meeting — as a quiet ghost button, since the page above already
- * carries the primary CTA. `onNavigate`/`onBook` are the same handlers
- * the page passes to TopBar.
+ * bottom of a page), configured contact details and the legal links.
+ * No booking button here — the header and the page above already carry
+ * it. `onNavigate` is the same handler the page passes to TopBar.
  */
-export default function SiteFooter({ onNavigate, onBook }) {
+export default function SiteFooter({ onNavigate }) {
   const { nav, copy, lang, branding, contact } = useLang();
   const fallback = COPY[lang] ?? COPY.en;
   const common = { ...fallback.common, ...copy.common };
-  const bookLabel = copy.home?.ctaPrimary ?? fallback.home.ctaPrimary;
   const tagline = copy.home?.eyebrow ?? fallback.home.eyebrow;
   const whatsappDigits = (contact?.whatsappNumber || "").replace(/\D/g, "");
 
@@ -31,7 +28,7 @@ export default function SiteFooter({ onNavigate, onBook }) {
 
         <nav className="site-footer-col" aria-label={common.footerExplore}>
           <h2>{common.footerExplore}</h2>
-          <ul>
+          <ul className="site-footer-explore">
             {nav.map((item) => (
               <li key={item.id}>
                 <button type="button" onClick={() => onNavigate?.(item.id)}>{item.label}</button>
@@ -49,9 +46,6 @@ export default function SiteFooter({ onNavigate, onBook }) {
               <li><a href={`https://wa.me/${whatsappDigits}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
             )}
           </ul>
-          {onBook && (
-            <Button variant="ghost" className="site-footer-cta" onClick={onBook}>{bookLabel}</Button>
-          )}
         </div>
       </div>
       <p className="site-footer-legal">
