@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.db import get_db
@@ -36,6 +36,37 @@ class CategoryResponse(BaseModel):
 @router.get("/categories")
 def list_categories(_: AdminUser = Depends(get_current_admin)) -> list[str]:
     return CATEGORIES
+
+
+class TestEmailBody(BaseModel):
+    # Blank = send to the internal alert address (or the From address).
+    to: str = Field(default="", max_length=254)
+
+
+@router.post("/notifications/test-email")
+def send_test_email(body: TestEmailBody, admin: AdminUser = Depends(get_current_admin), db: Session = Depends(get_db)):
+    """Sends a test message with the SAVED SMTP settings and reports the
+    real SMTP error back, so an admin can confirm mail works before (or
+    after) enabling notifications."""
+    import smtplib
+
+    from app import notification_service
+    from app.settings_service import get_setting
+
+    to = (body.to.strip() or get_setting(db, "notifications.admin_alert_email")
+          or get_setting(db, "notifications.from_email") or "").strip()
+    if "@" not in to:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Enter a recipient address (or set the internal alert email).")
+    try:
+        notification_service.send_test_email(db, to_email=to)
+    except notification_service.EmailNotConfigured as e:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, f"{e}. Save the SMTP settings first.")
+    except smtplib.SMTPAuthenticationError as e:
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
+                            f"SMTP login failed ({e.smtp_code}) — check the username and password.")
+    except (smtplib.SMTPException, OSError) as e:
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY, f"Sending failed: {type(e).__name__}: {e}")
+    return {"sent": True, "to": to}
 
 
 @router.get("/{category}", response_model=CategoryResponse)

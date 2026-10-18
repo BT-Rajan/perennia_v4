@@ -12,8 +12,9 @@ from __future__ import annotations
 
 import logging
 import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+import ssl
+from email.message import EmailMessage
+from email.utils import formataddr, formatdate, make_msgid
 
 from sqlalchemy.orm import Session
 
@@ -42,38 +43,96 @@ def render_text(template, lang: str, **kwargs) -> str:
 
 # ── Low-level senders ──────────────────────────────────────────────
 
-def send_email(db: Session, *, to_email: str, subject: str, body_text: str) -> bool:
-    if not get_setting(db, "notifications.email_enabled"):
-        return False
-    host = get_setting(db, "notifications.smtp_host")
-    from_email = get_setting(db, "notifications.from_email")
-    if not host or not from_email:
-        logger.info("Email notification skipped: SMTP not fully configured")
-        return False
+class EmailNotConfigured(Exception):
+    """SMTP host or From address is missing — nothing to send with."""
 
+
+# Port 465 is SMTP over implicit TLS (SMTPS); everything else (587,
+# 25, 2525) is plain SMTP, upgraded with STARTTLS when smtp_use_tls is
+# on. Picking by port rather than adding a second setting keeps the
+# common providers (Gmail, Office 365, Zoho, SES) working with nothing
+# more than host + port + credentials.
+SMTPS_PORT = 465
+SMTP_TIMEOUT_SECONDS = 15
+
+
+def _build_message(db: Session, *, to_email: str, subject: str, body_text: str) -> EmailMessage:
+    from_email = get_setting(db, "notifications.from_email")
     from_name = get_setting(db, "notifications.from_name") or _lang_value(get_setting(db, "branding.site_name"), "en")
+
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    # formataddr + EmailMessage's default policy encode a non-ASCII
+    # display name (e.g. an Arabic site name) correctly; a hand-built
+    # "Name <addr>" string does not.
+    msg["From"] = formataddr((from_name or "", from_email))
+    msg["To"] = to_email
+    msg["Date"] = formatdate(localtime=True)
+    msg["Message-ID"] = make_msgid(domain=from_email.rpartition("@")[2] or None)
+    msg.set_content(body_text, charset="utf-8")
+    return msg
+
+
+def deliver_email(db: Session, *, to_email: str, subject: str, body_text: str) -> None:
+    """Sends one email with the configured SMTP settings and RAISES on
+    any failure (EmailNotConfigured, smtplib.SMTPException, OSError).
+    Ignores notifications.email_enabled, so an admin can verify the
+    settings (send_test_email) before switching notifications on.
+    Callers that must never fail use send_email below instead."""
+    host = (get_setting(db, "notifications.smtp_host") or "").strip()
+    from_email = (get_setting(db, "notifications.from_email") or "").strip()
+    if not host or not from_email:
+        raise EmailNotConfigured("SMTP host and From address must both be set")
+
     port = get_setting(db, "notifications.smtp_port")
     use_tls = get_setting(db, "notifications.smtp_use_tls")
     username = get_setting(db, "notifications.smtp_username")
     password = get_setting(db, "notifications.smtp_password")
+    msg = _build_message(db, to_email=to_email, subject=subject, body_text=body_text)
 
-    msg = MIMEMultipart()
-    msg["Subject"] = subject
-    msg["From"] = f"{from_name} <{from_email}>"
-    msg["To"] = to_email
-    msg.attach(MIMEText(body_text, "plain", "utf-8"))
+    context = ssl.create_default_context()
+    if port == SMTPS_PORT:
+        server = smtplib.SMTP_SSL(host, port, timeout=SMTP_TIMEOUT_SECONDS, context=context)
+    else:
+        server = smtplib.SMTP(host, port, timeout=SMTP_TIMEOUT_SECONDS)
+    with server:
+        if port != SMTPS_PORT and use_tls:
+            server.starttls(context=context)
+        if username:
+            server.login(username, password)
+        server.send_message(msg)
 
+
+def send_email(db: Session, *, to_email: str, subject: str, body_text: str) -> bool:
+    """Best-effort send used by every notification: returns False
+    (and logs) instead of raising, and does nothing unless email
+    notifications are enabled."""
+    if not get_setting(db, "notifications.email_enabled"):
+        return False
     try:
-        with smtplib.SMTP(host, port, timeout=10) as server:
-            if use_tls:
-                server.starttls()
-            if username:
-                server.login(username, password)
-            server.send_message(msg)
+        deliver_email(db, to_email=to_email, subject=subject, body_text=body_text)
         return True
+    except EmailNotConfigured:
+        logger.info("Email notification skipped: SMTP not fully configured")
+        return False
     except (smtplib.SMTPException, OSError) as e:
         logger.warning("Email notification failed to %s: %s", to_email, e)
         return False
+
+
+def send_test_email(db: Session, *, to_email: str) -> None:
+    """Admin "Send test email" action: sends a short message with the
+    saved SMTP settings and raises with the real reason if it fails."""
+    site_name = _lang_value(get_setting(db, "branding.site_name"), "en") or "Website"
+    deliver_email(
+        db, to_email=to_email,
+        subject=f"{site_name}: test email",
+        body_text=(
+            f"This is a test email from the {site_name} admin panel.\n\n"
+            "If you are reading this, the SMTP settings work and booking "
+            "confirmations and staff alerts can be delivered."
+        ),
+    )
 
 
 def send_whatsapp(db: Session, *, to_number: str, message: str) -> bool:

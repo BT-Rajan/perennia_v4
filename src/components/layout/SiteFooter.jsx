@@ -1,6 +1,7 @@
 import { useLang } from "../../context/LangContext.jsx";
 import { COPY } from "../../data/content.js";
 import Button from "../ui/Button.jsx";
+import { pathForPage } from "../../seo/pageMeta.js";
 import "./SiteFooter.css";
 
 /**
@@ -53,7 +54,25 @@ export default function SiteFooter({ onNavigate, onBook }) {
           )}
         </div>
       </div>
-      <p className="site-footer-legal">© {new Date().getFullYear()} {branding.siteName}. {common.footerRights}</p>
+      <p className="site-footer-legal">
+        © {new Date().getFullYear()} {branding.siteName}. {common.footerRights}
+        {[["privacy", common.footerPrivacy], ["terms", common.footerTerms]].map(([id, label]) => (
+          // Real hrefs so the pages are crawlable and openable in a new
+          // tab; a plain click still switches pages in place.
+          <a
+            key={id}
+            className="site-footer-legal-link"
+            href={pathForPage(id)}
+            onClick={(e) => {
+              if (!onNavigate || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+              e.preventDefault();
+              onNavigate(id);
+            }}
+          >
+            {label}
+          </a>
+        ))}
+      </p>
     </footer>
   );
 }
