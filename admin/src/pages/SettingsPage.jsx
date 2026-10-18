@@ -56,6 +56,11 @@ const VIRTUAL_CATEGORIES = [
 ];
 const VIRTUAL_CATEGORY_KEYS = new Set(VIRTUAL_CATEGORIES.map((v) => v.key));
 
+// Registry categories kept out of the sidebar. calendar_sync: the site
+// doesn't use Google Calendar — bookings are confirmed by email with a
+// calendar invite attached instead (Notifications).
+const HIDDEN_CATEGORIES = new Set(["calendar_sync"]);
+
 function labelFor(category) {
   return CATEGORY_LABELS[category] || category[0].toUpperCase() + category.slice(1);
 }
@@ -80,9 +85,10 @@ export default function SettingsPage() {
     adminApi
       .listSettingCategories()
       .then((cats) => {
-        setCategories(cats);
-        if (!categoryParam && cats.length > 0) {
-          navigate(`/settings/${cats[0]}`, { replace: true });
+        const shown = cats.filter((c) => !HIDDEN_CATEGORIES.has(c));
+        setCategories(shown);
+        if (!categoryParam && shown.length > 0) {
+          navigate(`/settings/${shown[0]}`, { replace: true });
         }
       })
       .catch((e) => (e.status === 401 ? handleSessionExpired() : setError(e.message)));

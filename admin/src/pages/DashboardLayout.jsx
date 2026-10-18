@@ -6,7 +6,8 @@ import "./DashboardLayout.css";
 const NAV_ITEMS = [
   { to: "/", label: "Overview", end: true },
   { to: "/appointments", label: "Appointments" },
-  { to: "/calendar", label: "Calendar" },
+  // Google Calendar screen (/calendar) is left out of the menu: the site
+  // doesn't use Google Calendar. The route still exists in App.jsx.
   { to: "/services", label: "Services" },
   { to: "/leads", label: "Leads" },
   { to: "/knowledge", label: "Knowledge Base" },

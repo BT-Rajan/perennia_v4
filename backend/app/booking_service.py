@@ -556,8 +556,9 @@ def admin_cancel_appointment(db: Session, appt_id: str) -> dict:
     appt = db.get(Appointment, appt_id)
     if appt is None:
         return {"ok": False, "error": "not_found"}
+    already_cancelled = appt.status == "cancelled"
     appt.status = "cancelled"
-    return {"ok": True}
+    return {"ok": True, "appointment": _serialize(db, appt), "already_cancelled": already_cancelled}
 
 
 def admin_accept_appointment(db: Session, appt_id: str) -> dict:

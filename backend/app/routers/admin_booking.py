@@ -84,6 +84,8 @@ def admin_cancel(appt_id: str, admin: AdminUser = Depends(get_current_admin), db
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"No appointment {appt_id!r}")
     calendar_sync_service.delete_event_for_appointment(db, appt_id)
     db.commit()
+    if not result["already_cancelled"]:
+        notification_service.notify_booking_cancelled(db, result["appointment"])
     return result
 
 

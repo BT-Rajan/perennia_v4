@@ -10,15 +10,16 @@ import smtplib
 
 import pytest
 
-from app import notification_service
+from app import calendar_invite, notification_service
 from app.db import session_scope
-from app.models import SiteSetting
+from app.models import Appointment, SiteSetting
 from app.settings_service import invalidate_cache, set_many
 
 NOTIFICATION_KEYS = (
     "notifications.email_enabled", "notifications.smtp_host", "notifications.smtp_port",
     "notifications.smtp_username", "notifications.smtp_password", "notifications.smtp_use_tls",
     "notifications.from_email", "notifications.from_name", "notifications.admin_alert_email",
+    "notifications.attach_calendar_invite",
 )
 
 
@@ -153,3 +154,76 @@ def test_admin_test_email_endpoint(logged_in_client):
 def test_test_email_endpoint_requires_admin(client):
     resp = client.post("/admin/api/settings/notifications/test-email", json={"to": "x@y.com"})
     assert resp.status_code in (401, 403)
+
+
+# ── Booking emails + calendar invites ────────────────────────────────
+
+APPT = {
+    "id": "ABCD1234", "date": "2026-11-03", "time": "10:30", "timezone": "Asia/Kuwait",
+    "name": "Jamie Rivera", "email": "jamie@example.com", "phone": "", "lang": "en",
+    "service": "", "service_id": None, "service_name": "Discovery meeting", "notes": "",
+}
+
+
+def _invite_of(msg):
+    parts = [p for p in msg.iter_attachments() if p.get_content_type() == "text/calendar"]
+    return parts[0] if parts else None
+
+
+def test_confirmation_email_carries_invite_for_visitor_and_admin():
+    _configure(**{"notifications.email_enabled": True, "notifications.admin_alert_email": "ops@example.com"})
+    with session_scope() as db:
+        notification_service.notify_booking_confirmed(db, dict(APPT))
+    sent = {s.sent[0]["To"]: s.sent[0] for s in FakeSMTP.instances}
+    assert set(sent) == {"jamie@example.com", "ops@example.com"}
+    for msg in sent.values():
+        part = _invite_of(msg)
+        assert part is not None and part.get_param("method") == "REQUEST"
+        ics = part.get_content()
+        # 10:30 Kuwait (UTC+3) = 07:30 UTC; 30-minute default slot.
+        assert "DTSTART:20261103T073000Z" in ics and "DTEND:20261103T080000Z" in ics
+        assert "UID:appointment-ABCD1234@example.com" in ics
+        assert "SUMMARY:Discovery meeting" in ics
+
+
+def test_cancellation_invite_uses_same_uid_and_cancel_method():
+    _configure(**{"notifications.email_enabled": True})
+    with session_scope() as db:
+        notification_service.notify_booking_cancelled(db, dict(APPT))
+    part = _invite_of(FakeSMTP.instances[0].sent[0])
+    assert part.get_param("method") == "CANCEL"
+    ics = part.get_content()
+    assert "METHOD:CANCEL" in ics and "STATUS:CANCELLED" in ics
+    assert "UID:appointment-ABCD1234@example.com" in ics
+
+
+def test_invite_can_be_switched_off():
+    _configure(**{"notifications.email_enabled": True, "notifications.attach_calendar_invite": False})
+    with session_scope() as db:
+        notification_service.notify_booking_confirmed(db, dict(APPT))
+    assert _invite_of(FakeSMTP.instances[0].sent[0]) is None
+
+
+def test_ics_lines_are_escaped_and_folded():
+    with session_scope() as db:
+        ics = calendar_invite.build_invite(db, {**APPT, "notes": "Bring specs; floor 2, room A\nLong " + "x" * 120})
+    for line in ics.split("\r\n"):
+        assert len(line.encode()) <= 75
+    assert "Bring specs\\; floor 2\\, room A" in ics
+
+
+def test_admin_cancel_emails_the_visitor(logged_in_client):
+    _configure(**{"notifications.email_enabled": True})
+    with session_scope() as db:
+        db.add(Appointment(id="ADMCAN01", date="2026-11-04", time="09:00", timezone="Asia/Kuwait",
+                           name="Sam", email="sam@example.com", status="confirmed"))
+    resp = logged_in_client.post("/admin/api/booking/appointments/ADMCAN01/cancel")
+    assert resp.status_code == 200
+    (server,) = FakeSMTP.instances
+    msg = server.sent[0]
+    assert msg["To"] == "sam@example.com" and "cancelled" in msg["Subject"].lower()
+    assert _invite_of(msg).get_param("method") == "CANCEL"
+
+    # Cancelling again doesn't send a second email.
+    resp = logged_in_client.post("/admin/api/booking/appointments/ADMCAN01/cancel")
+    assert resp.status_code == 200 and len(FakeSMTP.instances) == 1
