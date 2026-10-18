@@ -329,6 +329,7 @@ export const COPY = {
       close: "Close", back: "Back", send: "Send", quickMenu: "Quick menu",
       primaryNav: "Primary", goHome: "Go to home", assistantTyping: "Assistant is typing",
       footerExplore: "Explore", footerContact: "Get in touch", footerRights: "All rights reserved.",
+      footerPrivacy: "Privacy Policy", footerTerms: "Terms of Use",
     },
     home: {
       welcome: "Welcome to Perennia",
@@ -471,6 +472,7 @@ export const COPY = {
       close: "إغلاق", back: "رجوع", send: "إرسال", quickMenu: "قائمة سريعة",
       primaryNav: "الأساسية", goHome: "الذهاب إلى الرئيسية", assistantTyping: "المساعد يكتب",
       footerExplore: "استكشف", footerContact: "تواصل معنا", footerRights: "جميع الحقوق محفوظة.",
+      footerPrivacy: "سياسة الخصوصية", footerTerms: "شروط الاستخدام",
     },
     home: {
       welcome: "مرحبا بك في بيرينيا",

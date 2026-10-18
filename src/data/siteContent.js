@@ -9,7 +9,7 @@
 // content is sourced never touches component code again.
 // ──────────────────────────────────────────────────────────
 import { BRAND, COPY, FAQ, NAV, SECTIONS } from "./content.js";
-import { PAGE_CONTENT, PAGE_META } from "./pages.js";
+import { LEGAL_PAGE_IDS, PAGE_CONTENT, PAGE_META } from "./pages.js";
 import { fetchContentPages, fetchFaqItems, fetchPublicConfig } from "../api/publicContent.js";
 
 const RTL_LANGS = new Set(["ar", "he", "fa", "ur"]);
@@ -138,6 +138,13 @@ function buildFromApi(publicConfig, contentPages, faqItems, supportedLanguages) 
         body: p.translations[lang]?.body_markdown ?? "",
       }])
     );
+    // Privacy/Terms must always resolve (Google's OAuth review links to
+    // them) — fall back to the bundled copy until the DB has its own.
+    for (const slug of LEGAL_PAGE_IDS) {
+      if (!pages[lang][slug] && PAGE_META[lang]?.[slug]) {
+        pages[lang][slug] = { ...PAGE_META[lang][slug], body: PAGE_CONTENT[lang]?.[slug] ?? "" };
+      }
+    }
 
     faq[lang] = faqItems.map((item) => ({
       q: item.translations[lang]?.q ?? "",

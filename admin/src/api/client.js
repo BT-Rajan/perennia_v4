@@ -108,6 +108,8 @@ export const adminApi = {
 
   listSettingCategories: () => request("admin/api/settings/categories"),
   getSettingCategory: (category) => request(`admin/api/settings/${category}`),
+  sendTestEmail: (to) =>
+    request("admin/api/settings/notifications/test-email", { method: "POST", body: JSON.stringify({ to: to || "" }) }),
   updateSettingCategory: (category, values) =>
     request(`admin/api/settings/${category}`, { method: "PUT", body: JSON.stringify(values) }),
   uploadImage: (file) => {

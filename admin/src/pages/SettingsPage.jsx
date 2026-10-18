@@ -17,6 +17,7 @@ import DensityPicker from "../components/DensityPicker.jsx";
 import SectionRhythmPicker from "../components/SectionRhythmPicker.jsx";
 import LogoZoomControl from "../components/LogoZoomControl.jsx";
 import CalendarSyncConnector from "../components/CalendarSyncConnector.jsx";
+import TestEmailSender from "../components/TestEmailSender.jsx";
 import WebhooksPage from "./WebhooksPage.jsx";
 import PagesPage from "./PagesPage.jsx";
 import FaqPage from "./FaqPage.jsx";
@@ -330,6 +331,7 @@ export default function SettingsPage() {
                   </div>
 
                   {categoryParam === "calendar_sync" && <CalendarSyncConnector />}
+                  {categoryParam === "notifications" && <TestEmailSender />}
                 </form>
               )}
             </div>

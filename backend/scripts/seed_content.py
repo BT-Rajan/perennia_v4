@@ -83,15 +83,34 @@ PAGE_META = {
                "section_body": "نظام ERP للتصنيع مبني حول سير العمل التشغيلي لشركة واحدة.",
                "tagline_line1": "نظام ERP ", "tagline_line2": "لمصنع JDK", "tagline_sub": "دراسة حالة · التصنيع"},
     },
+    # Legal pages: linked from the site footer (and from the Google
+    # OAuth consent screen), not the top nav. Placeholder text — edit
+    # in the admin panel under Settings → Pages.
+    "privacy": {
+        "en": {"nav_label": "Privacy Policy", "section_title": "Privacy Policy",
+               "section_body": "How we collect, use and protect your information.",
+               "tagline_line1": "Privacy ", "tagline_line2": "Policy", "tagline_sub": "LEGAL"},
+        "ar": {"nav_label": "سياسة الخصوصية", "section_title": "سياسة الخصوصية",
+               "section_body": "كيف نجمع معلوماتك ونستخدمها ونحميها.",
+               "tagline_line1": "سياسة ", "tagline_line2": "الخصوصية", "tagline_sub": "قانوني"},
+    },
+    "terms": {
+        "en": {"nav_label": "Terms of Use", "section_title": "Terms of Use",
+               "section_body": "The terms for using this website.",
+               "tagline_line1": "Terms of ", "tagline_line2": "Use", "tagline_sub": "LEGAL"},
+        "ar": {"nav_label": "شروط الاستخدام", "section_title": "شروط الاستخدام",
+               "section_body": "شروط استخدام هذا الموقع.",
+               "tagline_line1": "شروط ", "tagline_line2": "الاستخدام", "tagline_sub": "قانوني"},
+    },
 }
 
-NOT_IN_NAV = {"jdk-factory-erp"}
+NOT_IN_NAV = {"jdk-factory-erp", "privacy", "terms"}
 
 # Nav order for a fresh install: Solutions, Products, Labs, About,
 # Contact ("Work" is injected client-side after Solutions — see
 # withWorkNav in src/data/siteContent.js). Existing installs keep
 # whatever order an admin has set.
-PAGE_ORDER = ["services", "products", "labs", "about", "contact", "jdk-factory-erp"]
+PAGE_ORDER = ["services", "products", "labs", "about", "contact", "jdk-factory-erp", "privacy", "terms"]
 
 FAQ_SEED = [
     {"en": {"q": "What services does Perennia offer?",

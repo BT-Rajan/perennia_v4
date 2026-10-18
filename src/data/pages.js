@@ -18,15 +18,24 @@ import labsEn from "../content/en/labs.md?raw";
 import labsAr from "../content/ar/labs.md?raw";
 import jdkErpEn from "../content/en/jdk-factory-erp.md?raw";
 import jdkErpAr from "../content/ar/jdk-factory-erp.md?raw";
+import privacyEn from "../content/en/privacy.md?raw";
+import privacyAr from "../content/ar/privacy.md?raw";
+import termsEn from "../content/en/terms.md?raw";
+import termsAr from "../content/ar/terms.md?raw";
 
 export const PAGE_CONTENT = {
-  en: { about: aboutEn, products: productsEn, services: servicesEn, contact: contactEn, labs: labsEn, "jdk-factory-erp": jdkErpEn },
-  ar: { about: aboutAr, products: productsAr, services: servicesAr, contact: contactAr, labs: labsAr, "jdk-factory-erp": jdkErpAr },
+  en: { about: aboutEn, products: productsEn, services: servicesEn, contact: contactEn, labs: labsEn, "jdk-factory-erp": jdkErpEn, privacy: privacyEn, terms: termsEn },
+  ar: { about: aboutAr, products: productsAr, services: servicesAr, contact: contactAr, labs: labsAr, "jdk-factory-erp": jdkErpAr, privacy: privacyAr, terms: termsAr },
 };
 
 // Header tagline shown above each page's content shell — mirrors the
 // chat page's taglineLine1 / taglineLine2 / sub treatment so every
 // page in the app reads as part of the same family.
+// Footer-only legal pages. Always routable: if the live content API
+// doesn't have them yet (seed_content.py not re-run), the bundled
+// copies above are used — see buildFromApi in siteContent.js.
+export const LEGAL_PAGE_IDS = ["privacy", "terms"];
+
 export const PAGE_META = {
   en: {
     about: { line1: "Who We ", line2: "Are", sub: "PRACTICAL AI · AFFORDABLE INNOVATION" },
@@ -36,6 +45,9 @@ export const PAGE_META = {
     contact: { line1: "Let's ", line2: "Talk", sub: "GET IN TOUCH" },
     // Case study — reached from the homepage teaser, not the top nav.
     "jdk-factory-erp": { line1: "JDK Factory ", line2: "ERP", sub: "CASE STUDY · MANUFACTURING" },
+    // Legal pages — linked from the footer, not the top nav.
+    privacy: { line1: "Privacy ", line2: "Policy", sub: "LEGAL" },
+    terms: { line1: "Terms of ", line2: "Use", sub: "LEGAL" },
   },
   ar: {
     about: { line1: "من ", line2: "نحن", sub: "ذكاء اصطناعي عملي · ابتكار في المتناول" },
@@ -44,5 +56,7 @@ export const PAGE_META = {
     labs: { line1: "مختبر ", line2: "بيرينيا", sub: "تجارب وأعمال مفتوحة" },
     contact: { line1: "لنتحدث", line2: "", sub: "تواصل معنا" },
     "jdk-factory-erp": { line1: "نظام ERP ", line2: "لمصنع JDK", sub: "دراسة حالة · التصنيع" },
+    privacy: { line1: "سياسة ", line2: "الخصوصية", sub: "قانوني" },
+    terms: { line1: "شروط ", line2: "الاستخدام", sub: "قانوني" },
   },
 };
