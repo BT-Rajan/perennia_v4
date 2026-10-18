@@ -24,7 +24,7 @@ export default function OverviewPage() {
 
   return (
     <div>
-      <PageHeader title="Overview" subtitle="What's happening across bookings and leads." />
+      <PageHeader title="Overview" subtitle="What's happening across appointments and leads." />
 
       <div className="stat-grid">
         <Link to="/leads" className="stat-card-link">

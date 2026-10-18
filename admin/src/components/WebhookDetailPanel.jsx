@@ -4,12 +4,12 @@ import { useAuth } from "../context/AuthContext.jsx";
 import "./WebhookDetailPanel.css";
 
 const EVENT_CHOICES = [
-  { value: "booking.confirmed", label: "Booking confirmed" },
-  { value: "booking.cancelled", label: "Booking cancelled" },
-  { value: "booking.rescheduled", label: "Booking rescheduled" },
-  { value: "booking.requested", label: "Booking requested (needs confirmation)" },
-  { value: "booking.accepted", label: "Booking request accepted" },
-  { value: "booking.declined", label: "Booking request declined" },
+  { value: "booking.confirmed", label: "Appointment confirmed" },
+  { value: "booking.cancelled", label: "Appointment cancelled" },
+  { value: "booking.rescheduled", label: "Appointment rescheduled" },
+  { value: "booking.requested", label: "Appointment requested (needs confirmation)" },
+  { value: "booking.accepted", label: "Appointment request accepted" },
+  { value: "booking.declined", label: "Appointment request declined" },
 ];
 
 const EMPTY_FORM = { url: "", events: ["booking.confirmed"], is_active: true };

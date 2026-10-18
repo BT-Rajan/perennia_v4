@@ -89,7 +89,7 @@ export default function AppointmentsPage() {
     <div>
       <PageHeader
         title="Appointments"
-        subtitle="Every booking made through the site."
+        subtitle="Every appointment made through the site."
         actions={
           <button className="row-action primary" onClick={() => { setCreating(true); navigate("/appointments"); }}>
             + New appointment

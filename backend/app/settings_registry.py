@@ -358,7 +358,7 @@ _DEFS: list[SettingDef] = [
                validator=_int_range(0, 23)),
     SettingDef("booking.workdays", "booking", "Working days", SettingType.LIST, [0, 1, 2, 3, 4],
                help_text="0=Monday .. 6=Sunday.", validator=_valid_workdays),
-    SettingDef("booking.max_days_ahead", "booking", "Max days ahead bookable", SettingType.INT, 30,
+    SettingDef("booking.max_days_ahead", "booking", "Max days ahead (appointments)", SettingType.INT, 30,
                validator=_int_range(1, 365)),
     SettingDef("booking.min_notice_hours", "booking", "Minimum notice (hours)", SettingType.INT, 6,
                help_text="Required lead time to book, cancel, or reschedule.", validator=_int_range(0, 168)),
@@ -512,14 +512,14 @@ _DEFS: list[SettingDef] = [
     # a confirmation email or WhatsApp message is an admin edit like
     # everything else. {name}/{date}/{time}/{id}/{service} placeholders
     # are filled in at send time — see notification_service.render().
-    SettingDef("templates.booking_confirmed_email", "templates", "Booking confirmed — email", SettingType.JSON, {
+    SettingDef("templates.booking_confirmed_email", "templates", "Appointment confirmed — email", SettingType.JSON, {
         "en": {"subject": "Your appointment is confirmed — {id}",
                "body": "Hi {name},\n\nYour appointment is confirmed for {date} at {time}.\n"
                        "Confirmation code: {id}\n\nWe look forward to speaking with you."},
         "ar": {"subject": "تم تأكيد موعدك — {id}",
                "body": "مرحباً {name}،\n\nتم تأكيد موعدك في {date} الساعة {time}.\nرمز التأكيد: {id}\n\nنتطلع للحديث معك."},
     }, i18n=True),
-    SettingDef("templates.booking_cancelled_email", "templates", "Booking cancelled — email", SettingType.JSON, {
+    SettingDef("templates.booking_cancelled_email", "templates", "Appointment cancelled — email", SettingType.JSON, {
         "en": {"subject": "Your appointment has been cancelled — {id}",
                "body": "Hi {name},\n\nYour appointment on {date} at {time} (code {id}) has been cancelled.\n"
                        "Feel free to book a new time whenever suits you."},
@@ -527,34 +527,34 @@ _DEFS: list[SettingDef] = [
                "body": "مرحباً {name}،\n\nتم إلغاء موعدك في {date} الساعة {time} (الرمز {id}).\n"
                        "يمكنك حجز موعد جديد في أي وقت يناسبك."},
     }, i18n=True),
-    SettingDef("templates.booking_rescheduled_email", "templates", "Booking rescheduled — email", SettingType.JSON, {
+    SettingDef("templates.booking_rescheduled_email", "templates", "Appointment rescheduled — email", SettingType.JSON, {
         "en": {"subject": "Your appointment was rescheduled — {id}",
                "body": "Hi {name},\n\nYour appointment (code {id}) is now confirmed for {date} at {time}."},
         "ar": {"subject": "تم تغيير موعد الحجز — {id}",
                "body": "مرحباً {name}،\n\nموعدك (الرمز {id}) أصبح الآن في {date} الساعة {time}."},
     }, i18n=True),
-    SettingDef("templates.booking_confirmed_whatsapp", "templates", "Booking confirmed — WhatsApp", SettingType.TEXT, {
+    SettingDef("templates.booking_confirmed_whatsapp", "templates", "Appointment confirmed — WhatsApp", SettingType.TEXT, {
         "en": "Hi {name}! Your appointment is confirmed for {date} at {time}. Code: {id}",
         "ar": "مرحباً {name}! تم تأكيد موعدك في {date} الساعة {time}. الرمز: {id}",
     }, i18n=True),
-    SettingDef("templates.booking_cancelled_whatsapp", "templates", "Booking cancelled — WhatsApp", SettingType.TEXT, {
+    SettingDef("templates.booking_cancelled_whatsapp", "templates", "Appointment cancelled — WhatsApp", SettingType.TEXT, {
         "en": "Hi {name}, your appointment on {date} at {time} (code {id}) has been cancelled.",
         "ar": "مرحباً {name}، تم إلغاء موعدك في {date} الساعة {time} (الرمز {id}).",
     }, i18n=True),
-    SettingDef("templates.booking_rescheduled_whatsapp", "templates", "Booking rescheduled — WhatsApp", SettingType.TEXT, {
+    SettingDef("templates.booking_rescheduled_whatsapp", "templates", "Appointment rescheduled — WhatsApp", SettingType.TEXT, {
         "en": "Hi {name}, your appointment (code {id}) is now confirmed for {date} at {time}.",
         "ar": "مرحباً {name}، موعدك (الرمز {id}) أصبح الآن في {date} الساعة {time}.",
     }, i18n=True),
-    SettingDef("templates.new_booking_admin_alert", "templates", "New booking — internal alert", SettingType.JSON, {
+    SettingDef("templates.new_booking_admin_alert", "templates", "New appointment — internal alert", SettingType.JSON, {
         "en": {"subject": "New booking: {name} — {date} {time}",
                "body": "{name} ({email}) booked {date} at {time}.\nService: {service}\nCode: {id}"},
     }, help_text="Internal alert, English only by default — this is for staff, not visitors."),
-    SettingDef("templates.booking_cancelled_admin_alert", "templates", "Booking cancelled — internal alert",
+    SettingDef("templates.booking_cancelled_admin_alert", "templates", "Appointment cancelled — internal alert",
                SettingType.JSON, {
         "en": {"subject": "Cancelled: {name} — {date} {time}",
                "body": "{name} ({email}) — appointment on {date} at {time} was cancelled.\nService: {service}\nCode: {id}"},
     }, help_text="Internal alert, English only by default — this is for staff, not visitors."),
-    SettingDef("templates.booking_rescheduled_admin_alert", "templates", "Booking rescheduled — internal alert",
+    SettingDef("templates.booking_rescheduled_admin_alert", "templates", "Appointment rescheduled — internal alert",
                SettingType.JSON, {
         "en": {"subject": "Rescheduled: {name} — now {date} {time}",
                "body": "{name} ({email}) — appointment moved to {date} at {time}.\nService: {service}\nCode: {id}"},
@@ -571,18 +571,18 @@ _DEFS: list[SettingDef] = [
     # new_booking_admin_alert) instead of the attendee getting an
     # immediate confirmation; the attendee only hears back once an
     # admin accepts or declines the request.
-    SettingDef("templates.booking_requested_admin_alert", "templates", "Booking requested — internal alert",
+    SettingDef("templates.booking_requested_admin_alert", "templates", "Appointment requested — internal alert",
                SettingType.JSON, {
         "en": {"subject": "Booking request: {name} — {date} {time}",
                "body": "{name} ({email}) requested {date} at {time}.\nService: {service}\nCode: {id}\n\n"
                        "This service requires confirmation — accept or decline it from the admin dashboard."},
     }, help_text="Internal alert, English only by default — this is for staff, not visitors."),
-    SettingDef("templates.booking_requested_admin_whatsapp", "templates", "Booking requested — internal WhatsApp",
+    SettingDef("templates.booking_requested_admin_whatsapp", "templates", "Appointment requested — internal WhatsApp",
                SettingType.TEXT, "New booking request from {name} for {date} at {time} ({service}, code {id}) "
                                   "needs your confirmation — check the admin dashboard.",
                help_text="Pass 13: sent to notifications.admin_alert_whatsapp_number when set, alongside "
                          "(or instead of) the email alert above."),
-    SettingDef("templates.booking_accepted_email", "templates", "Booking request accepted — email", SettingType.JSON, {
+    SettingDef("templates.booking_accepted_email", "templates", "Appointment request accepted — email", SettingType.JSON, {
         "en": {"subject": "Your appointment is confirmed — {id}",
                "body": "Hi {name},\n\nGood news — your request for {date} at {time} has been accepted "
                        "and is now confirmed.\nConfirmation code: {id}\n\nWe look forward to speaking with you."},
@@ -590,7 +590,7 @@ _DEFS: list[SettingDef] = [
                "body": "مرحباً {name}،\n\nخبر سار — تم قبول طلبك في {date} الساعة {time} وأصبح مؤكداً الآن.\n"
                        "رمز التأكيد: {id}\n\nنتطلع للحديث معك."},
     }, i18n=True),
-    SettingDef("templates.booking_declined_email", "templates", "Booking request declined — email", SettingType.JSON, {
+    SettingDef("templates.booking_declined_email", "templates", "Appointment request declined — email", SettingType.JSON, {
         "en": {"subject": "About your appointment request — {id}",
                "body": "Hi {name},\n\nWe're sorry, but we're unable to confirm your request for {date} "
                        "at {time}.{reason}\n\nPlease feel free to reach out or book another time.\n\nCode: {id}"},
@@ -599,12 +599,12 @@ _DEFS: list[SettingDef] = [
                        "لا تتردد في التواصل معنا أو حجز موعد آخر.\n\nالرمز: {id}"},
     }, i18n=True, help_text="{reason} is filled with the admin's decline note when one is given, "
                               "or left blank otherwise — leave it in the template even if you rarely use it."),
-    SettingDef("templates.booking_accepted_whatsapp", "templates", "Booking request accepted — WhatsApp",
+    SettingDef("templates.booking_accepted_whatsapp", "templates", "Appointment request accepted — WhatsApp",
                SettingType.TEXT, {
         "en": "Hi {name}! Your request for {date} at {time} has been accepted and is now confirmed. Code: {id}",
         "ar": "مرحباً {name}! تم قبول طلبك في {date} الساعة {time} وأصبح مؤكداً. الرمز: {id}",
     }, i18n=True),
-    SettingDef("templates.booking_declined_whatsapp", "templates", "Booking request declined — WhatsApp",
+    SettingDef("templates.booking_declined_whatsapp", "templates", "Appointment request declined — WhatsApp",
                SettingType.TEXT, {
         "en": "Hi {name}, we're unable to confirm your request for {date} at {time}.{reason} "
               "Feel free to reach out or book another time.",
@@ -1129,7 +1129,7 @@ _DEFS: list[SettingDef] = [
                           "have it type across two lines instead of one."),
     SettingDef("copy.chat", "copy", "Chat screen text", SettingType.JSON, {"en": {}, "ar": {}}, i18n=True,
                help_text="tagline_line1, tagline_line2, sub, header, book_btn, faq_title, input_placeholder, welcome_msg, lang_switch"),
-    SettingDef("copy.booking", "copy", "Booking flow text", SettingType.JSON, {"en": {}, "ar": {}}, i18n=True,
+    SettingDef("copy.booking", "copy", "Appointment flow text", SettingType.JSON, {"en": {}, "ar": {}}, i18n=True,
                help_text="Field labels and status messages for the booking panel, including validation and "
                           "error messages so a visitor never sees a raw error code. Status messages support "
                           "{id}/{date}/{time} placeholders."),
