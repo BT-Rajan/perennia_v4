@@ -187,6 +187,19 @@ _DEFS: list[SettingDef] = [
                {"en": META_EN, "ar": META_AR}, i18n=True,
                help_text="Shown in search results and link previews (og:description)."),
 
+    # seo -------------------------------------------------------------
+    SettingDef("seo.google_site_verification", "seo", "Google Search Console verification code",
+               SettingType.STRING, "",
+               help_text="The content value of Google's HTML-tag verification "
+                         "(<meta name=\"google-site-verification\" content=\"…\">). Paste only the code."),
+    SettingDef("seo.bing_site_verification", "seo", "Bing Webmaster Tools verification code",
+               SettingType.STRING, "",
+               help_text="The content value of Bing's msvalidate.01 meta tag. Paste only the code."),
+    SettingDef("seo.same_as", "seo", "Official profiles (links)", SettingType.LIST,
+               ["https://github.com/perennia-kw"],
+               help_text="Full URLs of Perennia's official profiles (LinkedIn, Google Business Profile, "
+                         "X, Instagram, GitHub…). Search engines use them to connect the site to the company."),
+
     # locale ----------------------------------------------------------
     SettingDef("locale.default_language", "locale", "Default language", SettingType.ENUM, "en",
                choices=("en", "ar")),
