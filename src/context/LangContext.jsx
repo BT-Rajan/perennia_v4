@@ -24,7 +24,19 @@ function saveLang(lang) {
   }
 }
 
+// ?lang=ar / ?lang=en in the address picks the language outright, so
+// other sites (apps.perennia.org) can link to a page in a given language.
+function readUrlLang() {
+  try {
+    return new URLSearchParams(window.location.search).get("lang");
+  } catch {
+    return null;
+  }
+}
+
 function detectInitialLang(supportedLanguages, defaultLanguage) {
+  const fromUrl = readUrlLang();
+  if (fromUrl && supportedLanguages.includes(fromUrl)) return fromUrl;
   const saved = readSavedLang();
   if (saved && supportedLanguages.includes(saved)) return saved;
   if (typeof navigator === "undefined") return defaultLanguage;

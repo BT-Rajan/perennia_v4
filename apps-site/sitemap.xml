@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://apps.perennia.org/</loc></url>
+  <url><loc>https://apps.perennia.org/ar/</loc></url>
   <url><loc>https://apps.perennia.org/zigora.html</loc></url>
+  <url><loc>https://apps.perennia.org/ar/zigora.html</loc></url>
   <url><loc>https://apps.perennia.org/bbk.html</loc></url>
+  <url><loc>https://apps.perennia.org/ar/bbk.html</loc></url>
   <url><loc>https://apps.perennia.org/consultancy.html</loc></url>
+  <url><loc>https://apps.perennia.org/ar/consultancy.html</loc></url>
   <url><loc>https://apps.perennia.org/jdk.html</loc></url>
+  <url><loc>https://apps.perennia.org/ar/jdk.html</loc></url>
   <url><loc>https://apps.perennia.org/perennia.html</loc></url>
+  <url><loc>https://apps.perennia.org/ar/perennia.html</loc></url>
 </urlset>

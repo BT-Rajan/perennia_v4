@@ -1,0 +1,264 @@
+"""English content for the apps.perennia.org case studies (see build.py).
+
+content_ar.py mirrors this file key for key. Tokens filled in by build.py:
+{{MAIN}} is https://perennia.org, and {{CASE_STAGES:<label>}} is the main
+site's JDK workflow (copy.home.case_stages) as a workflow chain.
+"""
+
+UI = dict(
+    page_title="Case Studies | Perennia",
+    page_desc="Perennia case studies: practical software and AI built from real business problems — education, consumer platforms, professional services and manufacturing — from requirements to launch.",
+    tagline=("Case ", "Studies", "Practical software · Real business problems"),
+    crumb="Case Studies",
+    study_title="{name} — Case Study | Perennia",
+    study_sub="Case study · {sector}",
+    video_missing="The promo video is not available right now.",
+    previous="Previous",
+    next="Next",
+    more_label="More case studies",
+    intro_quote="Every project here began with a problem a business could not solve with the tools it had.",
+    intro_body="We work from the problem first: how the work actually gets done, where it gets stuck, and what would make the biggest difference. Each case study below follows one engagement from that starting point to a system in daily use — with the promo, the outcome, and a link to the live application.",
+    browse="Browse the case studies",
+    grid_label="Case studies",
+    read_study="Read the case study",
+    read_product="Read the product story",
+    live_demo="Live demo",
+    result="Result:",
+    similar_heading="Have a similar problem?",
+    similar_body="Tell us where the work is getting stuck. We will tell you honestly whether software is the answer, and what it would take.",
+    not_found_title="Page not found | Perennia",
+    not_found_desc="This page could not be found.",
+    not_found_tagline=("Page ", "not found", "Error 404"),
+    not_found_body="The page you were looking for isn't here. It may have moved, or the address may be mistyped.",
+    go_main="Go to perennia.org",
+    work="Work",
+)
+
+# ── Case studies ──────────────────────────────────────────
+# Order drives previous/next links (circular).
+STUDIES = [
+    dict(
+        slug="zigora",
+        name="Zigora Intelligence",
+        line1="Zigora ", line2="Intelligence",
+        sector="Education",
+        kicker="Education · Launched October 2026",
+        demo="http://169.58.13.213:5252", demo_label="Open the live application",
+        desc="Zigora Intelligence case study: an AI learning platform that builds a personal study plan, answers questions by text, voice or picture, and generates practice tests for students from high school to graduation.",
+        challenge="Students from high school to graduation had no structured way to plan their study, practise, and get answers when they were stuck.",
+        summary="An AI learning platform that builds a study plan around each student, answers questions by text, voice or picture, and generates multiple-choice practice tests on demand.",
+        result="Launched October 2026; students signing up and schools evaluating it.",
+        lead="One place for a student to plan what to study, get unstuck, and check they are ready.",
+        intro="Zigora Intelligence is an AI learning platform for students from high school through to graduation. It turns what and where a student studies into a personal learning plan, and stays with them as they work through it.",
+        facts=[("Sector", "Education"), ("Learners", "High school to graduation"),
+               ("Status", "Launched October 2026"), ("Ask by", "Text, voice or picture")],
+        caption="Promo: the Zigora study workspace in use.",
+        sections=[
+            ("The challenge", """
+    <p>Most students study without a clear plan for what to cover and in what order. When they reach a question they cannot answer, they fall back on search results, notes from friends, or waiting for the next lesson. Practice is limited to whatever a textbook or teacher happens to provide, so it is hard for a student to know whether they are actually ready.</p>
+    <p>Students, and the schools and families behind them, needed support at every step of learning, not a single tool opened the night before an exam.</p>"""),
+            ("The approach", """
+    <p>We designed Zigora around the student's own context. It begins by asking where and what they study, so the plan it produces reflects their curriculum and goals rather than a generic syllabus. From there, three capabilities work together in one assistant.</p>"""),
+            ("The solution: plan, ask, practise", """
+    <ol class="workflow-chain" aria-label="How a student uses Zigora"><li>Profile</li><li>Learning plan</li><li>Questions</li><li>Practice tests</li><li>Exam readiness</li></ol>
+    <ul>
+      <li><strong>Personal learning plans</strong> — built from the student's curriculum, institution and goals, so they always know what to study next.</li>
+      <li><strong>Questions in any form</strong> — a question can be typed, spoken, or sent as a photo of the problem on the page, whichever is quickest for the student.</li>
+      <li><strong>Practice on demand</strong> — the system generates multiple-choice tests so students can check their understanding whenever they choose.</li>
+    </ul>"""),
+            ("The outcome", """
+    <p>Zigora launched in October 2026. Individual students are already signing up, and schools are evaluating the platform and tailoring it to their own needs.</p>
+    <ul>
+      <li><strong>Structured study</strong> — learners follow a plan instead of deciding what to do each day.</li>
+      <li><strong>Help at the moment it is needed</strong> — no waiting for the next class to clear a doubt.</li>
+      <li><strong>Measurable readiness</strong> — practice tests show where a student stands before the exam does.</li>
+      <li><strong>Adaptable for institutions</strong> — schools can shape the product around their programmes.</li>
+    </ul>"""),
+            ("What it demonstrates", """
+    <ul>
+      <li>AI applied to a specific, everyday problem rather than as a general-purpose chat tool</li>
+      <li>Multi-modal input — text, voice and images — in one consistent experience</li>
+      <li>A consumer product designed to be customised for institutional customers</li>
+    </ul>"""),
+        ],
+        close=("Bring AI into your learning programme",
+               "Tell us about your learners and your curriculum, and we will show you what a tailored version could look like."),
+    ),
+    dict(
+        slug="bbk",
+        name="BBK Game Portal",
+        line1="BBK Game ", line2="Portal",
+        sector="Consumer platform",
+        kicker="Consumer platform · Live in 30 days",
+        demo="https://playbbk.com", demo_label="Visit playbbk.com",
+        desc="BBK Game Portal case study: a traditional Kuwaiti game brought online for a new generation of players, delivered turnkey from requirements to launch, with payment gateways, in 30 days.",
+        challenge="Young entrepreneurs wanted to bring a traditional Kuwaiti game online at the lowest practical cost, and quickly.",
+        summary="A turnkey, full-stack JavaScript portal with integrated payment gateways, taken from first requirement to public launch in 30 days.",
+        result="Live at playbbk.com in 30 days.",
+        lead="A traditional Kuwaiti game, brought online for a new generation of players, in 30 days.",
+        intro="BBK is a web portal that lets people play a well-loved traditional Kuwaiti game online. Perennia delivered it turnkey for a team of young entrepreneurs, from the first requirement to a live, paying product.",
+        facts=[("Sector", "Consumer entertainment"), ("Engagement", "Turnkey, requirements to launch"),
+               ("Time to launch", "30 days"), ("Platform", "Full-stack JavaScript, payment gateways")],
+        caption="Promo: a tour of the BBK portal.",
+        sections=[
+            ("The challenge", """
+    <p>The game is part of everyday culture in Kuwait, but for most people it could only be played in person. A team of young entrepreneurs saw the opportunity to take it online. As a new venture, they had two firm constraints: the build had to cost as little as practically possible, and it had to be live quickly enough to test the idea in the market while it was still fresh.</p>"""),
+            ("The approach", """
+    <p>The client came to us with an idea rather than a specification. We took ownership of the whole project — requirements, design, build, payments and launch — so the founders had one accountable partner instead of coordinating several contractors. Scope was held deliberately to what the business needed on day one, which is what made a 30-day launch achievable.</p>"""),
+            ("The solution: one turnkey delivery", """
+    <ol class="workflow-chain" aria-label="Delivery stages"><li>Requirements</li><li>Design</li><li>Build</li><li>Payments</li><li>Launch</li></ol>
+    <ul>
+      <li><strong>A single full-stack JavaScript codebase</strong> — one language from browser to server, keeping the product simple and economical to run and extend.</li>
+      <li><strong>Integrated payment gateways</strong> — players pay inside the portal, so the business could earn revenue from launch.</li>
+      <li><strong>A straightforward player experience</strong> — a clean layout that gets players from the home page into a game in a few clicks.</li>
+    </ul>"""),
+            ("The outcome", """
+    <p>The portal launched within the planned 30 days and is live at <a href="https://playbbk.com" target="_blank" rel="noopener noreferrer">playbbk.com</a>.</p>
+    <ul>
+      <li><strong>Speed to market</strong> — the founders were testing their idea with real players within a month.</li>
+      <li><strong>Controlled cost</strong> — a focused scope and a lean technology stack kept the investment proportionate to an early-stage venture.</li>
+      <li><strong>Revenue-ready from day one</strong> — payments were part of the first release, not a later phase.</li>
+      <li><strong>One accountable partner</strong> — a single team owned the outcome from requirements to launch.</li>
+    </ul>"""),
+            ("What it demonstrates", """
+    <ul>
+      <li>Turnkey delivery for founders who have an idea but no technical team</li>
+      <li>Disciplined scoping to meet a fixed launch date and budget</li>
+      <li>Payments and commercial readiness built into the first release</li>
+    </ul>"""),
+        ],
+        close=("Have an idea you want live quickly?",
+               "Tell us what you want to launch and when. We will tell you honestly what is achievable in that time."),
+    ),
+    dict(
+        slug="consultancy",
+        name="Consultancy Management System",
+        line1="Consultancy ", line2="Management",
+        sector="Professional services",
+        kicker="Professional services · Live in 75 days",
+        demo="http://169.58.13.213:9007", demo_label="Open the live application",
+        desc="Consultancy Management System case study: a practice management platform with built-in AI for a leading housing consultancy, live in 75 days, with the founder reporting a 75–80% reduction in project-management effort.",
+        challenge="A leading consultancy's subject-matter experts were spending their days on administration instead of advice.",
+        summary="A practice management system with AI built into the application — complex building-code logic in Python, the rest of the platform in JavaScript.",
+        result="Live in 75 days; founder reports 75–80% less project-management effort.",
+        lead="Giving a consultancy's experts their time back, with AI built into the way the practice works.",
+        intro="Our client is a leading consultancy that helps people realise their housing plans. Its advisers are among the best in their field. We built the practice a single system to run its work, with AI support inside the application itself.",
+        facts=[("Sector", "Professional services, housing advisory"), ("Time to go live", "75 days"),
+               ("Reported impact", "75–80% less project-management effort"), ("Platform", "Python for building codes, JavaScript for the platform")],
+        caption="Promo: an overview of the consultancy management system.",
+        sections=[
+            ("The challenge", """
+    <p>The firm's value lies in the judgement of its experts, yet much of their day was consumed by project management: tracking engagements, chasing tasks and deadlines, and keeping documents in order across separate tools. The expertise clients were paying for was being diluted by the administration around it.</p>
+    <p>On top of that, much of the work involves checking against complex building codes — exactly the kind of structured, repetitive analysis that software should support rather than leave to manual effort on every project.</p>"""),
+            ("The approach", """
+    <p>We started by mapping how the practice actually runs an engagement, from the first client conversation to the final deliverable, and built the system around that flow rather than adapting a generic template. We then identified where AI could genuinely support the adviser's judgement and placed it inside the workflow, not in a separate tool.</p>"""),
+            ("The solution: one workspace for the practice", """
+    <ol class="workflow-chain" aria-label="Engagement workflow"><li>Client</li><li>Engagement</li><li>Tasks &amp; deadlines</li><li>Building-code checks</li><li>Documents</li><li>Delivery</li></ol>
+    <ul>
+      <li><strong>One record per client</strong> — every engagement, task and document in one place, so a partner can see where each piece of work stands.</li>
+      <li><strong>Clear ownership</strong> — tasks and deadlines are visible to the people responsible for them.</li>
+      <li><strong>AI built into the application</strong> — used where it supports the adviser, as part of the everyday workflow.</li>
+      <li><strong>The right tool for each job</strong> — complex building-code logic implemented in Python, with the rest of the platform in JavaScript.</li>
+    </ul>"""),
+            ("The outcome", """
+    <p>The system went live in 75 days. The founder reports a <strong>75–80% reduction in project-management effort</strong>, returning that time to client work.</p>
+    <ul>
+      <li><strong>More time for advice</strong> — experts spend their days on the work clients value.</li>
+      <li><strong>Visibility across the practice</strong> — the status of every engagement is clear without chasing.</li>
+      <li><strong>Faster access to information</strong> — client details and documents are no longer scattered across tools.</li>
+      <li><strong>AI that fits the work</strong> — no separate product for the team to learn.</li>
+    </ul>"""),
+            ("What it demonstrates", """
+    <ul>
+      <li>Mapping a professional-services workflow before writing software</li>
+      <li>Practical, embedded AI rather than AI as a bolt-on</li>
+      <li>Choosing the technology for each problem — Python where the domain logic demands it</li>
+      <li>Measurable operational impact within a single quarter</li>
+    </ul>"""),
+        ],
+        close=("Is administration crowding out your expertise?",
+               "Walk us through how your practice runs today. We will show you where software and AI can take the load."),
+    ),
+    dict(
+        slug="jdk",
+        name="JDK Factory ERP",
+        line1="JDK Factory ", line2="ERP",
+        sector="Manufacturing",
+        kicker="Manufacturing · Delivered in 30 days",
+        demo="http://169.58.13.213:4173", demo_label="Open the live application",
+        desc="JDK Factory ERP case study: a simpler, connected ERP for a cement manufacturer, replacing a complicated and rigid system with one workflow from sales to payment, delivered in 30 days.",
+        challenge="A cement manufacturer found its existing ERP too complicated and too rigid for how the plant actually runs.",
+        summary="A simpler, connected ERP built around the plant's own processes — from sales and procurement through production, delivery and payment — delivered in 30 days.",
+        result="Delivered in 30 days; one connected record from order to delivery.",
+        lead="An ERP built around how a cement plant actually works, delivered in 30 days.",
+        intro="JDK is a cement manufacturer. Its team had been using Odoo, but found it unnecessarily complicated and rigid for day-to-day operations. We replaced it with a simpler system built around the plant's own workflow.",
+        facts=[("Sector", "Cement manufacturing"), ("Replaced", "Odoo"),
+               ("Time to delivery", "30 days"), ("Platform", "React front end, FastAPI back end")],
+        caption="Promo: JDK Factory ERP at work, from order to delivery.",
+        sections=[
+            ("The challenge", """
+    <p>A general-purpose ERP has to serve every kind of business, and JDK was paying for that generality in complexity. Everyday tasks took too many steps, and processes specific to cement production had to be bent to fit the software rather than the other way round. The team wanted a system that was straightforward to use and ready for where the business was heading.</p>"""),
+            ("The approach", """
+    <p>We mapped the plant's operational workflow first — how a customer order becomes a production requirement, how materials are sourced and received, and how finished output is bagged, batched and delivered. The core workflows were then rebuilt around those processes, so the system reflects how JDK operates rather than a generic template.</p>"""),
+            ("The solution: one connected workflow", """
+    {{CASE_STAGES:Order-to-payment workflow}}
+    <ul>
+      <li><strong>Sales, procurement and production connected</strong> — a customer order, the materials needed to fulfil it and the output ready to leave the plant sit in one record, with no re-keying between departments.</li>
+      <li><strong>Built for cement operations</strong> — bagging, batches and inventory movements are first-class parts of the system.</li>
+      <li><strong>Role-based access</strong> — each team sees its own tasks, while leadership sees the whole operation.</li>
+      <li><strong>A modern web stack</strong> — React on the front end and FastAPI on the back end, faster to use and easier to extend.</li>
+    </ul>"""),
+            ("The outcome", """
+    <p>The system was delivered in 30 days as a clear step forward from the previous tool.</p>
+    <ul>
+      <li><strong>Less re-keying</strong> — information is entered once and reused across sales, inventory and production.</li>
+      <li><strong>Visibility for managers</strong> — what has been ordered, what is in production and what is ready for delivery is visible in one place.</li>
+      <li><strong>A system that fits the plant</strong> — it follows real cement operations rather than forcing workarounds.</li>
+      <li><strong>Usable anywhere on site</strong> — it runs in the browser, in the office, on the plant floor or on a tablet.</li>
+    </ul>"""),
+            ("What it demonstrates", """
+    <ul>
+      <li>Replacing a generic package with business-specific software</li>
+      <li>Understanding a manufacturing workflow end to end before building</li>
+      <li>One shared record of each order in place of hand-offs between tools</li>
+      <li>Enterprise software delivered on a 30-day timeline</li>
+    </ul>
+    <p>Read the in-depth <a href="{{MAIN}}/jdk-factory-erp">JDK Factory ERP case study</a> on perennia.org for the full workflow and the operational rules built into the system.</p>"""),
+        ],
+        close=("Start with your own workflow",
+               "Let's understand how your operation really runs before deciding what to build."),
+    ),
+    dict(
+        slug="perennia",
+        name="Perennia CMS Portal",
+        line1="Perennia ", line2="CMS Portal",
+        sector="Product",
+        kicker="Perennia product · Phase 2",
+        demo="{{MAIN}}/", demo_label="See it on perennia.org",
+        desc="Perennia CMS Portal: Perennia's own zero-code content platform, which powers perennia.org, so a business can publish and update its website without a developer or a long build.",
+        challenge="Publishing a website should not depend on a developer or a long build.",
+        summary="Our zero-code content platform. It powers perennia.org and is being prepared for client use in Phase 2.",
+        result="Powers perennia.org today; client release in Phase 2.",
+        lead="Our own zero-code content platform — the system that runs perennia.org.",
+        intro="The Perennia CMS Portal is the content platform behind perennia.org. We built it for ourselves first, so that our website could be run by the people responsible for its content rather than by developers.",
+        facts=[("Type", "Perennia product"), ("Status", "In use on perennia.org; Phase 2"),
+               ("Approach", "Zero-code"), ("Used for", "Pages, content and site settings")],
+        caption="Promo: the Perennia CMS Portal.",
+        sections=[
+            ("The challenge", """
+    <p>For many businesses, every change to the website — a new page, an updated service description, a revised contact detail — becomes a request to a developer and a wait for the next release. The people who own the message are not the people who can publish it.</p>"""),
+            ("The approach", """
+    <p>We applied the same principle we use for client systems: build around the people who do the work. Content and site settings are managed through an administration portal, and the public site reads them directly, so changes do not require code or a rebuild.</p>"""),
+            ("The solution", """
+    <ul>
+      <li><strong>Zero-code publishing</strong> — pages and their content are created and edited in the admin portal.</li>
+      <li><strong>Configurable site settings</strong> — the look of the site and its navigation are managed as settings, not code.</li>
+      <li><strong>Proven in production</strong> — perennia.org runs on the platform today.</li>
+    </ul>"""),
+            ("Status", """
+    <p>The platform is in daily use on perennia.org. Making it available to clients is part of our Phase 2 roadmap. If you would like to be among the first to use it, we would be glad to talk.</p>"""),
+        ],
+        close=("Want to run your own site without a developer?",
+               "Tell us about your website and who keeps it up to date. We will show you how the platform could work for you."),
+    ),
+]

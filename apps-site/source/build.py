@@ -1,19 +1,26 @@
-"""Generate the apps.perennia.org case-study pages (apps-site/*.html).
+"""Generate the apps.perennia.org case-study pages, in English and Arabic.
 
-The pages are static HTML, deployed as-is by install.sh (which copies
-only apps-site's top-level files, so this source/ folder is never
-published). Edit the content here, then regenerate and commit the output:
+English pages are written to apps-site/ and Arabic ones to apps-site/ar/,
+with the same file names, so every page has a counterpart in the other
+language and a switch to it. The pages are static HTML, deployed as-is
+by install.sh (which copies apps-site's top-level files and ar/, never
+this source/ folder). Edit the content, then regenerate and commit:
 
     python3 apps-site/source/build.py
 
-Navigation, the booking CTA, footer labels and the JDK workflow stages
-are read from the main site's shared content (src/content/*.json), so
-the two sites can't drift apart.
+Page text lives in content_en.py and content_ar.py (same keys). The
+navigation, booking CTA, footer, language-switch labels and the JDK
+workflow stages come from the main site's shared content
+(src/content/*.json), so the two sites can't drift apart.
 """
 import json
+import re
 from datetime import date
 from html import escape
 from pathlib import Path
+
+import content_ar
+import content_en
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "apps-site"
@@ -21,130 +28,155 @@ CONTENT = ROOT / "src" / "content"
 
 SITE_COPY = json.loads((CONTENT / "site-copy.json").read_text(encoding="utf-8"))
 PAGES = json.loads((CONTENT / "pages.json").read_text(encoding="utf-8"))
-HOME = SITE_COPY["home"]["en"]
-COMMON = SITE_COPY["common"]["en"]
 
 MAIN = "https://perennia.org"
 SITE = "https://apps.perennia.org"
 # Link previews use the main site's share image (1200×630).
 OG_IMAGE = f"{MAIN}/static/og-image.png"
-BOOK = f"{MAIN}/contact"
-BOOK_LABEL = HOME["cta_primary"]
 # Same default as contact.phone in backend/app/settings_registry.py.
 PHONE = "+965 9933 1344"
+FONTS = {
+    "en": "family=Cormorant+Garamond:wght@500;600;700&family=Syne:wght@400;500;600;700",
+    "ar": "family=Cormorant+Garamond:wght@500;600;700&family=Syne:wght@400;500;600;700"
+          "&family=Noto+Kufi+Arabic:wght@400;500;600;700",
+}
+BRAND = {"en": "Perennia", "ar": "بيرينيا"}
+
+LANGS = {
+    "en": dict(dir="ltr", prefix="", content=content_en, other="ar", locale="en_US"),
+    "ar": dict(dir="rtl", prefix="ar/", content=content_ar, other="en", locale="ar_KW"),
+}
+assert [s["slug"] for s in content_en.STUDIES] == [s["slug"] for s in content_ar.STUDIES]
 
 
-def main_url(slug):
-    return f"{MAIN}/{slug}"
+def site_path(lang, page=""):
+    """Root-relative URL of a page ("" is the index) in a language."""
+    return f"/{LANGS[lang]['prefix']}{page}"
 
 
-# The main site's nav: its nav pages in order, with "Work" after
-# Solutions (withWorkNav in src/data/siteContent.js). On this site
-# "Work" is the case-study index.
-NAV = [(p["en"]["nav_label"], main_url(p["slug"])) for p in PAGES if p["show_in_nav"]]
-_at = next((i + 1 for i, p in enumerate(PAGES) if p["slug"] == "services"), 0)
-NAV.insert(_at, ("Work", "/"))
-LEGAL = [(p["en"]["nav_label"], main_url(p["slug"])) for p in PAGES if p["slug"] in ("privacy", "terms")]
+def main_url(lang, slug=""):
+    """A perennia.org page, opened in the same language (see readUrlLang
+    in src/context/LangContext.jsx)."""
+    return f"{MAIN}/{slug}?lang={lang}"
 
 
-def nav_links(indent):
+def nav(lang):
+    """The main site's nav: its nav pages in order, with "Work" after
+    Solutions (withWorkNav in src/data/siteContent.js). Here "Work" is
+    this site's index."""
+    items = [(p[lang]["nav_label"], main_url(lang, p["slug"])) for p in PAGES if p["show_in_nav"]]
+    at = next((i + 1 for i, p in enumerate(PAGES) if p["slug"] == "services"), 0)
+    items.insert(at, (LANGS[lang]["content"].UI["work"], site_path(lang)))
+    return items
+
+
+def workflow_chain(stages, label):
+    items = "".join(f"<li>{escape(s)}</li>" for s in stages)
+    return f'<ol class="workflow-chain" aria-label="{escape(label)}">{items}</ol>'
+
+
+def fill_tokens(html, lang):
+    """{{CASE_STAGES:<label>}} and {{MAIN}}/<path> in the content files."""
+    stages = SITE_COPY["home"][lang]["case_stages"]
+    html = re.sub(r"\{\{CASE_STAGES:([^}]*)\}\}", lambda m: workflow_chain(stages, m.group(1)), html)
+    return re.sub(r"\{\{MAIN\}\}/([^\"?#]*)", lambda m: main_url(lang, m.group(1)), html)
+
+
+def page(lang, page_path, title, desc, body, script="", indexable=True):
+    other = LANGS[lang]["other"]
+    home, common = SITE_COPY["home"][lang], SITE_COPY["common"][lang]
+    index = site_path(lang)
     current = ' aria-current="page"'
-    return "\n".join(
-        f'{indent}<a href="{href}"{current if href == "/" else ""}>{label}</a>' for label, href in NAV
+    nav_html = "\n".join(
+        f'      <a href="{href}"{current if href == index else ""}>{label}</a>' for label, href in nav(lang)
     )
-
-
-HEAD = """<!DOCTYPE html>
+    explore = "\n".join(f'        <li><a href="{href}">{label}</a></li>' for label, href in nav(lang))
+    legal = "".join(
+        f'<a href="{main_url(lang, p["slug"])}">{p[lang]["nav_label"]}</a>'
+        for p in PAGES if p["slug"] in ("privacy", "terms")
+    )
+    alternates = "\n".join(
+        f'<link rel="alternate" hreflang="{code}" href="{SITE}{site_path(code, page_path)}">' for code in LANGS
+    )
+    url = f"{SITE}{site_path(lang, page_path)}"
+    robots = "index, follow" if indexable else "noindex"
+    html = f"""<!DOCTYPE html>
 <!-- Generated by apps-site/source/build.py: edit that, not this file. -->
-<html lang="en">
+<html lang="{lang}" dir="{LANGS[lang]['dir']}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>{title}</title>
-<meta name="description" content="{desc}">
+<title>{escape(title)}</title>
+<meta name="description" content="{escape(desc)}">
 <link rel="canonical" href="{url}">
+{alternates}
+<link rel="alternate" hreflang="x-default" href="{SITE}{site_path('en', page_path)}">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="robots" content="{robots}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Perennia">
-<meta property="og:title" content="{title}">
-<meta property="og:description" content="{desc}">
+<meta property="og:site_name" content="{BRAND[lang]}">
+<meta property="og:locale" content="{LANGS[lang]['locale']}">
+<meta property="og:title" content="{escape(title)}">
+<meta property="og:description" content="{escape(desc)}">
 <meta property="og:url" content="{url}">
-<meta property="og:image" content="{og_image}">
+<meta property="og:image" content="{OG_IMAGE}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#07060a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?{FONTS[lang]}&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <header class="top-bar-header">
-  <a class="logo-word" href="{main}/">Perennia</a>
+  <a class="logo-word" href="{main_url(lang)}">{BRAND[lang]}</a>
   <div class="top-bar-center">
-    <nav class="nav-menu" aria-label="Primary">
-{nav}
+    <nav class="nav-menu" aria-label="{common['primary_nav']}">
+{nav_html}
     </nav>
   </div>
-  <a class="top-bar-cta btn btn-ghost" href="{book}">{book_label}</a>
+  <div class="top-bar-end">
+    <a class="top-bar-cta btn btn-ghost" href="{main_url(lang, 'contact')}">{home['cta_primary']}</a>
+    <a class="lang-switch" href="{site_path(other, page_path)}" hreflang="{other}" lang="{other}">{home['lang_switch']}</a>
+  </div>
 </header>
 
 <div class="content-page">
 <main class="content-main">
-"""
-
-FOOT = """</main>
+{body}</main>
 
 <footer class="site-footer">
   <div class="site-footer-inner">
     <div>
-      <p class="site-footer-name">Perennia</p>
-      <p class="site-footer-tagline">{tagline}</p>
+      <p class="site-footer-name">{BRAND[lang]}</p>
+      <p class="site-footer-tagline">{home['eyebrow']}</p>
     </div>
-    <nav class="site-footer-col" aria-label="{explore}">
-      <h2>{explore}</h2>
+    <nav class="site-footer-col" aria-label="{common['footer_explore']}">
+      <h2>{common['footer_explore']}</h2>
       <ul class="site-footer-explore">
-{explore_links}
+{explore}
       </ul>
     </nav>
     <div class="site-footer-col">
-      <h2>{contact}</h2>
+      <h2>{common['footer_contact']}</h2>
       <ul>
-        <li><a href="tel:{phone_href}">{phone}</a></li>
+        <li><a href="tel:{PHONE.replace(' ', '')}" dir="ltr">{PHONE}</a></li>
       </ul>
     </div>
   </div>
-  <p class="site-footer-legal">© {year} Perennia. {rights}{legal}</p>
+  <p class="site-footer-legal">© {date.today().year} {BRAND[lang]}. {common['footer_rights']}{legal}</p>
 </footer>
 </div>
-{{script}}</body>
+{script}</body>
 </html>
-""".format(
-    tagline=HOME["eyebrow"],
-    explore=COMMON["footer_explore"],
-    explore_links="\n".join(f'        <li><a href="{href}">{label}</a></li>' for label, href in NAV),
-    contact=COMMON["footer_contact"],
-    phone=PHONE,
-    phone_href=PHONE.replace(" ", ""),
-    year=date.today().year,
-    rights=COMMON["footer_rights"],
-    legal="".join(f'<a href="{href}">{label}</a>' for label, href in LEGAL),
-)
+"""
+    return fill_tokens(html, lang)
+
 
 VIDEO_SCRIPT = (
     '<script>document.querySelectorAll(".screen video").forEach(function(v){'
     'v.addEventListener("error",function(){v.parentNode.classList.add("bad")})})</script>\n'
 )
-
-
-def page(title, desc, body, script="", path="", indexable=True):
-    return (
-        HEAD.format(title=escape(title), desc=escape(desc), main=MAIN, book=BOOK, book_label=BOOK_LABEL,
-                    nav=nav_links("      "), url=f"{SITE}/{path}", og_image=OG_IMAGE,
-                    robots="index, follow" if indexable else "noindex")
-        + body
-        + FOOT.format(script=script)
-    )
 
 
 def tagline(line1, line2, sub):
@@ -156,251 +188,19 @@ def tagline(line1, line2, sub):
 """
 
 
-def workflow_chain(stages, label):
-    items = "".join(f"<li>{escape(s)}</li>" for s in stages)
-    return f'\n    <ol class="workflow-chain" aria-label="{label}">{items}</ol>'
-
-
 def demo_link(url, label, cls="btn btn-ghost"):
     return f'<a class="{cls}" href="{url}" target="_blank" rel="noopener noreferrer">{label}</a>'
 
 
-# ── Case studies ──────────────────────────────────────────
-# Order drives previous/next links (circular).
-STUDIES = [
-    dict(
-        slug="zigora",
-        name="Zigora Intelligence",
-        line1="Zigora ", line2="Intelligence",
-        sector="Education",
-        kicker="Education · Launched October 2026",
-        demo="http://169.58.13.213:5252", demo_label="Open the live application",
-        desc="Zigora Intelligence case study: an AI learning platform that builds a personal study plan, answers questions by text, voice or picture, and generates practice tests for students from high school to graduation.",
-        challenge="Students from high school to graduation had no structured way to plan their study, practise, and get answers when they were stuck.",
-        summary="An AI learning platform that builds a study plan around each student, answers questions by text, voice or picture, and generates multiple-choice practice tests on demand.",
-        result="Launched October 2026; students signing up and schools evaluating it.",
-        lead="One place for a student to plan what to study, get unstuck, and check they are ready.",
-        intro="Zigora Intelligence is an AI learning platform for students from high school through to graduation. It turns what and where a student studies into a personal learning plan, and stays with them as they work through it.",
-        facts=[("Sector", "Education"), ("Learners", "High school to graduation"),
-               ("Status", "Launched October 2026"), ("Ask by", "Text, voice or picture")],
-        caption="Promo: the Zigora study workspace in use.",
-        sections=[
-            ("The challenge", """
-    <p>Most students study without a clear plan for what to cover and in what order. When they reach a question they cannot answer, they fall back on search results, notes from friends, or waiting for the next lesson. Practice is limited to whatever a textbook or teacher happens to provide, so it is hard for a student to know whether they are actually ready.</p>
-    <p>Students, and the schools and families behind them, needed support at every step of learning, not a single tool opened the night before an exam.</p>"""),
-            ("The approach", """
-    <p>We designed Zigora around the student's own context. It begins by asking where and what they study, so the plan it produces reflects their curriculum and goals rather than a generic syllabus. From there, three capabilities work together in one assistant.</p>"""),
-            ("The solution: plan, ask, practise", """
-    <ol class="workflow-chain" aria-label="How a student uses Zigora"><li>Profile</li><li>Learning plan</li><li>Questions</li><li>Practice tests</li><li>Exam readiness</li></ol>
-    <ul>
-      <li><strong>Personal learning plans</strong> — built from the student's curriculum, institution and goals, so they always know what to study next.</li>
-      <li><strong>Questions in any form</strong> — a question can be typed, spoken, or sent as a photo of the problem on the page, whichever is quickest for the student.</li>
-      <li><strong>Practice on demand</strong> — the system generates multiple-choice tests so students can check their understanding whenever they choose.</li>
-    </ul>"""),
-            ("The outcome", """
-    <p>Zigora launched in October 2026. Individual students are already signing up, and schools are evaluating the platform and tailoring it to their own needs.</p>
-    <ul>
-      <li><strong>Structured study</strong> — learners follow a plan instead of deciding what to do each day.</li>
-      <li><strong>Help at the moment it is needed</strong> — no waiting for the next class to clear a doubt.</li>
-      <li><strong>Measurable readiness</strong> — practice tests show where a student stands before the exam does.</li>
-      <li><strong>Adaptable for institutions</strong> — schools can shape the product around their programmes.</li>
-    </ul>"""),
-            ("What it demonstrates", """
-    <ul>
-      <li>AI applied to a specific, everyday problem rather than as a general-purpose chat tool</li>
-      <li>Multi-modal input — text, voice and images — in one consistent experience</li>
-      <li>A consumer product designed to be customised for institutional customers</li>
-    </ul>"""),
-        ],
-        close=("Bring AI into your learning programme",
-               "Tell us about your learners and your curriculum, and we will show you what a tailored version could look like."),
-    ),
-    dict(
-        slug="bbk",
-        name="BBK Game Portal",
-        line1="BBK Game ", line2="Portal",
-        sector="Consumer platform",
-        kicker="Consumer platform · Live in 30 days",
-        demo="https://playbbk.com", demo_label="Visit playbbk.com",
-        desc="BBK Game Portal case study: a traditional Kuwaiti game brought online for a new generation of players, delivered turnkey from requirements to launch, with payment gateways, in 30 days.",
-        challenge="Young entrepreneurs wanted to bring a traditional Kuwaiti game online at the lowest practical cost, and quickly.",
-        summary="A turnkey, full-stack JavaScript portal with integrated payment gateways, taken from first requirement to public launch in 30 days.",
-        result="Live at playbbk.com in 30 days.",
-        lead="A traditional Kuwaiti game, brought online for a new generation of players, in 30 days.",
-        intro="BBK is a web portal that lets people play a well-loved traditional Kuwaiti game online. Perennia delivered it turnkey for a team of young entrepreneurs, from the first requirement to a live, paying product.",
-        facts=[("Sector", "Consumer entertainment"), ("Engagement", "Turnkey, requirements to launch"),
-               ("Time to launch", "30 days"), ("Platform", "Full-stack JavaScript, payment gateways")],
-        caption="Promo: a tour of the BBK portal.",
-        sections=[
-            ("The challenge", """
-    <p>The game is part of everyday culture in Kuwait, but for most people it could only be played in person. A team of young entrepreneurs saw the opportunity to take it online. As a new venture, they had two firm constraints: the build had to cost as little as practically possible, and it had to be live quickly enough to test the idea in the market while it was still fresh.</p>"""),
-            ("The approach", """
-    <p>The client came to us with an idea rather than a specification. We took ownership of the whole project — requirements, design, build, payments and launch — so the founders had one accountable partner instead of coordinating several contractors. Scope was held deliberately to what the business needed on day one, which is what made a 30-day launch achievable.</p>"""),
-            ("The solution: one turnkey delivery", """
-    <ol class="workflow-chain" aria-label="Delivery stages"><li>Requirements</li><li>Design</li><li>Build</li><li>Payments</li><li>Launch</li></ol>
-    <ul>
-      <li><strong>A single full-stack JavaScript codebase</strong> — one language from browser to server, keeping the product simple and economical to run and extend.</li>
-      <li><strong>Integrated payment gateways</strong> — players pay inside the portal, so the business could earn revenue from launch.</li>
-      <li><strong>A straightforward player experience</strong> — a clean layout that gets players from the home page into a game in a few clicks.</li>
-    </ul>"""),
-            ("The outcome", """
-    <p>The portal launched within the planned 30 days and is live at <a href="https://playbbk.com" target="_blank" rel="noopener noreferrer">playbbk.com</a>.</p>
-    <ul>
-      <li><strong>Speed to market</strong> — the founders were testing their idea with real players within a month.</li>
-      <li><strong>Controlled cost</strong> — a focused scope and a lean technology stack kept the investment proportionate to an early-stage venture.</li>
-      <li><strong>Revenue-ready from day one</strong> — payments were part of the first release, not a later phase.</li>
-      <li><strong>One accountable partner</strong> — a single team owned the outcome from requirements to launch.</li>
-    </ul>"""),
-            ("What it demonstrates", """
-    <ul>
-      <li>Turnkey delivery for founders who have an idea but no technical team</li>
-      <li>Disciplined scoping to meet a fixed launch date and budget</li>
-      <li>Payments and commercial readiness built into the first release</li>
-    </ul>"""),
-        ],
-        close=("Have an idea you want live quickly?",
-               "Tell us what you want to launch and when. We will tell you honestly what is achievable in that time."),
-    ),
-    dict(
-        slug="consultancy",
-        name="Consultancy Management System",
-        line1="Consultancy ", line2="Management",
-        sector="Professional services",
-        kicker="Professional services · Live in 75 days",
-        demo="http://169.58.13.213:9007", demo_label="Open the live application",
-        desc="Consultancy Management System case study: a practice management platform with built-in AI for a leading housing consultancy, live in 75 days, with the founder reporting a 75–80% reduction in project-management effort.",
-        challenge="A leading consultancy's subject-matter experts were spending their days on administration instead of advice.",
-        summary="A practice management system with AI built into the application — complex building-code logic in Python, the rest of the platform in JavaScript.",
-        result="Live in 75 days; founder reports 75–80% less project-management effort.",
-        lead="Giving a consultancy's experts their time back, with AI built into the way the practice works.",
-        intro="Our client is a leading consultancy that helps people realise their housing plans. Its advisers are among the best in their field. We built the practice a single system to run its work, with AI support inside the application itself.",
-        facts=[("Sector", "Professional services, housing advisory"), ("Time to go live", "75 days"),
-               ("Reported impact", "75–80% less project-management effort"), ("Platform", "Python for building codes, JavaScript for the platform")],
-        caption="Promo: an overview of the consultancy management system.",
-        sections=[
-            ("The challenge", """
-    <p>The firm's value lies in the judgement of its experts, yet much of their day was consumed by project management: tracking engagements, chasing tasks and deadlines, and keeping documents in order across separate tools. The expertise clients were paying for was being diluted by the administration around it.</p>
-    <p>On top of that, much of the work involves checking against complex building codes — exactly the kind of structured, repetitive analysis that software should support rather than leave to manual effort on every project.</p>"""),
-            ("The approach", """
-    <p>We started by mapping how the practice actually runs an engagement, from the first client conversation to the final deliverable, and built the system around that flow rather than adapting a generic template. We then identified where AI could genuinely support the adviser's judgement and placed it inside the workflow, not in a separate tool.</p>"""),
-            ("The solution: one workspace for the practice", """
-    <ol class="workflow-chain" aria-label="Engagement workflow"><li>Client</li><li>Engagement</li><li>Tasks &amp; deadlines</li><li>Building-code checks</li><li>Documents</li><li>Delivery</li></ol>
-    <ul>
-      <li><strong>One record per client</strong> — every engagement, task and document in one place, so a partner can see where each piece of work stands.</li>
-      <li><strong>Clear ownership</strong> — tasks and deadlines are visible to the people responsible for them.</li>
-      <li><strong>AI built into the application</strong> — used where it supports the adviser, as part of the everyday workflow.</li>
-      <li><strong>The right tool for each job</strong> — complex building-code logic implemented in Python, with the rest of the platform in JavaScript.</li>
-    </ul>"""),
-            ("The outcome", """
-    <p>The system went live in 75 days. The founder reports a <strong>75–80% reduction in project-management effort</strong>, returning that time to client work.</p>
-    <ul>
-      <li><strong>More time for advice</strong> — experts spend their days on the work clients value.</li>
-      <li><strong>Visibility across the practice</strong> — the status of every engagement is clear without chasing.</li>
-      <li><strong>Faster access to information</strong> — client details and documents are no longer scattered across tools.</li>
-      <li><strong>AI that fits the work</strong> — no separate product for the team to learn.</li>
-    </ul>"""),
-            ("What it demonstrates", """
-    <ul>
-      <li>Mapping a professional-services workflow before writing software</li>
-      <li>Practical, embedded AI rather than AI as a bolt-on</li>
-      <li>Choosing the technology for each problem — Python where the domain logic demands it</li>
-      <li>Measurable operational impact within a single quarter</li>
-    </ul>"""),
-        ],
-        close=("Is administration crowding out your expertise?",
-               "Walk us through how your practice runs today. We will show you where software and AI can take the load."),
-    ),
-    dict(
-        slug="jdk",
-        name="JDK Factory ERP",
-        line1="JDK Factory ", line2="ERP",
-        sector="Manufacturing",
-        kicker="Manufacturing · Delivered in 30 days",
-        demo="http://169.58.13.213:4173", demo_label="Open the live application",
-        desc="JDK Factory ERP case study: a simpler, connected ERP for a cement manufacturer, replacing a complicated and rigid system with one workflow from sales to payment, delivered in 30 days.",
-        challenge="A cement manufacturer found its existing ERP too complicated and too rigid for how the plant actually runs.",
-        summary="A simpler, connected ERP built around the plant's own processes — from sales and procurement through production, delivery and payment — delivered in 30 days.",
-        result="Delivered in 30 days; one connected record from order to delivery.",
-        lead="An ERP built around how a cement plant actually works, delivered in 30 days.",
-        intro="JDK is a cement manufacturer. Its team had been using Odoo, but found it unnecessarily complicated and rigid for day-to-day operations. We replaced it with a simpler system built around the plant's own workflow.",
-        facts=[("Sector", "Cement manufacturing"), ("Replaced", "Odoo"),
-               ("Time to delivery", "30 days"), ("Platform", "React front end, FastAPI back end")],
-        caption="Promo: JDK Factory ERP at work, from order to delivery.",
-        sections=[
-            ("The challenge", """
-    <p>A general-purpose ERP has to serve every kind of business, and JDK was paying for that generality in complexity. Everyday tasks took too many steps, and processes specific to cement production had to be bent to fit the software rather than the other way round. The team wanted a system that was straightforward to use and ready for where the business was heading.</p>"""),
-            ("The approach", """
-    <p>We mapped the plant's operational workflow first — how a customer order becomes a production requirement, how materials are sourced and received, and how finished output is bagged, batched and delivered. The core workflows were then rebuilt around those processes, so the system reflects how JDK operates rather than a generic template.</p>"""),
-            ("The solution: one connected workflow", workflow_chain(HOME["case_stages"], "Order-to-payment workflow") + """
-    <ul>
-      <li><strong>Sales, procurement and production connected</strong> — a customer order, the materials needed to fulfil it and the output ready to leave the plant sit in one record, with no re-keying between departments.</li>
-      <li><strong>Built for cement operations</strong> — bagging, batches and inventory movements are first-class parts of the system.</li>
-      <li><strong>Role-based access</strong> — each team sees its own tasks, while leadership sees the whole operation.</li>
-      <li><strong>A modern web stack</strong> — React on the front end and FastAPI on the back end, faster to use and easier to extend.</li>
-    </ul>"""),
-            ("The outcome", """
-    <p>The system was delivered in 30 days as a clear step forward from the previous tool.</p>
-    <ul>
-      <li><strong>Less re-keying</strong> — information is entered once and reused across sales, inventory and production.</li>
-      <li><strong>Visibility for managers</strong> — what has been ordered, what is in production and what is ready for delivery is visible in one place.</li>
-      <li><strong>A system that fits the plant</strong> — it follows real cement operations rather than forcing workarounds.</li>
-      <li><strong>Usable anywhere on site</strong> — it runs in the browser, in the office, on the plant floor or on a tablet.</li>
-    </ul>"""),
-            ("What it demonstrates", """
-    <ul>
-      <li>Replacing a generic package with business-specific software</li>
-      <li>Understanding a manufacturing workflow end to end before building</li>
-      <li>One shared record of each order in place of hand-offs between tools</li>
-      <li>Enterprise software delivered on a 30-day timeline</li>
-    </ul>
-    <p>Read the in-depth <a href="{MAIN}/jdk-factory-erp">JDK Factory ERP case study</a> on perennia.org for the full workflow and the operational rules built into the system.</p>""".replace("{MAIN}", MAIN)),
-        ],
-        close=("Start with your own workflow",
-               "Let's understand how your operation really runs before deciding what to build."),
-    ),
-    dict(
-        slug="perennia",
-        name="Perennia CMS Portal",
-        line1="Perennia ", line2="CMS Portal",
-        sector="Product",
-        kicker="Perennia product · Phase 2",
-        demo=MAIN, demo_label="See it on perennia.org",
-        desc="Perennia CMS Portal: Perennia's own zero-code content platform, which powers perennia.org, so a business can publish and update its website without a developer or a long build.",
-        challenge="Publishing a website should not depend on a developer or a long build.",
-        summary="Our zero-code content platform. It powers perennia.org and is being prepared for client use in Phase 2.",
-        result="Powers perennia.org today; client release in Phase 2.",
-        lead="Our own zero-code content platform — the system that runs perennia.org.",
-        intro="The Perennia CMS Portal is the content platform behind perennia.org. We built it for ourselves first, so that our website could be run by the people responsible for its content rather than by developers.",
-        facts=[("Type", "Perennia product"), ("Status", "In use on perennia.org; Phase 2"),
-               ("Approach", "Zero-code"), ("Used for", "Pages, content and site settings")],
-        caption="Promo: the Perennia CMS Portal.",
-        sections=[
-            ("The challenge", """
-    <p>For many businesses, every change to the website — a new page, an updated service description, a revised contact detail — becomes a request to a developer and a wait for the next release. The people who own the message are not the people who can publish it.</p>"""),
-            ("The approach", """
-    <p>We applied the same principle we use for client systems: build around the people who do the work. Content and site settings are managed through an administration portal, and the public site reads them directly, so changes do not require code or a rebuild.</p>"""),
-            ("The solution", """
-    <ul>
-      <li><strong>Zero-code publishing</strong> — pages and their content are created and edited in the admin portal.</li>
-      <li><strong>Configurable site settings</strong> — the look of the site and its navigation are managed as settings, not code.</li>
-      <li><strong>Proven in production</strong> — perennia.org runs on the platform today.</li>
-    </ul>"""),
-            ("Status", """
-    <p>The platform is in daily use on perennia.org. Making it available to clients is part of our Phase 2 roadmap. If you would like to be among the first to use it, we would be glad to talk.</p>"""),
-        ],
-        close=("Want to run your own site without a developer?",
-               "Tell us about your website and who keeps it up to date. We will show you how the platform could work for you."),
-    ),
-]
-
-
-def study_page(i, s):
-    prev_s = STUDIES[i - 1]
-    next_s = STUDIES[(i + 1) % len(STUDIES)]
+def study_page(lang, i):
+    content = LANGS[lang]["content"]
+    ui, studies = content.UI, content.STUDIES
+    s, prev_s, next_s = studies[i], studies[i - 1], studies[(i + 1) % len(studies)]
+    home = SITE_COPY["home"][lang]
     facts = "\n".join(f"      <div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in s["facts"])
     sections = "\n".join(f"    <h2>{h}</h2>{body}" for h, body in s["sections"])
-    body = f"""  <p class="crumb"><a href="/">Case Studies</a> / {s['name']}</p>
-{tagline(s['line1'], s['line2'], 'Case study · ' + s['sector'])}
+    body = f"""  <p class="crumb"><a href="{site_path(lang)}">{ui['crumb']}</a> / {s['name']}</p>
+{tagline(s['line1'], s['line2'], ui['study_sub'].format(sector=s['sector']))}
   <section class="glass-panel content-shell">
     <div class="markdown-content">
     <blockquote><p>{s['lead']}</p></blockquote>
@@ -411,7 +211,7 @@ def study_page(i, s):
     <figure class="markdown-figure">
       <div class="screen">
         <video controls playsinline preload="metadata" src="/promo/{s['slug']}.mp4"></video>
-        <div class="miss">The promo video is not available right now.</div>
+        <div class="miss">{ui['video_missing']}</div>
       </div>
       <figcaption>{s['caption']}</figcaption>
     </figure>
@@ -419,103 +219,115 @@ def study_page(i, s):
     <h2>{s['close'][0]}</h2>
     <p>{s['close'][1]}</p>
     <div class="markdown-cta">
-      <a class="btn btn-primary" href="{BOOK}">{BOOK_LABEL}</a>
+      <a class="btn btn-primary" href="{main_url(lang, 'contact')}">{home['cta_primary']}</a>
       {demo_link(s['demo'], s['demo_label'])}
     </div>
     </div>
   </section>
 
-  <nav class="pn" aria-label="More case studies">
-    <a class="glass-panel" href="{prev_s['slug']}.html"><small>Previous</small><b>{prev_s['name']}</b></a>
-    <a class="glass-panel next" href="{next_s['slug']}.html"><small>Next</small><b>{next_s['name']}</b></a>
+  <nav class="pn" aria-label="{ui['more_label']}">
+    <a class="glass-panel" href="{site_path(lang, prev_s['slug'] + '.html')}"><small>{ui['previous']}</small><b>{prev_s['name']}</b></a>
+    <a class="glass-panel next" href="{site_path(lang, next_s['slug'] + '.html')}"><small>{ui['next']}</small><b>{next_s['name']}</b></a>
   </nav>
 """
-    return page(f"{s['name']} — Case Study | Perennia", s["desc"], body, VIDEO_SCRIPT, path=f"{s['slug']}.html")
+    title = ui["study_title"].format(name=s["name"])
+    return page(lang, f"{s['slug']}.html", title, s["desc"], body, VIDEO_SCRIPT)
 
 
-def index_page():
+def index_page(lang):
+    content = LANGS[lang]["content"]
+    ui = content.UI
+    home = SITE_COPY["home"][lang]
     cards = []
-    for s in STUDIES:
+    for s in content.STUDIES:
         phase = " phase" if s["slug"] == "perennia" else ""
-        read = "Read the product story" if phase else "Read the case study"
+        href = site_path(lang, f"{s['slug']}.html")
         cards.append(f"""    <article class="glass-panel cs-card{phase}">
       <div class="thumb"><video muted preload="metadata" playsinline src="/promo/{s['slug']}.mp4#t=1" aria-hidden="true"></video></div>
       <div class="cs-card-body">
         <span class="kicker">{s['kicker']}</span>
-        <h2><a href="{s['slug']}.html">{s['name']}</a></h2>
+        <h2><a href="{href}">{s['name']}</a></h2>
         <p class="challenge">{s['challenge']}</p>
         <p class="desc">{s['summary']}</p>
-        <p class="result"><b>Result:</b> {s['result']}</p>
+        <p class="result"><b>{ui['result']}</b> {s['result']}</p>
         <div class="links">
-          <a class="btn btn-primary" href="{s['slug']}.html">{read}</a>
-          {demo_link(s['demo'], 'Live demo')}
+          <a class="btn btn-primary" href="{href}">{ui['read_product'] if phase else ui['read_study']}</a>
+          {demo_link(s['demo'], ui['live_demo'])}
         </div>
       </div>
     </article>""")
-    body = f"""{tagline('Case ', 'Studies', 'Practical software · Real business problems')}
+    body = f"""{tagline(*ui['tagline'])}
   <section class="glass-panel content-shell intro">
     <div class="markdown-content">
-    <blockquote><p>Every project here began with a problem a business could not solve with the tools it had.</p></blockquote>
-    <p>We work from the problem first: how the work actually gets done, where it gets stuck, and what would make the biggest difference. Each case study below follows one engagement from that starting point to a system in daily use — with the promo, the outcome, and a link to the live application.</p>
+    <blockquote><p>{ui['intro_quote']}</p></blockquote>
+    <p>{ui['intro_body']}</p>
     <div class="markdown-cta">
-      <a class="btn btn-primary" href="{BOOK}">{BOOK_LABEL}</a>
-      <a class="btn btn-ghost" href="#work">Browse the case studies</a>
+      <a class="btn btn-primary" href="{main_url(lang, 'contact')}">{home['cta_primary']}</a>
+      <a class="btn btn-ghost" href="#work">{ui['browse']}</a>
     </div>
     </div>
   </section>
 
-  <section class="cs-grid" id="work" aria-label="Case studies">
+  <section class="cs-grid" id="work" aria-label="{ui['grid_label']}">
 {chr(10).join(cards)}
   </section>
 
   <section class="glass-panel content-shell intro">
     <div class="markdown-content">
-    <h2>Have a similar problem?</h2>
-    <p>Tell us where the work is getting stuck. We will tell you honestly whether software is the answer, and what it would take.</p>
+    <h2>{ui['similar_heading']}</h2>
+    <p>{ui['similar_body']}</p>
     <div class="markdown-cta">
-      <a class="btn btn-primary" href="{BOOK}">{BOOK_LABEL}</a>
+      <a class="btn btn-primary" href="{main_url(lang, 'contact')}">{home['cta_primary']}</a>
     </div>
     </div>
   </section>
 """
-    return page(
-        "Case Studies | Perennia",
-        "Perennia case studies: practical software and AI built from real business problems — education, consumer platforms, professional services and manufacturing — from requirements to launch.",
-        body,
-        path="",
-    )
+    return page(lang, "", ui["page_title"], ui["page_desc"], body)
 
 
-def not_found_page():
-    body = f"""{tagline('Page ', 'not found', 'Error 404')}
+def not_found_page(lang):
+    ui = LANGS[lang]["content"].UI
+    body = f"""{tagline(*ui['not_found_tagline'])}
   <section class="glass-panel content-shell intro">
     <div class="markdown-content">
-    <p>The page you were looking for isn't here. It may have moved, or the address may be mistyped.</p>
+    <p>{ui['not_found_body']}</p>
     <div class="markdown-cta">
-      <a class="btn btn-primary" href="/">Browse the case studies</a>
-      <a class="btn btn-ghost" href="{MAIN}/">Go to perennia.org</a>
+      <a class="btn btn-primary" href="{site_path(lang)}">{ui['browse']}</a>
+      <a class="btn btn-ghost" href="{main_url(lang)}">{ui['go_main']}</a>
     </div>
     </div>
   </section>
 """
-    # Served for any missing path (nginx error_page), so links must be
-    # root-relative, and it must never be indexed.
-    html = page("Page not found | Perennia", "This page could not be found.", body, path="404.html", indexable=False)
-    return html.replace('href="style.css"', 'href="/style.css"')
+    # Served for missing paths (nginx error_page), so every link is
+    # root-relative; never indexed.
+    return page(lang, "404.html", ui["not_found_title"], ui["not_found_desc"], body, indexable=False)
 
 
 def sitemap():
-    urls = [f"{SITE}/"] + [f"{SITE}/{s['slug']}.html" for s in STUDIES]
-    items = "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls)
-    return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{items}</urlset>\n'
+    pages = [""] + [f"{s['slug']}.html" for s in content_en.STUDIES]
+    items = "".join(f"  <url><loc>{SITE}{site_path(lang, p)}</loc></url>\n" for p in pages for lang in LANGS)
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{items}</urlset>\n'
+    )
 
 
-(OUT / "index.html").write_text(index_page(), encoding="utf-8")
-for i, s in enumerate(STUDIES):
-    (OUT / f"{s['slug']}.html").write_text(study_page(i, s), encoding="utf-8")
-(OUT / "404.html").write_text(not_found_page(), encoding="utf-8")
-(OUT / "sitemap.xml").write_text(sitemap(), encoding="utf-8")
-(OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
-# Same icon as the main site.
-(OUT / "favicon.svg").write_bytes((ROOT / "public" / "favicon.svg").read_bytes())
-print("wrote", 2 + len(STUDIES), "pages, sitemap.xml, robots.txt, favicon.svg")
+def main():
+    written = 0
+    for lang in LANGS:
+        out = OUT / LANGS[lang]["prefix"]
+        out.mkdir(exist_ok=True)
+        (out / "index.html").write_text(index_page(lang), encoding="utf-8")
+        for i, s in enumerate(LANGS[lang]["content"].STUDIES):
+            (out / f"{s['slug']}.html").write_text(study_page(lang, i), encoding="utf-8")
+        (out / "404.html").write_text(not_found_page(lang), encoding="utf-8")
+        written += 2 + len(content_en.STUDIES)
+    (OUT / "sitemap.xml").write_text(sitemap(), encoding="utf-8")
+    (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
+    # Same icon as the main site.
+    (OUT / "favicon.svg").write_bytes((ROOT / "public" / "favicon.svg").read_bytes())
+    print(f"wrote {written} pages (en + ar), sitemap.xml, robots.txt, favicon.svg")
+
+
+if __name__ == "__main__":
+    main()

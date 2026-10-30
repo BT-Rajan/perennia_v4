@@ -14,6 +14,7 @@
 
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-body: "Syne", system-ui, -apple-system, sans-serif;
+  --font-ar: "Noto Kufi Arabic", "Arial Unicode MS", sans-serif;
 
   --header-h: 64px;
   --content-max: 1180px;
@@ -122,6 +123,27 @@ img, video { max-width: 100%; }
   color: var(--white-soft);
 }
 .top-bar-cta.btn:hover { border-color: var(--gold); color: var(--gold); }
+.top-bar-end { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
+
+/* Language switch (Chip.css / LangToggle on the main site): a link to
+   the same page in the other language. */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  padding: 9px 16px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid color-mix(in srgb, var(--gold) 15%, transparent);
+  color: var(--white-soft);
+  white-space: nowrap;
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+.lang-switch:hover {
+  border-color: color-mix(in srgb, var(--gold) 25%, transparent);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--gold) 15%, transparent);
+}
 
 @media (min-width: 1025px) {
   .top-bar-header { height: 100px; }
@@ -131,6 +153,8 @@ img, video { max-width: 100%; }
 }
 @media (max-width: 767px) {
   .top-bar-header { padding: 0 var(--space-3); height: 56px; }
+  .top-bar-end { gap: var(--space-2); }
+  .lang-switch { padding: 7px 12px; font-size: 0.75rem; }
   .logo-word { font-size: 1.2rem; }
   .top-bar-cta.btn { padding: 8px 14px; font-size: 0.75rem; }
 }
@@ -273,7 +297,7 @@ img, video { max-width: 100%; }
   grid-template-columns: repeat(2, minmax(0, 1fr));
   border-top: 1px solid var(--gold-border);
 }
-.facts div { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-bottom: 1px solid var(--gold-border); }
+.facts div { padding-block: var(--space-3); padding-inline: 0 var(--space-4); border-bottom: 1px solid var(--gold-border); }
 .facts dt { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 .facts dd { color: var(--white-soft); font-weight: 500; line-height: 1.5; margin-top: 2px; }
 
@@ -398,3 +422,24 @@ img, video { max-width: 100%; }
   .pn .next { text-align: start; }
   .site-footer-inner { grid-template-columns: 1fr; gap: var(--space-5); }
 }
+
+/* ── Arabic (dir="rtl"), as the main site does with [dir="rtl"] ── */
+[dir="rtl"] body,
+[dir="rtl"] .btn { font-family: var(--font-ar); }
+[dir="rtl"] .logo-word,
+[dir="rtl"] .content-tagline-main,
+[dir="rtl"] .markdown-content h2,
+[dir="rtl"] .markdown-content h3,
+[dir="rtl"] .cs-card h2,
+[dir="rtl"] .pn b,
+[dir="rtl"] .site-footer-name { font-family: var(--font-ar); font-weight: 600; }
+/* Arabic has no letter case, and tracking breaks joined letters. */
+[dir="rtl"] .content-tagline-sub,
+[dir="rtl"] .facts dt,
+[dir="rtl"] .pn small,
+[dir="rtl"] .cs-card .kicker,
+[dir="rtl"] .site-footer-col h2 { letter-spacing: 0; text-transform: none; }
+[dir="rtl"] .markdown-content blockquote { font-style: normal; }
+[dir="rtl"] .workflow-chain li + li::before { content: "←"; }
+/* The English label on the switch keeps its own direction. */
+.lang-switch[lang="en"] { direction: ltr; }

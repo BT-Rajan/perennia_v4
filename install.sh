@@ -408,8 +408,9 @@ fi
 
 # ----------------------------------------------------------------------------
 # 6b. apps.perennia.org static site (apps-site/ -> APPS_WEBROOT)
-#     Copies the top-level files of apps-site/ over the apps webroot. It
-#     never deletes anything there, and never touches promo/ or .well-known/.
+#     Copies the top-level files of apps-site/ and its ar/ folder (the
+#     Arabic pages) over the apps webroot. It never deletes anything there,
+#     never touches promo/ or .well-known/, and never copies source/.
 #     Set APPS_WEBROOT to override, or APPS_WEBROOT="" to skip.
 # ----------------------------------------------------------------------------
 
@@ -421,7 +422,9 @@ elif [[ ! -d "$APPS_WEBROOT" ]]; then
 else
     log "Deploying apps-site/ to $APPS_WEBROOT"
     find "$ROOT_DIR/apps-site" -maxdepth 1 -type f -print0 | xargs -0 -r -I{} cp -f {} "$APPS_WEBROOT"/
-    log "Apps site updated: $(find "$ROOT_DIR/apps-site" -maxdepth 1 -type f | wc -l) files"
+    mkdir -p "$APPS_WEBROOT/ar"
+    find "$ROOT_DIR/apps-site/ar" -maxdepth 1 -type f -print0 | xargs -0 -r -I{} cp -f {} "$APPS_WEBROOT/ar"/
+    log "Apps site updated: $(find "$ROOT_DIR/apps-site" "$ROOT_DIR/apps-site/ar" -maxdepth 1 -type f | wc -l) files (English and Arabic)"
 fi
 
 # ----------------------------------------------------------------------------
