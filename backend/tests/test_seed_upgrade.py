@@ -40,3 +40,28 @@ def test_unedited_body_is_upgraded_and_edited_body_is_kept(monkeypatch):
         assert t["en"]["body_markdown"] == seed._read_md("en", "services")   # unedited: upgraded
         assert "/software-development" in t["en"]["body_markdown"]
         assert t["ar"]["body_markdown"] == "edited by an admin"               # edited: kept
+
+
+def test_homepage_headline_upgrades_as_a_pair_and_keeps_edits():
+    from app.settings_registry import get_def
+    from app.settings_service import get_setting, set_many
+
+    seed = _load_seed()
+    old = {lang: {f: next(iter(v)) for f, v in fields.items()} for lang, fields in seed.PREVIOUS_COPY["copy.home"].items()}
+    saved = {lang: dict(get_def("copy.home").default[lang]) for lang in ("en", "ar")}
+    for lang in ("en", "ar"):
+        saved[lang].update(old[lang])
+    saved["en"]["tagline_line1"] = "Our own headline"          # an admin edit
+    with session_scope() as db:
+        set_many(db, {"copy.home": saved}, actor_id=None, actor_username="test")
+
+    seed.main()
+
+    new = get_def("copy.home").default
+    with session_scope() as db:
+        home = get_setting(db, "copy.home")
+    assert home["en"]["tagline_line1"] == "Our own headline"            # edit kept…
+    assert home["en"]["tagline_line2"] == old["en"]["tagline_line2"]    # …with its own second line
+    assert home["en"]["supporting_text"] == new["en"]["supporting_text"]
+    assert home["ar"]["tagline_line1"] == new["ar"]["tagline_line1"]    # untouched: upgraded
+    assert home["ar"]["tagline_line2"] == new["ar"]["tagline_line2"]

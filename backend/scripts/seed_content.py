@@ -14,6 +14,7 @@ override, so it never clobbers an admin's edits.
 """
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import sys
@@ -25,7 +26,7 @@ from app.db import Base, engine, session_scope
 from app.models import ContentPage, FaqItem, SiteSetting
 from app import content_service
 from app.settings_registry import get_def
-from app.settings_service import set_many
+from app.settings_service import get_setting, set_many
 
 FRONTEND_CONTENT_DIR = Path(__file__).resolve().parent.parent.parent / "src" / "content"
 
@@ -64,6 +65,53 @@ PREVIOUS_BODIES = {
 
 def _body_hash(text: str) -> str:
     return hashlib.sha256(text.replace("\r\n", "\n").strip().encode("utf-8")).hexdigest()
+
+
+# Copy fields earlier versions of this repo shipped. A saved value that is
+# still exactly one of these was never edited, so on deploy it is updated
+# to the current default; edited values are kept.
+PREVIOUS_COPY = {
+    # Homepage headline and supporting line, before the search keywords.
+    "copy.home": {
+        "en": {
+            "tagline_line1": {"Technology that moves"},
+            "tagline_line2": {"your business forward."},
+            "supporting_text": {"Perennia helps GCC businesses adopt, build and scale technology — from their first digital initiative to practical AI and larger-scale transformation."},
+        },
+        "ar": {
+            "tagline_line1": {"تقنية تدفع"},
+            "tagline_line2": {"أعمالك إلى الأمام."},
+            "supporting_text": {"تساعد بيرينيا الشركات في دول الخليج على تبنّي التقنية وبنائها وتوسيعها — من أول مبادرة رقمية إلى الذكاء الاصطناعي العملي والتحول على نطاق أوسع."},
+        },
+    },
+}
+
+
+# Fields that read as one sentence: updated together or not at all, so an
+# edited first line never ends up next to a new second line.
+COPY_FIELD_GROUPS = (("tagline_line1", "tagline_line2"),)
+
+
+def _upgrade_copy(key: str, saved: dict) -> list[str]:
+    """Update, in place, fields of a saved copy blob still holding a
+    previously shipped value. Returns what changed / was kept."""
+    default = get_def(key).default
+    report = []
+    for lang, fields in PREVIOUS_COPY.get(key, {}).items():
+        blob = saved.setdefault(lang, {})
+        new = default.get(lang, {})
+        groups = [g for g in COPY_FIELD_GROUPS if set(g) <= set(fields)]
+        groups += [(f,) for f in fields if not any(f in g for g in groups)]
+        for group in groups:
+            if all(blob.get(f) == new.get(f) for f in group):
+                continue  # already current
+            if all(blob.get(f) in fields[f] and new.get(f) for f in group):
+                for f in group:
+                    blob[f] = new[f]
+                report.append(f"updated {lang}.{'+'.join(group)}")
+            else:
+                report.append(f"kept edited {lang}.{'+'.join(group)}")
+    return report
 
 
 # Copy blobs: their registry defaults, which are read from
@@ -137,11 +185,15 @@ def main() -> None:
         for key in COPY_KEYS:
             if db.get(SiteSetting, key) is None:
                 to_set[key] = get_def(key).default
-            else:
-                print(f"Setting '{key}' already overridden — skipping.")
+                continue
+            saved = copy.deepcopy(get_setting(db, key) or {})
+            report = _upgrade_copy(key, saved)
+            if any(r.startswith("updated") for r in report):
+                to_set[key] = saved
+            print(f"Setting '{key}' already overridden — {', '.join(report) if report else 'skipping'}.")
         if to_set:
             set_many(db, to_set, actor_id=None, actor_username="seed_script")
-            print(f"Seeded copy blobs: {list(to_set)}.")
+            print(f"Saved copy blobs: {list(to_set)}.")
 
         # --- contact phone: fill in if still empty ---
         phone = db.get(SiteSetting, "contact.phone")
