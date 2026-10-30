@@ -124,6 +124,8 @@ canonical, share tags, favicon, sitemap, robots and 404 page.
 | 5.9 | Phone links dial correctly | 🔧 | ✅ | Main footer used `tel:+965 9933 1344` (spaces); now `tel:+96599331344`, like the Contact page. |
 | 5.10 | Back button and deep links | ✅ | ✅ | Back after in-app navigation returns to the previous page; `/labs` loads directly. |
 | 5.11 | Language switch | 🔧 | — | The AR/EN choice reverted to the browser language on every reload or new tab; it is now remembered (`localStorage`). Toggle → reload → still Arabic, verified. |
+| 5.12 | Logo, header menu, chatbot and footer the same on every page, both languages, both sites | ✅ | 🔧 | Checked on all 9 main and 7 apps pages × EN/AR × 1440/390 px: each is identical across pages, and main and apps match. The apps site used a text logo, had no Home icon, **no menu at all on phones** and no chatbot; it now has the main site's logo image, Home icon, phone menu drawer (Home, sections, Book; closes on Escape) and floating AI Assistant + booking buttons, which open the main site's chat or booking (`?open=chat` / `?open=booking`) in the same language. |
+| 5.13 | Mobile friendly | ✅ | 🔧 | Both sites at 390 px: no horizontal scroll, no text under 12 px (small labels were 11 px), every tap target at least 24 px (the apps footer links and the Contact page phone link were 15–17 px). |
 
 ## 6. Accessibility
 

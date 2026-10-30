@@ -41,6 +41,33 @@ FONTS = {
           "&family=Noto+Kufi+Arabic:wght@400;500;600;700",
 }
 BRAND = {"en": "Perennia", "ar": "بيرينيا"}
+# The main site's logo (branding.logo_url default), copied in by main().
+LOGO = "perennia-logo.png"
+
+HOME_ICON = (
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" '
+    'stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9a1 1 0 '
+    '0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h2.5a1 1 0 0 0 1-1v-9"/></svg>'
+)
+CALENDAR_ICON = (
+    '<svg class="sticky-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/>'
+    '<line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'
+)
+CHAT_ICON = (
+    '<svg class="sticky-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'
+)
+# Mobile menu: toggles the drawer, closes on outside tap, Escape or a link.
+MENU_SCRIPT = (
+    '<script>(function(){var t=document.querySelector(".nav-mobile-toggle"),d=document.getElementById("nav-mobile-drawer"),'
+    'b=document.querySelector(".nav-mobile-backdrop");if(!t)return;function s(o){t.classList.toggle("is-open",o);'
+    'd.classList.toggle("is-open",o);b.classList.toggle("is-open",o);t.setAttribute("aria-expanded",o);'
+    't.setAttribute("aria-label",o?t.dataset.close:t.dataset.open)}t.addEventListener("click",function(){'
+    's(!t.classList.contains("is-open"))});b.addEventListener("click",function(){s(false)});'
+    'document.addEventListener("keydown",function(e){if(e.key==="Escape")s(false)})})();</script>\n'
+)
 
 LANGS = {
     "en": dict(dir="ltr", prefix="", content=content_en, other="ar", locale="en_US"),
@@ -85,10 +112,17 @@ def fill_tokens(html, lang):
 def page(lang, page_path, title, desc, body, script="", indexable=True):
     other = LANGS[lang]["other"]
     home, common = SITE_COPY["home"][lang], SITE_COPY["common"][lang]
+    chat, booking = SITE_COPY["chat"][lang], SITE_COPY["booking"][lang]
     index = site_path(lang)
     current = ' aria-current="page"'
-    nav_html = "\n".join(
+    go_home = common["go_home"]
+    nav_html = f'      <a class="nav-menu-home" href="{main_url(lang)}" title="{go_home}" aria-label="{go_home}">{HOME_ICON}</a>\n'
+    nav_html += "\n".join(
         f'      <a href="{href}"{current if href == index else ""}>{label}</a>' for label, href in nav(lang)
+    )
+    drawer_html = f'    <a class="nav-mobile-link nav-mobile-home" href="{main_url(lang)}">{HOME_ICON}<span>{go_home}</span></a>\n'
+    drawer_html += "\n".join(
+        f'    <a class="nav-mobile-link" href="{href}"{current if href == index else ""}>{label}</a>' for label, href in nav(lang)
     )
     explore = "\n".join(f'        <li><a href="{href}">{label}</a></li>' for label, href in nav(lang))
     legal = "".join(
@@ -129,17 +163,30 @@ def page(lang, page_path, title, desc, body, script="", indexable=True):
 </head>
 <body>
 <header class="top-bar-header">
-  <a class="logo-word" href="{main_url(lang)}">{BRAND[lang]}</a>
+  <a class="logo" href="{main_url(lang)}" aria-label="{go_home}"><img class="logo-img" src="/{LOGO}" alt="{BRAND[lang]} logo"></a>
   <div class="top-bar-center">
     <nav class="nav-menu" aria-label="{common['primary_nav']}">
 {nav_html}
     </nav>
+    <button type="button" class="nav-mobile-toggle" aria-expanded="false" aria-controls="nav-mobile-drawer" aria-label="{common['quick_menu']}" data-open="{common['quick_menu']}" data-close="{common['close']}">
+      <span class="nav-mobile-toggle-bar"></span><span class="nav-mobile-toggle-bar"></span><span class="nav-mobile-toggle-bar"></span>
+    </button>
   </div>
   <div class="top-bar-end">
     <a class="top-bar-cta btn btn-ghost" href="{main_url(lang, 'contact')}">{home['cta_primary']}</a>
     <a class="lang-switch" href="{site_path(other, page_path)}" hreflang="{other}" lang="{other}">{home['lang_switch']}</a>
   </div>
 </header>
+<div class="nav-mobile-backdrop" aria-hidden="true"></div>
+<nav id="nav-mobile-drawer" class="nav-mobile-drawer" aria-label="{common['primary_nav']}">
+{drawer_html}
+    <div class="nav-mobile-cta"><a class="btn btn-primary" href="{main_url(lang, 'contact')}">{home['cta_primary']}</a></div>
+</nav>
+
+<div class="sticky-actions">
+  <a class="sticky-btn sticky-booking" href="{main_url(lang)}&amp;open=booking" aria-label="{booking['title']}" title="{booking['title']}">{CALENDAR_ICON}</a>
+  <a class="sticky-btn sticky-chat" href="{main_url(lang)}&amp;open=chat" aria-label="{chat['header']}" title="{chat['header']}"><span class="sticky-online" aria-hidden="true"></span>{CHAT_ICON}<span class="sticky-label">{chat['header']}</span></a>
+</div>
 
 <div class="content-page">
 <main class="content-main">
@@ -167,7 +214,7 @@ def page(lang, page_path, title, desc, body, script="", indexable=True):
   <p class="site-footer-legal">© {date.today().year} {BRAND[lang]}. {common['footer_rights']}{legal}</p>
 </footer>
 </div>
-{script}</body>
+{MENU_SCRIPT}{script}</body>
 </html>
 """
     return fill_tokens(html, lang)
@@ -324,9 +371,10 @@ def main():
         written += 2 + len(content_en.STUDIES)
     (OUT / "sitemap.xml").write_text(sitemap(), encoding="utf-8")
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
-    # Same icon as the main site.
+    # Same icon and logo as the main site.
     (OUT / "favicon.svg").write_bytes((ROOT / "public" / "favicon.svg").read_bytes())
-    print(f"wrote {written} pages (en + ar), sitemap.xml, robots.txt, favicon.svg")
+    (OUT / LOGO).write_bytes((ROOT / "public" / "static" / LOGO).read_bytes())
+    print(f"wrote {written} pages (en + ar), sitemap.xml, robots.txt, favicon.svg, {LOGO}")
 
 
 if __name__ == "__main__":
