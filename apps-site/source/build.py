@@ -25,6 +25,9 @@ HOME = SITE_COPY["home"]["en"]
 COMMON = SITE_COPY["common"]["en"]
 
 MAIN = "https://perennia.org"
+SITE = "https://apps.perennia.org"
+# Link previews use the main site's share image (1200×630).
+OG_IMAGE = f"{MAIN}/static/og-image.png"
 BOOK = f"{MAIN}/contact"
 BOOK_LABEL = HOME["cta_primary"]
 # Same default as contact.phone in backend/app/settings_registry.py.
@@ -40,14 +43,14 @@ def main_url(slug):
 # "Work" is the case-study index.
 NAV = [(p["en"]["nav_label"], main_url(p["slug"])) for p in PAGES if p["show_in_nav"]]
 _at = next((i + 1 for i, p in enumerate(PAGES) if p["slug"] == "services"), 0)
-NAV.insert(_at, ("Work", "index.html"))
+NAV.insert(_at, ("Work", "/"))
 LEGAL = [(p["en"]["nav_label"], main_url(p["slug"])) for p in PAGES if p["slug"] in ("privacy", "terms")]
 
 
 def nav_links(indent):
     current = ' aria-current="page"'
     return "\n".join(
-        f'{indent}<a href="{href}"{current if href == "index.html" else ""}>{label}</a>' for label, href in NAV
+        f'{indent}<a href="{href}"{current if href == "/" else ""}>{label}</a>' for label, href in NAV
     )
 
 
@@ -59,8 +62,16 @@ HEAD = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="{desc}">
+<link rel="canonical" href="{url}">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="robots" content="{robots}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Perennia">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="{og_image}">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#07060a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -126,10 +137,11 @@ VIDEO_SCRIPT = (
 )
 
 
-def page(title, desc, body, script=""):
+def page(title, desc, body, script="", path="", indexable=True):
     return (
         HEAD.format(title=escape(title), desc=escape(desc), main=MAIN, book=BOOK, book_label=BOOK_LABEL,
-                    nav=nav_links("      "))
+                    nav=nav_links("      "), url=f"{SITE}/{path}", og_image=OG_IMAGE,
+                    robots="index, follow" if indexable else "noindex")
         + body
         + FOOT.format(script=script)
     )
@@ -137,7 +149,7 @@ def page(title, desc, body, script=""):
 
 def tagline(line1, line2, sub):
     return f"""  <div class="content-tagline">
-    <div class="content-tagline-main"><span>{line1}</span><span class="gold">{line2}</span></div>
+    <h1 class="content-tagline-main"><span>{line1}</span><span class="gold">{line2}</span></h1>
     <div class="content-tagline-divider"></div>
     <div class="content-tagline-sub">{sub}</div>
   </div>
@@ -387,7 +399,7 @@ def study_page(i, s):
     next_s = STUDIES[(i + 1) % len(STUDIES)]
     facts = "\n".join(f"      <div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in s["facts"])
     sections = "\n".join(f"    <h2>{h}</h2>{body}" for h, body in s["sections"])
-    body = f"""  <p class="crumb"><a href="index.html">Case Studies</a> / {s['name']}</p>
+    body = f"""  <p class="crumb"><a href="/">Case Studies</a> / {s['name']}</p>
 {tagline(s['line1'], s['line2'], 'Case study · ' + s['sector'])}
   <section class="glass-panel content-shell">
     <div class="markdown-content">
@@ -418,7 +430,7 @@ def study_page(i, s):
     <a class="glass-panel next" href="{next_s['slug']}.html"><small>Next</small><b>{next_s['name']}</b></a>
   </nav>
 """
-    return page(f"{s['name']} — Case Study | Perennia", s["desc"], body, VIDEO_SCRIPT)
+    return page(f"{s['name']} — Case Study | Perennia", s["desc"], body, VIDEO_SCRIPT, path=f"{s['slug']}.html")
 
 
 def index_page():
@@ -470,10 +482,40 @@ def index_page():
         "Case Studies | Perennia",
         "Perennia case studies: practical software and AI built from real business problems — education, consumer platforms, professional services and manufacturing — from requirements to launch.",
         body,
+        path="",
     )
+
+
+def not_found_page():
+    body = f"""{tagline('Page ', 'not found', 'Error 404')}
+  <section class="glass-panel content-shell intro">
+    <div class="markdown-content">
+    <p>The page you were looking for isn't here. It may have moved, or the address may be mistyped.</p>
+    <div class="markdown-cta">
+      <a class="btn btn-primary" href="/">Browse the case studies</a>
+      <a class="btn btn-ghost" href="{MAIN}/">Go to perennia.org</a>
+    </div>
+    </div>
+  </section>
+"""
+    # Served for any missing path (nginx error_page), so links must be
+    # root-relative, and it must never be indexed.
+    html = page("Page not found | Perennia", "This page could not be found.", body, path="404.html", indexable=False)
+    return html.replace('href="style.css"', 'href="/style.css"')
+
+
+def sitemap():
+    urls = [f"{SITE}/"] + [f"{SITE}/{s['slug']}.html" for s in STUDIES]
+    items = "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls)
+    return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{items}</urlset>\n'
 
 
 (OUT / "index.html").write_text(index_page(), encoding="utf-8")
 for i, s in enumerate(STUDIES):
     (OUT / f"{s['slug']}.html").write_text(study_page(i, s), encoding="utf-8")
-print("wrote", 1 + len(STUDIES), "pages")
+(OUT / "404.html").write_text(not_found_page(), encoding="utf-8")
+(OUT / "sitemap.xml").write_text(sitemap(), encoding="utf-8")
+(OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
+# Same icon as the main site.
+(OUT / "favicon.svg").write_bytes((ROOT / "public" / "favicon.svg").read_bytes())
+print("wrote", 2 + len(STUDIES), "pages, sitemap.xml, robots.txt, favicon.svg")

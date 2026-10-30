@@ -211,8 +211,7 @@ img, video { max-width: 100%; }
 .content-tagline-sub { font-size: var(--fs-sub); letter-spacing: 0.12em; color: var(--muted-strong); text-transform: uppercase; }
 
 .crumb { font-size: var(--fs-sm); color: var(--muted); }
-.crumb a { color: var(--gold); }
-.crumb a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.crumb a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
 
 /* GlassPanel.css */
 .glass-panel {
