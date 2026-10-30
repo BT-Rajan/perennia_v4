@@ -6,7 +6,6 @@ Ready to start a conversation? Use the button below to book time directly with o
 
 - **Book a 30-Minute Discovery Meeting** — a conversation about your business, the problem and the outcome you want. Pick a time below and we'll confirm by email.
 - **Chat with our assistant** — available around the clock for quick questions.
-- **Email** — reach out any time and we'll get back to you within one business day.
 
 ## Where we work
 
