@@ -8,7 +8,9 @@
       "section_body": "Technology, AI and Advisory — three connected capabilities, built around how your business actually works.",
       "tagline_line1": "What We ",
       "tagline_line2": "Do",
-      "tagline_sub": "SOLUTIONS"
+      "tagline_sub": "SOLUTIONS",
+      "seo_title": "IT Solutions in Kuwait: Software, AI & IT Strategy | Perennia",
+      "seo_description": "Technology, AI and advisory for businesses in Kuwait and the GCC: custom software development, AI implementation and IT strategy, built around how you work."
     },
     "ar": {
       "nav_label": "الحلول",
@@ -16,7 +18,81 @@
       "section_body": "التقنية والذكاء الاصطناعي والاستشارات — ثلاث قدرات مترابطة، مبنية حول طريقة عمل أعمالك فعليًا.",
       "tagline_line1": "ماذا ",
       "tagline_line2": "نقدّم",
-      "tagline_sub": "الحلول"
+      "tagline_sub": "الحلول",
+      "seo_title": "حلول تقنية المعلومات في الكويت: برمجيات وذكاء اصطناعي | بيرينيا",
+      "seo_description": "التقنية والذكاء الاصطناعي والاستشارات للشركات في الكويت ودول الخليج: تطوير برمجيات مخصصة، وتطبيق الذكاء الاصطناعي، واستراتيجية تقنية المعلومات."
+    }
+  },
+  {
+    "slug": "software-development",
+    "show_in_nav": false,
+    "en": {
+      "nav_label": "Software Development",
+      "section_title": "Custom Software Development in Kuwait",
+      "section_body": "Custom ERP, business systems, portals and apps built around how your business works, for companies in Kuwait and the GCC.",
+      "tagline_line1": "Custom Software ",
+      "tagline_line2": "Development",
+      "tagline_sub": "KUWAIT · GCC",
+      "seo_title": "Custom Software Development Company in Kuwait | Perennia",
+      "seo_description": "Perennia builds custom software in Kuwait: ERP systems, business platforms, portals and mobile apps in Arabic and English, delivered in weeks, not years."
+    },
+    "ar": {
+      "nav_label": "تطوير البرمجيات",
+      "section_title": "تطوير البرمجيات المخصصة في الكويت",
+      "section_body": "أنظمة ERP وأنظمة أعمال وبوابات وتطبيقات مخصصة مبنية حول طريقة عمل شركتك، للشركات في الكويت ودول الخليج.",
+      "tagline_line1": "تطوير البرمجيات ",
+      "tagline_line2": "المخصصة",
+      "tagline_sub": "الكويت · دول الخليج",
+      "seo_title": "شركة تطوير برمجيات مخصصة في الكويت | بيرينيا",
+      "seo_description": "تبني بيرينيا برمجيات مخصصة في الكويت: أنظمة ERP ومنصات أعمال وبوابات وتطبيقات جوال بالعربية والإنجليزية، تُسلَّم خلال أسابيع لا سنوات."
+    }
+  },
+  {
+    "slug": "ai-implementation",
+    "show_in_nav": false,
+    "en": {
+      "nav_label": "AI Implementation",
+      "section_title": "AI Implementation in Kuwait",
+      "section_body": "Practical AI built into your business: AI assistants, AI inside business applications and intelligent workflows, for Kuwait and the GCC.",
+      "tagline_line1": "AI ",
+      "tagline_line2": "Implementation",
+      "tagline_sub": "KUWAIT · GCC",
+      "seo_title": "AI Implementation & AI Solutions Company in Kuwait | Perennia",
+      "seo_description": "Perennia is an AI company in Kuwait: bilingual AI assistants, AI inside your business applications and intelligent workflows, built and supported by one team."
+    },
+    "ar": {
+      "nav_label": "تطبيق الذكاء الاصطناعي",
+      "section_title": "تطبيق الذكاء الاصطناعي في الكويت",
+      "section_body": "ذكاء اصطناعي عملي مدمج في عملك: مساعدون أذكياء، وذكاء اصطناعي داخل تطبيقات الأعمال، وسير عمل ذكي، في الكويت ودول الخليج.",
+      "tagline_line1": "تطبيق ",
+      "tagline_line2": "الذكاء الاصطناعي",
+      "tagline_sub": "الكويت · دول الخليج",
+      "seo_title": "شركة ذكاء اصطناعي في الكويت: تطبيق وحلول | بيرينيا",
+      "seo_description": "بيرينيا شركة ذكاء اصطناعي في الكويت: مساعدون أذكياء بالعربية والإنجليزية، وذكاء اصطناعي داخل تطبيقات أعمالك، وسير عمل ذكي، يبنيها ويدعمها فريق واحد."
+    }
+  },
+  {
+    "slug": "it-strategy",
+    "show_in_nav": false,
+    "en": {
+      "nav_label": "IT Strategy",
+      "section_title": "IT Strategy and Technology Consulting in Kuwait",
+      "section_body": "Decide what technology your business needs, in what order and at what cost, with a realistic roadmap for Kuwait and the GCC.",
+      "tagline_line1": "IT ",
+      "tagline_line2": "Strategy",
+      "tagline_sub": "KUWAIT · GCC",
+      "seo_title": "IT Strategy & Technology Consulting in Kuwait | Perennia",
+      "seo_description": "IT strategy and technology consulting in Kuwait: map your processes, decide build vs buy, assess AI readiness and get a realistic roadmap with costs."
+    },
+    "ar": {
+      "nav_label": "استراتيجية تقنية المعلومات",
+      "section_title": "استراتيجية تقنية المعلومات والاستشارات التقنية في الكويت",
+      "section_body": "حدّد التقنية التي يحتاجها عملك، وبأي ترتيب، وبأي تكلفة، مع خارطة طريق واقعية للكويت ودول الخليج.",
+      "tagline_line1": "استراتيجية ",
+      "tagline_line2": "تقنية المعلومات",
+      "tagline_sub": "الكويت · دول الخليج",
+      "seo_title": "استراتيجية تقنية المعلومات والاستشارات في الكويت | بيرينيا",
+      "seo_description": "استراتيجية تقنية المعلومات والاستشارات التقنية في الكويت: رسم عملياتك، وقرار البناء أو الشراء، والجاهزية للذكاء الاصطناعي، وخارطة طريق واقعية بالتكاليف."
     }
   },
   {
@@ -28,7 +104,9 @@
       "section_body": "Business platforms, booking systems, automation workflows and AI assistants — tuned to how your team actually works.",
       "tagline_line1": "What We ",
       "tagline_line2": "Build",
-      "tagline_sub": "PRODUCTS & PLATFORMS"
+      "tagline_sub": "PRODUCTS & PLATFORMS",
+      "seo_title": "AI Assistants, Booking Systems & Business Software | Perennia",
+      "seo_description": "Bilingual AI assistants, booking systems, automation workflows and custom business platforms for companies in Kuwait and the GCC."
     },
     "ar": {
       "nav_label": "المنتجات",
@@ -36,7 +114,9 @@
       "section_body": "منصات أعمال، وأنظمة حجز، وأتمتة سير العمل، ومساعدون بالذكاء الاصطناعي — مصممة لتناسب طريقة عمل فريقك فعليًا.",
       "tagline_line1": "ماذا ",
       "tagline_line2": "نبني",
-      "tagline_sub": "المنتجات والمنصات"
+      "tagline_sub": "المنتجات والمنصات",
+      "seo_title": "مساعدون أذكياء وأنظمة حجز وبرمجيات أعمال | بيرينيا",
+      "seo_description": "مساعدون أذكياء بالعربية والإنجليزية، وأنظمة حجز، وأتمتة سير العمل، ومنصات أعمال مخصصة للشركات في الكويت ودول الخليج."
     }
   },
   {
@@ -48,7 +128,9 @@
       "section_body": "Experiments and free AI utilities, kept separate from client work and products.",
       "tagline_line1": "Perennia ",
       "tagline_line2": "Labs",
-      "tagline_sub": "EXPERIMENTS & OPEN WORK"
+      "tagline_sub": "EXPERIMENTS & OPEN WORK",
+      "seo_title": "Perennia Labs: Free AI Tools & Experiments",
+      "seo_description": "Free, practical AI utilities and experiments from Perennia, a Kuwait-based AI and software company, released through GitHub."
     },
     "ar": {
       "nav_label": "المختبر",
@@ -56,7 +138,9 @@
       "section_body": "تجارب وأدوات ذكاء اصطناعي مجانية، منفصلة عن أعمال العملاء والمنتجات.",
       "tagline_line1": "مختبر ",
       "tagline_line2": "بيرينيا",
-      "tagline_sub": "تجارب وأعمال مفتوحة"
+      "tagline_sub": "تجارب وأعمال مفتوحة",
+      "seo_title": "مختبر بيرينيا: أدوات ذكاء اصطناعي مجانية وتجارب",
+      "seo_description": "أدوات ذكاء اصطناعي عملية ومجانية وتجارب من بيرينيا، شركة الذكاء الاصطناعي والبرمجيات في الكويت، تُنشر عبر GitHub."
     }
   },
   {
@@ -68,7 +152,9 @@
       "section_body": "Perennia is a Kuwait-based technology company. We help businesses adopt, build and scale technology — using AI where it makes business sense — from first conversation through to production support.",
       "tagline_line1": "Who We ",
       "tagline_line2": "Are",
-      "tagline_sub": "PRACTICAL AI · AFFORDABLE INNOVATION"
+      "tagline_sub": "PRACTICAL AI · AFFORDABLE INNOVATION",
+      "seo_title": "About Perennia: AI & Software Company in Kuwait",
+      "seo_description": "Perennia is a Kuwait-based technology company combining software, automation and AI to solve real business problems, backed by 28 years of enterprise experience."
     },
     "ar": {
       "nav_label": "من نحن",
@@ -76,7 +162,9 @@
       "section_body": "بيرينيا شركة تقنية مقرّها الكويت. نساعد الشركات على تبنّي التقنية وبنائها وتوسيعها — مع استخدام الذكاء الاصطناعي حيث يكون منطقيًا للأعمال — من المحادثة الأولى وحتى الدعم في التشغيل.",
       "tagline_line1": "من ",
       "tagline_line2": "نحن",
-      "tagline_sub": "ذكاء اصطناعي عملي · ابتكار في المتناول"
+      "tagline_sub": "ذكاء اصطناعي عملي · ابتكار في المتناول",
+      "seo_title": "عن بيرينيا: شركة ذكاء اصطناعي وبرمجيات في الكويت",
+      "seo_description": "بيرينيا شركة تقنية مقرّها الكويت تجمع بين البرمجيات والأتمتة والذكاء الاصطناعي لحل مشكلات الأعمال الحقيقية، بدعم 28 عامًا من الخبرة المؤسسية."
     }
   },
   {
@@ -88,7 +176,9 @@
       "section_body": "Ready to talk? Use \"Book a 30-Minute Discovery Meeting\" to pick a time directly, or start a chat below and our assistant will connect you with the right person.",
       "tagline_line1": "Let's ",
       "tagline_line2": "Talk",
-      "tagline_sub": "GET IN TOUCH"
+      "tagline_sub": "GET IN TOUCH",
+      "seo_title": "Contact Perennia: Software & AI Company in Kuwait",
+      "seo_description": "Book a free 30-minute discovery meeting with Perennia, a software development and AI company in Kuwait, or chat with our assistant."
     },
     "ar": {
       "nav_label": "تواصل معنا",
@@ -96,7 +186,9 @@
       "section_body": "جاهز للتحدث؟ استخدم \"احجز اجتماعًا استكشافيًا لمدة 30 دقيقة\" لاختيار موعد مباشرة، أو ابدأ محادثة أدناه وسيقوم مساعدنا بتوصيلك بالشخص المناسب.",
       "tagline_line1": "لنتحدث",
       "tagline_line2": "",
-      "tagline_sub": "تواصل معنا"
+      "tagline_sub": "تواصل معنا",
+      "seo_title": "تواصل مع بيرينيا: شركة برمجيات وذكاء اصطناعي في الكويت",
+      "seo_description": "احجز اجتماعًا استكشافيًا مجانيًا مدته 30 دقيقة مع بيرينيا، شركة تطوير البرمجيات والذكاء الاصطناعي في الكويت، أو تحدّث مع مساعدنا."
     }
   },
   {
@@ -108,7 +200,9 @@
       "section_body": "A manufacturing ERP built around one business's operational workflow.",
       "tagline_line1": "JDK Factory ",
       "tagline_line2": "ERP",
-      "tagline_sub": "CASE STUDY · MANUFACTURING"
+      "tagline_sub": "CASE STUDY · MANUFACTURING",
+      "seo_title": "Manufacturing ERP Case Study, Kuwait: JDK Factory ERP | Perennia",
+      "seo_description": "How Perennia built a custom manufacturing ERP for a Kuwait business: sales, procurement, inventory, production, delivery and payment in one connected workflow."
     },
     "ar": {
       "nav_label": "نظام ERP لمصنع JDK",
@@ -116,7 +210,9 @@
       "section_body": "نظام ERP للتصنيع مبني حول سير العمل التشغيلي لشركة واحدة.",
       "tagline_line1": "نظام ERP ",
       "tagline_line2": "لمصنع JDK",
-      "tagline_sub": "دراسة حالة · التصنيع"
+      "tagline_sub": "دراسة حالة · التصنيع",
+      "seo_title": "دراسة حالة ERP للتصنيع في الكويت: نظام مصنع JDK | بيرينيا",
+      "seo_description": "كيف بنت بيرينيا نظام ERP مخصصًا للتصنيع لشركة في الكويت: المبيعات والمشتريات والمخزون والإنتاج والتسليم والدفع في سير عمل واحد."
     }
   },
   {
@@ -128,7 +224,9 @@
       "section_body": "How we collect, use and protect your information.",
       "tagline_line1": "Privacy ",
       "tagline_line2": "Policy",
-      "tagline_sub": "LEGAL"
+      "tagline_sub": "LEGAL",
+      "seo_title": "Privacy Policy | Perennia",
+      "seo_description": "How Perennia collects, uses and protects your information."
     },
     "ar": {
       "nav_label": "سياسة الخصوصية",
@@ -136,7 +234,9 @@
       "section_body": "كيف نجمع معلوماتك ونستخدمها ونحميها.",
       "tagline_line1": "سياسة ",
       "tagline_line2": "الخصوصية",
-      "tagline_sub": "قانوني"
+      "tagline_sub": "قانوني",
+      "seo_title": "سياسة الخصوصية | بيرينيا",
+      "seo_description": "كيف تجمع بيرينيا معلوماتك وتستخدمها وتحميها."
     }
   },
   {
@@ -148,7 +248,9 @@
       "section_body": "The terms for using this website.",
       "tagline_line1": "Terms of ",
       "tagline_line2": "Use",
-      "tagline_sub": "LEGAL"
+      "tagline_sub": "LEGAL",
+      "seo_title": "Terms of Use | Perennia",
+      "seo_description": "The terms for using the Perennia website."
     },
     "ar": {
       "nav_label": "شروط الاستخدام",
@@ -156,7 +258,9 @@
       "section_body": "شروط استخدام هذا الموقع.",
       "tagline_line1": "شروط ",
       "tagline_line2": "الاستخدام",
-      "tagline_sub": "قانوني"
+      "tagline_sub": "قانوني",
+      "seo_title": "شروط الاستخدام | بيرينيا",
+      "seo_description": "شروط استخدام موقع بيرينيا."
     }
   }
 ]

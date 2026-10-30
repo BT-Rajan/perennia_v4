@@ -39,6 +39,10 @@ PAGE_FIELDS: list[FieldDef] = [
     FieldDef("tagline_line2", "Page header — line 2 (accent)", required=False),
     FieldDef("tagline_sub", "Page header — subtitle", required=False),
     FieldDef("body_markdown", "Full page body (Markdown)", required=True, multiline=True),
+    # Search engines: the page's <title> and meta description. Empty falls
+    # back to section_title / section_body (see app/seo_render.py).
+    FieldDef("seo_title", "Search title (about 60 characters)", required=False),
+    FieldDef("seo_description", "Search description (about 155 characters)", required=False, multiline=True),
 ]
 
 FAQ_FIELDS: list[FieldDef] = [

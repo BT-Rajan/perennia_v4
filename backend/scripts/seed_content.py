@@ -35,6 +35,10 @@ FRONTEND_CONTENT_DIR = Path(__file__).resolve().parent.parent.parent / "src" / "
 PAGES = json.loads((FRONTEND_CONTENT_DIR / "pages.json").read_text(encoding="utf-8"))
 FAQ_SEED = json.loads((FRONTEND_CONTENT_DIR / "faq.json").read_text(encoding="utf-8"))
 
+# Fields added after a page may already exist in the DB: filled in on
+# existing pages when empty there, never overwritten.
+FILL_IF_EMPTY = ("seo_title", "seo_description")
+
 # Copy blobs: their registry defaults, which are read from
 # src/content/site-copy.json (see app/settings_registry.py).
 COPY_KEYS = ("copy.home", "copy.chat", "copy.booking")
@@ -56,8 +60,24 @@ def main() -> None:
         for order, record in enumerate(PAGES):
             slug, show_in_nav = record["slug"], record["show_in_nav"]
             per_lang = {k: v for k, v in record.items() if k not in ("slug", "show_in_nav")}
-            if db.get(ContentPage, slug) is not None:
-                print(f"Page '{slug}' already exists — skipping.")
+            existing = db.get(ContentPage, slug)
+            if existing is not None:
+                # Fill only empty SEO fields on existing pages; never
+                # overwrite anything an admin has written.
+                merged = {lang: dict(fields) for lang, fields in (existing.translations or {}).items()}
+                filled = []
+                for lang, fields in per_lang.items():
+                    target = merged.setdefault(lang, {})
+                    for key in FILL_IF_EMPTY:
+                        if fields.get(key) and not (target.get(key) or "").strip():
+                            target[key] = fields[key]
+                            filled.append(f"{lang}.{key}")
+                if filled:
+                    content_service.upsert_page(db, slug, translations=merged, actor_id=None,
+                                                 actor_username="seed_script")
+                    print(f"Page '{slug}' exists — filled {', '.join(filled)}.")
+                else:
+                    print(f"Page '{slug}' already exists — skipping.")
                 continue
             translations = {
                 lang: {**fields, "body_markdown": _read_md(lang, slug)}
