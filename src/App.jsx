@@ -17,6 +17,17 @@ const SPECIAL_PAGE_IDS = new Set(["home", "contact"]);
 
 // Needs useLang() (for features.bookingEnabled), which only works
 // inside LangProvider — see the default export below.
+// ?open=chat or ?open=booking opens that panel on arrival, so other
+// sites (apps.perennia.org's floating buttons) can link straight to it.
+function readOpenParam() {
+  try {
+    return new URLSearchParams(window.location.search).get("open");
+  } catch {
+    return null;
+  }
+}
+const OPEN_ON_ARRIVAL = readOpenParam();
+
 function AppShell() {
   const { features, pages, copy, lang, branding } = useLang();
   // "home" | "contact" | any configured page slug. Each page also has
@@ -29,14 +40,14 @@ function AppShell() {
   // Both the hero's quick-start box and the sticky button open this
   // same widget (voice + text, see ChatWidget) — the one chat surface
   // on the whole site.
-  const [chatOpen, setChatOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(OPEN_ON_ARRIVAL === "chat");
   // Message typed into the hero's quick-start chat box, carried across
   // into ChatWidget so hitting Enter there feels like continuing the
   // same conversation rather than starting over.
   const [pendingMessage, setPendingMessage] = useState("");
   // The Appointments sticky button opens booking from any page, not
   // just from inside a chat conversation — this is that panel's state.
-  const [bookingOpen, setBookingOpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(OPEN_ON_ARRIVAL === "booking");
   const [toastMessage, setToastMessage] = useState("");
 
   // Section to scroll to once the target page has rendered — set by
@@ -55,6 +66,16 @@ function AppShell() {
     setScrollTarget(null);
     setPage(id);
   }
+
+  // Drop ?open= (and ?lang=, already applied) from the address once used,
+  // so a reload or a shared link doesn't reopen the panel.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("open") && !url.searchParams.has("lang")) return;
+    url.searchParams.delete("open");
+    url.searchParams.delete("lang");
+    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+  }, []);
 
   // Browser back/forward: follow the URL.
   useEffect(() => {

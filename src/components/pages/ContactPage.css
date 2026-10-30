@@ -18,6 +18,9 @@
   font-weight: 600;
   text-decoration: none;
   unicode-bidi: isolate;
+  /* at least 24px tall, so it's easy to tap on a phone */
+  display: inline-block;
+  padding-block: 4px;
 }
 .contact-details-list a:hover { text-decoration: underline; }
 

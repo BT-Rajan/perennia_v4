@@ -91,7 +91,7 @@
      instead of relying on breakpoint-by-breakpoint font-size overrides. */
   --fs-hero: clamp(2rem, 5vw + 1rem, 4rem);
   --fs-tagline: clamp(1.5rem, 3vw + 1rem, 2.75rem);
-  --fs-sub: clamp(0.7rem, 0.5vw + 0.55rem, 0.85rem);
+  --fs-sub: clamp(0.75rem, 0.5vw + 0.55rem, 0.85rem);
   --fs-body: clamp(0.9rem, 0.3vw + 0.8rem, 1rem);
   --fs-sm: clamp(0.78rem, 0.2vw + 0.72rem, 0.85rem);
   --fs-h2: 1.3rem;
