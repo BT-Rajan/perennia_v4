@@ -14,6 +14,7 @@ override, so it never clobbers an admin's edits.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -39,6 +40,32 @@ FAQ_SEED = json.loads((FRONTEND_CONTENT_DIR / "faq.json").read_text(encoding="ut
 # existing pages when empty there, never overwritten.
 FILL_IF_EMPTY = ("seo_title", "seo_description")
 
+# Bodies earlier versions of this repo shipped, as sha256 of the stripped
+# text (see _body_hash). A page whose body is still one of these was
+# never edited, so it is safely updated to the current .md file. Add the
+# old hash here whenever a bundled page body changes and live sites
+# should get the new text.
+PREVIOUS_BODIES = {
+    # Solutions, before the links to the service pages were added.
+    "services": {
+        "en": {
+            "7e4042cda804981f3f7dc1715877fd9aa1c4da17a84e5a12f41d1faf92c79b64",
+            "8f375a96c30f8f47ff94dd7767535a9acfdd9ca211c9120c2ab17e211917c28f",
+            "389c5aa73495d8b97fa0fda535b714fbe90084e0441e8cf26c426d01291ae252",
+        },
+        "ar": {
+            "f235ac48e7669724c6559407e3774d1b95198ffe8cf66c9147b9b1701e15da06",
+            "48b1929955744a287e3ef0eca08ba008978db79d9c88e21f70c4783363ad5584",
+            "04f4f0295ef652ecd57e052899243a9064797ed2119075b7c8e9b99b350c5128",
+        },
+    },
+}
+
+
+def _body_hash(text: str) -> str:
+    return hashlib.sha256(text.replace("\r\n", "\n").strip().encode("utf-8")).hexdigest()
+
+
 # Copy blobs: their registry defaults, which are read from
 # src/content/site-copy.json (see app/settings_registry.py).
 COPY_KEYS = ("copy.home", "copy.chat", "copy.booking")
@@ -62,8 +89,9 @@ def main() -> None:
             per_lang = {k: v for k, v in record.items() if k not in ("slug", "show_in_nav")}
             existing = db.get(ContentPage, slug)
             if existing is not None:
-                # Fill only empty SEO fields on existing pages; never
-                # overwrite anything an admin has written.
+                # Fill only empty SEO fields, and update a body only if it
+                # is still exactly a text this repo shipped before (nobody
+                # has edited it); never overwrite anything an admin wrote.
                 merged = {lang: dict(fields) for lang, fields in (existing.translations or {}).items()}
                 filled = []
                 for lang, fields in per_lang.items():
@@ -72,6 +100,13 @@ def main() -> None:
                         if fields.get(key) and not (target.get(key) or "").strip():
                             target[key] = fields[key]
                             filled.append(f"{lang}.{key}")
+                    body = _read_md(lang, slug)
+                    current = target.get("body_markdown") or ""
+                    if body and current != body and _body_hash(current) in PREVIOUS_BODIES.get(slug, {}).get(lang, ()):
+                        target["body_markdown"] = body
+                        filled.append(f"{lang}.body_markdown (updated to the current text)")
+                    elif slug in PREVIOUS_BODIES and current and current.strip() != body:
+                        print(f"  Page '{slug}' ({lang}) was edited in the admin panel — body left as is.")
                 if filled:
                     content_service.upsert_page(db, slug, translations=merged, actor_id=None,
                                                  actor_username="seed_script")
