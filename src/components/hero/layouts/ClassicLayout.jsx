@@ -77,6 +77,7 @@ export default function ClassicLayout({ home, heroButtons, lang, onCtaPrimary, o
         needLabel={home.workNeedLabel}
         builtLabel={home.workBuiltLabel}
         otherItems={homeOtherWork}
+        allLink={{ label: home.workAllLabel, url: home.workAllUrl }}
       />
 
       <HeroDiscovery

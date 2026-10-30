@@ -638,7 +638,7 @@ _DEFS: list[SettingDef] = [
                           "capabilities_scope_note (the Technology/AI/Advisory section), "
                           "local_kicker, local_heading, local_intro (the Kuwait/GCC panel), "
                           "process_heading, process_intro (the how-we-work section), work_kicker, work_heading, work_intro, "
-                          "work_other_label, work_need_label, work_built_label (the Our work section), case_kicker, case_heading, case_body, "
+                          "work_other_label, work_need_label, work_built_label, work_all_label and work_all_url (the Our work section; the last two are its \"View all case studies\" link — leave either empty to hide it), case_kicker, case_heading, case_body, "
                           "case_link, case_image_alt, case_page_slug, case_image_url (the featured case-study teaser), "
                           "trust_kicker, trust_heading, trust_intro, "
                           "trust_contrast_label_a/_a/_label_b/_b (the reliable-induction section), discovery_heading, "

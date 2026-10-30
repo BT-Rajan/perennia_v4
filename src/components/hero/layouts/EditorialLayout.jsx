@@ -86,6 +86,7 @@ export default function EditorialLayout({ home, heroButtons, lang, onCtaPrimary,
         needLabel={home.workNeedLabel}
         builtLabel={home.workBuiltLabel}
         otherItems={homeOtherWork}
+        allLink={{ label: home.workAllLabel, url: home.workAllUrl }}
         className="hero-block-start"
       />
 

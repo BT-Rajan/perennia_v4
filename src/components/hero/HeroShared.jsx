@@ -68,9 +68,11 @@ export function HeroDiscovery({ heading, body, note, ctas, className }) {
  * from "Other work": a quiet text list (who it was for, the need, what
  * was built) with no screenshots or links, so the hierarchy is obvious
  * and nothing links to a page that doesn't exist. The featured panel is
- * omitted if its page is missing (featured.onOpen null).
+ * omitted if its page is missing (featured.onOpen null). `allLink`
+ * ({ label, url }) closes the section with a link to every case study
+ * (apps.perennia.org); hidden when either is empty or the URL is unsafe.
  */
-export function HeroWork({ kicker, heading, intro, featured, otherLabel, needLabel, builtLabel, otherItems, className }) {
+export function HeroWork({ kicker, heading, intro, featured, otherLabel, needLabel, builtLabel, otherItems, allLink, className }) {
   const showFeatured = featured?.heading && featured?.onOpen;
   if (!showFeatured && !otherItems?.length) return null;
   return (
@@ -105,6 +107,11 @@ export function HeroWork({ kicker, heading, intro, featured, otherLabel, needLab
               </li>
             ))}
           </ul>
+        </div>
+      )}
+      {allLink?.label && isSafeHref(allLink.url) && (
+        <div className="hero-work-all">
+          <a className="btn btn-ghost" href={allLink.url} target="_blank" rel="noopener noreferrer">{allLink.label}</a>
         </div>
       )}
     </section>
