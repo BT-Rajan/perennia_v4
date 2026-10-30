@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from html import escape
 from pathlib import Path
-from urllib.parse import quote
 
 from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,12 +8,11 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app import seo_render
 from app.config import settings
 from app.db import get_db
-from app.models import ContentPage
 from app.rate_limit import limiter
 from app.routers import (
     admin_auth,
@@ -59,10 +56,6 @@ def _built_file(root: Path, rel_path: str) -> Path | None:
         return candidate
     return None
 
-
-# Footer legal pages are always routable, even before the DB has them
-# (the frontend falls back to its bundled copy — see siteContent.js).
-ALWAYS_ROUTABLE_PAGES = {"privacy", "terms"}
 
 # Pages may use the microphone (chat voice input); nothing else is needed.
 PERMISSIONS_POLICY = "camera=(), geolocation=(), payment=(), usb=(), microphone=(self)"
@@ -211,26 +204,16 @@ def create_app() -> FastAPI:
             built = _built_file(PUBLIC_DIST, full_path)
             if built:
                 return FileResponse(built)
-            # Unknown URLs still get the site (it shows the homepage), but
-            # with a 404 status and noindex so search engines don't index
-            # every mistyped address as a copy of the homepage.
-            slug = full_path.strip("/")
-            known = not slug or slug in ALWAYS_ROUTABLE_PAGES or db.scalar(
-                select(ContentPage.slug).where(ContentPage.slug == slug, ContentPage.is_visible.is_(True))
-            ) is not None
-            # index.html carries __SITE_URL__/__PAGE_URL__ placeholders in
-            # its canonical, Open Graph and JSON-LD tags (link previews
-            # need absolute URLs and don't run JavaScript); fill them from
-            # this request's scheme + host so no domain is hardcoded.
-            # Escaped: both come from the request (path, Host header).
-            site = str(request.base_url).rstrip("/")
-            page = f"{site}/{quote(full_path.strip('/'))}"
-            html = (PUBLIC_DIST / "index.html").read_text(encoding="utf-8")
-            html = html.replace("__PAGE_URL__", escape(page)).replace("__SITE_URL__", escape(site))
-            if not known:
-                html = html.replace('<meta name="robots" content="index, follow" />',
-                                    '<meta name="robots" content="noindex" />')
-            return HTMLResponse(html, status_code=200 if known else 404)
+            # Each page's own title, description, structured data and
+            # content, in its language (app/seo_render.py). Unknown URLs
+            # still get the site (it shows the homepage), but with a 404
+            # status and noindex so search engines don't index every
+            # mistyped address as a copy of the homepage.
+            html, status = seo_render.render(
+                (PUBLIC_DIST / "index.html").read_text(encoding="utf-8"),
+                db=db, base_url=str(request.base_url), full_path=full_path,
+            )
+            return HTMLResponse(html, status_code=status)
 
     return app
 

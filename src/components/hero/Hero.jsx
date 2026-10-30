@@ -1,4 +1,5 @@
 import { useLang } from "../../context/LangContext.jsx";
+import { pageLinkProps } from "../../seo/pageLink.js";
 import TopBar from "../layout/TopBar.jsx";
 import SiteFooter from "../layout/SiteFooter.jsx";
 import ClassicLayout from "./layouts/ClassicLayout.jsx";
@@ -29,9 +30,18 @@ const LAYOUTS = {
  * itself. Which arrangement the headline/tagline/CTAs/nav-cards render in is chosen by the admin (see
  * Settings > Theme > Homepage layout) — see LAYOUTS above.
  */
+// Each capability card links to its service page, when that page exists.
+const CAPABILITY_PAGES = { technology: "software-development", ai: "ai-implementation", advisory: "it-strategy" };
+
 export default function Hero({ onEnter, onNavigate, onBookingClick }) {
   const { copy, sections, nav, branding, heroButtons, lang, theme, pages, features } = useLang();
-  const home = copy.home;
+  const home = {
+    ...copy.home,
+    capabilities: (copy.home.capabilities || []).map((c) => {
+      const slug = CAPABILITY_PAGES[c.id];
+      return pages?.[slug] ? { ...c, link: pageLinkProps(slug, lang, onNavigate), linkLabel: pages[slug].title || pages[slug].navLabel } : c;
+    }),
+  };
 
   // Primary CTA opens the same booking panel as the sticky Appointments
   // button; with booking switched off it falls back to the Contact page

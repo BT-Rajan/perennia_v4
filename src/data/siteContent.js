@@ -146,6 +146,11 @@ function buildFromApi(publicConfig, contentPages, faqItems, supportedLanguages) 
 
     pages[lang] = Object.fromEntries(
       visiblePages.map((p) => [p.slug, {
+        navLabel: p.translations[lang]?.nav_label ?? p.slug,
+        title: p.translations[lang]?.section_title ?? "",
+        summary: p.translations[lang]?.section_body ?? "",
+        seoTitle: p.translations[lang]?.seo_title ?? "",
+        seoDescription: p.translations[lang]?.seo_description ?? "",
         line1: p.translations[lang]?.tagline_line1 ?? "",
         line2: p.translations[lang]?.tagline_line2 ?? "",
         sub: p.translations[lang]?.tagline_sub ?? "",
@@ -158,6 +163,8 @@ function buildFromApi(publicConfig, contentPages, faqItems, supportedLanguages) 
       const bundled = BUNDLED_PAGES.find((p) => p.slug === slug)?.translations[lang];
       if (!pages[lang][slug] && bundled) {
         pages[lang][slug] = {
+          navLabel: bundled.nav_label, title: bundled.section_title, summary: bundled.section_body,
+          seoTitle: bundled.seo_title ?? "", seoDescription: bundled.seo_description ?? "",
           line1: bundled.tagline_line1, line2: bundled.tagline_line2, sub: bundled.tagline_sub, body: bundled.body_markdown,
         };
       }

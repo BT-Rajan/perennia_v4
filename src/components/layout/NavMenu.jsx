@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLang } from "../../context/LangContext.jsx";
 import Button from "../ui/Button.jsx";
+import { pageLinkProps } from "../../seo/pageLink.js";
 import "./NavMenu.css";
 
 const HOME_ICON = (
@@ -25,13 +26,11 @@ const HOME_ICON = (
  * small screens.
  */
 export default function NavMenu({ onNavigate, onBook, bookLabel }) {
-  const { nav, copy } = useLang();
+  const { nav, copy, lang } = useLang();
   const [open, setOpen] = useState(false);
-
-  function handleClick(id) {
-    setOpen(false);
-    onNavigate?.(id);
-  }
+  // Real links (crawlable, open in a new tab); a plain click still
+  // switches pages in place and closes the drawer.
+  const link = (id) => pageLinkProps(id, lang, onNavigate, () => setOpen(false));
 
   function handleBook() {
     setOpen(false);
@@ -41,19 +40,13 @@ export default function NavMenu({ onNavigate, onBook, bookLabel }) {
   return (
     <>
       <nav className="nav-menu" aria-label={copy.common.primaryNav}>
-        <button
-          key="home"
-          className="nav-menu-link nav-menu-home"
-          onClick={() => onNavigate?.("home")}
-          title={copy.common.goHome}
-          aria-label={copy.common.goHome}
-        >
+        <a key="home" className="nav-menu-link nav-menu-home" {...link("home")} title={copy.common.goHome} aria-label={copy.common.goHome}>
           {HOME_ICON}
-        </button>
+        </a>
         {nav.map((item) => (
-          <button key={item.id} className="nav-menu-link" onClick={() => onNavigate?.(item.id)}>
+          <a key={item.id} className="nav-menu-link" {...link(item.id)}>
             {item.label}
-          </button>
+          </a>
         ))}
       </nav>
 
@@ -84,14 +77,14 @@ export default function NavMenu({ onNavigate, onBook, bookLabel }) {
         className={`nav-mobile-drawer ${open ? "is-open" : ""}`}
         aria-label={copy.common.primaryNav}
       >
-        <button className="nav-mobile-link nav-mobile-home" onClick={() => handleClick("home")}>
+        <a className="nav-mobile-link nav-mobile-home" {...link("home")}>
           {HOME_ICON}
           <span>{copy.common.goHome}</span>
-        </button>
+        </a>
         {nav.map((item) => (
-          <button key={item.id} className="nav-mobile-link" onClick={() => handleClick(item.id)}>
+          <a key={item.id} className="nav-mobile-link" {...link(item.id)}>
             {item.label}
-          </button>
+          </a>
         ))}
         {onBook && bookLabel && (
           <div className="nav-mobile-cta">

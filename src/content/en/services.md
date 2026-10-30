@@ -6,13 +6,19 @@ Three connected capabilities — Technology, AI and Advisory — built around ho
 
 Build the technology your business needs: custom software, business applications, automation and digital systems designed around the way the business actually operates — including the interface design that makes a system simple for your people to use.
 
+[Custom software development in Kuwait](/software-development)
+
 ## AI
 
 Use AI where it makes business sense: AI implementation, intelligent workflows and practical AI solutions focused on useful business outcomes — not AI for its own sake.
 
+[AI implementation in Kuwait](/ai-implementation)
+
 ## Advisory
 
 Make better technology decisions. We start with a short discovery engagement — mapping your workflows, identifying where technology can genuinely help, and giving you a realistic plan with costs and timelines.
+
+[IT strategy and technology consulting](/it-strategy)
 
 ## Implementation and support
 

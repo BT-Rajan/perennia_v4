@@ -6,8 +6,8 @@ site's JDK workflow (copy.home.case_stages) as a workflow chain.
 """
 
 UI = dict(
-    page_title="Case Studies | Perennia",
-    page_desc="Perennia case studies: practical software and AI built from real business problems — education, consumer platforms, professional services and manufacturing — from requirements to launch.",
+    page_title="Case Studies: Custom Software & AI Projects | Perennia Kuwait",
+    page_desc="Case studies from Perennia, a Kuwait-based AI and custom software development company: ERP, AI platforms, practice management and consumer portals, from requirements to launch.",
     tagline=("Case ", "Studies", "Practical software · Real business problems"),
     crumb="Case Studies",
     study_title="{name} — Case Study | Perennia",
@@ -39,6 +39,7 @@ UI = dict(
 STUDIES = [
     dict(
         slug="zigora",
+        seo_title="Zigora Intelligence: AI Learning Platform Case Study | Perennia",
         name="Zigora Intelligence",
         line1="Zigora ", line2="Intelligence",
         sector="Education",
@@ -86,6 +87,7 @@ STUDIES = [
     ),
     dict(
         slug="bbk",
+        seo_title="BBK Game Portal: Online Game Platform with Payments | Perennia",
         name="BBK Game Portal",
         line1="BBK Game ", line2="Portal",
         sector="Consumer platform",
@@ -132,6 +134,7 @@ STUDIES = [
     ),
     dict(
         slug="consultancy",
+        seo_title="Consultancy Management System with AI: Case Study | Perennia",
         name="Consultancy Management System",
         line1="Consultancy ", line2="Management",
         sector="Professional services",
@@ -181,6 +184,7 @@ STUDIES = [
     ),
     dict(
         slug="jdk",
+        seo_title="JDK Factory ERP: Custom Manufacturing ERP, Kuwait | Perennia",
         name="JDK Factory ERP",
         line1="JDK Factory ", line2="ERP",
         sector="Manufacturing",
@@ -230,6 +234,7 @@ STUDIES = [
     ),
     dict(
         slug="perennia",
+        seo_title="Perennia CMS Portal: Zero-Code Website Platform | Perennia",
         name="Perennia CMS Portal",
         line1="Perennia ", line2="CMS Portal",
         sector="Product",

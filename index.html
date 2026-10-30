@@ -19,62 +19,28 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Perennia" />
-    <!-- Safari only accepts PNG for apple-touch-icon (SVG is silently
-         ignored, falling back to a screenshot) — this points at the
-         current SVG logo as a placeholder; swap in a real 180×180 PNG
-         once branding.logo_url has one, or iOS home-screen icons will
-         look wrong even though everything else here works. -->
-    <link rel="apple-touch-icon" href="/static/logo.svg" />
-    <title>Perennia — Practical AI. Affordable Innovation.</title>
-    <meta id="meta-description" name="description" content="Perennia — a technology partner for GCC businesses. Practical AI. Affordable Innovation." />
-    <!-- Search / link-preview tags. __SITE_URL__ and __PAGE_URL__ are
-         filled in per request by the backend (public_spa in
-         backend/app/main.py) from the request's own scheme + host, so no
-         domain is hardcoded; src/seo/pageMeta.js then keeps title,
-         description, canonical and og:/twitter: text in step with the
-         page being viewed. -->
-    <link rel="canonical" href="__PAGE_URL__" />
-    <meta name="robots" content="index, follow" />
+    <!-- PNG: Safari ignores SVG touch icons (public/static/icon-*.png are the favicon rendered at each size). -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/icon-180.png" />
+    <!-- seo:head — replaced per request by the backend (app/seo_render.py)
+         with each page's own title, description, canonical, hreflang,
+         share tags and structured data, in the page's language. What's
+         here is only the fallback for `npm run dev`; src/seo/pageMeta.js
+         keeps these tags in step as visitors move between pages. -->
+    <title>AI &amp; Custom Software Development Company in Kuwait | Perennia</title>
+    <meta id="meta-description" name="description" content="Perennia is a Kuwait-based AI and software development company: custom software, AI implementation and IT strategy for businesses in Kuwait and the GCC." />
+    <link rel="canonical" href="https://perennia.org/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Perennia" />
-    <meta property="og:title" content="Perennia — Practical AI. Affordable Innovation." />
-    <meta property="og:description" content="Perennia — a technology partner for GCC businesses. Practical AI. Affordable Innovation." />
-    <meta property="og:url" content="__PAGE_URL__" />
-    <meta property="og:image" content="__SITE_URL__/static/og-image.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Perennia — Practical AI. Affordable Innovation." />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:locale:alternate" content="ar_KW" />
+    <meta property="og:title" content="AI &amp; Custom Software Development Company in Kuwait | Perennia" />
+    <meta property="og:description" content="Perennia is a Kuwait-based AI and software development company: custom software, AI implementation and IT strategy for businesses in Kuwait and the GCC." />
+    <meta property="og:url" content="https://perennia.org/" />
+    <meta property="og:image" content="https://perennia.org/static/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Perennia — Practical AI. Affordable Innovation." />
-    <meta name="twitter:description" content="Perennia — a technology partner for GCC businesses. Practical AI. Affordable Innovation." />
-    <meta name="twitter:image" content="__SITE_URL__/static/og-image.png" />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Organization",
-            "@id": "__SITE_URL__/#organization",
-            "name": "Perennia",
-            "url": "__SITE_URL__/",
-            "logo": "__SITE_URL__/static/perennia-logo.png",
-            "description": "A technology partner for GCC businesses. Practical AI. Affordable Innovation.",
-            "address": { "@type": "PostalAddress", "addressCountry": "KW" },
-            "areaServed": ["Kuwait", "GCC"]
-          },
-          {
-            "@type": "WebSite",
-            "@id": "__SITE_URL__/#website",
-            "name": "Perennia",
-            "url": "__SITE_URL__/",
-            "inLanguage": ["en", "ar"],
-            "publisher": { "@id": "__SITE_URL__/#organization" }
-          }
-        ]
-      }
-    </script>
+    <meta name="twitter:title" content="AI &amp; Custom Software Development Company in Kuwait | Perennia" />
+    <meta name="twitter:description" content="Perennia is a Kuwait-based AI and software development company: custom software, AI implementation and IT strategy for businesses in Kuwait and the GCC." />
+    <meta name="twitter:image" content="https://perennia.org/static/og-image.png" />
+    <!-- /seo:head -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -84,19 +50,10 @@
     />
   </head>
   <body>
+    <!-- seo:body — the page's own content, rendered by the backend so
+         every crawler sees it without running JavaScript; React replaces
+         it with the same content when it starts. -->
     <div id="root"></div>
-    <noscript>
-      <h1>Perennia — Practical AI. Affordable Innovation.</h1>
-      <p>A technology partner for GCC businesses. Start with the business. Build the technology around it.</p>
-      <ul>
-        <li><a href="/services">Solutions</a></li>
-        <li><a href="/products">Products</a></li>
-        <li><a href="/labs">Labs</a></li>
-        <li><a href="/jdk-factory-erp">JDK Factory ERP case study</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact — book a 30-minute discovery meeting</a></li>
-      </ul>
-    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

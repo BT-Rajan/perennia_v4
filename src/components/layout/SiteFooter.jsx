@@ -1,17 +1,24 @@
 import { useLang } from "../../context/LangContext.jsx";
-import { pathForPage } from "../../seo/pageMeta.js";
+import { pageLinkProps } from "../../seo/pageLink.js";
 import "./SiteFooter.css";
 
 /**
  * The one footer every page renders (Home, content pages, Contact):
- * the brand line, the same destinations as the header nav (so Solutions,
- * Work, Products, Labs, About and Contact are always reachable from the
- * bottom of a page), configured contact details and the legal links.
+ * the brand line, the service pages and case studies, the same
+ * destinations as the header nav, configured contact details and the
+ * legal links. All are real links (crawlable; a click still switches
+ * pages in place) — the same footer the server renders for crawlers in
+ * backend/app/seo_render.py.
  * No booking button here — the header and the page above already carry
  * it. `onNavigate` is the same handler the page passes to TopBar.
  */
+// Keyword service pages, as in backend/app/seo_render.py SERVICE_PAGES.
+const SERVICE_PAGES = ["software-development", "ai-implementation", "it-strategy"];
+const CASE_STUDIES_URL = { en: "https://apps.perennia.org/", ar: "https://apps.perennia.org/ar/" };
+
 export default function SiteFooter({ onNavigate }) {
-  const { nav, copy, branding, contact } = useLang();
+  const { nav, copy, branding, contact, pages, lang } = useLang();
+  const services = SERVICE_PAGES.filter((id) => pages?.[id]);
   const common = copy.common;
   const tagline = copy.home.eyebrow;
   const whatsappDigits = (contact?.whatsappNumber || "").replace(/\D/g, "");
@@ -24,13 +31,21 @@ export default function SiteFooter({ onNavigate }) {
           {tagline && <p className="site-footer-tagline">{tagline}</p>}
         </div>
 
+        <nav className="site-footer-col" aria-label={common.footerServices}>
+          <h2>{common.footerServices}</h2>
+          <ul>
+            {services.map((id) => (
+              <li key={id}><a {...pageLinkProps(id, lang, onNavigate)}>{pages[id].navLabel}</a></li>
+            ))}
+            <li><a href={CASE_STUDIES_URL[lang] ?? CASE_STUDIES_URL.en}>{common.footerCaseStudies}</a></li>
+          </ul>
+        </nav>
+
         <nav className="site-footer-col" aria-label={common.footerExplore}>
           <h2>{common.footerExplore}</h2>
           <ul className="site-footer-explore">
             {nav.map((item) => (
-              <li key={item.id}>
-                <button type="button" onClick={() => onNavigate?.(item.id)}>{item.label}</button>
-              </li>
+              <li key={item.id}><a {...pageLinkProps(item.id, lang, onNavigate)}>{item.label}</a></li>
             ))}
           </ul>
         </nav>
@@ -49,20 +64,7 @@ export default function SiteFooter({ onNavigate }) {
       <p className="site-footer-legal">
         © {new Date().getFullYear()} {branding.siteName}. {common.footerRights}
         {[["privacy", common.footerPrivacy], ["terms", common.footerTerms]].map(([id, label]) => (
-          // Real hrefs so the pages are crawlable and openable in a new
-          // tab; a plain click still switches pages in place.
-          <a
-            key={id}
-            className="site-footer-legal-link"
-            href={pathForPage(id)}
-            onClick={(e) => {
-              if (!onNavigate || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-              e.preventDefault();
-              onNavigate(id);
-            }}
-          >
-            {label}
-          </a>
+          <a key={id} className="site-footer-legal-link" {...pageLinkProps(id, lang, onNavigate)}>{label}</a>
         ))}
       </p>
     </footer>

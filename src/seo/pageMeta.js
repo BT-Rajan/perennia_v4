@@ -2,17 +2,43 @@
 // URL ↔ page mapping and per-page <head> tags for search engines and
 // link previews. Presentation is untouched: the app still switches
 // pages in-place (App.jsx); this only gives each page its own address
-// (/<slug>, home at /) and its own title/description/canonical — the
-// same URLs backend/app/routers/public_seo.py lists in /sitemap.xml.
+// and its own title/description/canonical — the same URLs
+// backend/app/routers/public_seo.py lists in /sitemap.xml and
+// backend/app/seo_render.py renders on the server.
+//
+// English (the default language) is at /<slug>, home at /; every other
+// language is prefixed: /ar/<slug>, home at /ar/.
 // ──────────────────────────────────────────────────────────
 
-export function pathForPage(id) {
-  return !id || id === "home" || id === "work" ? "/" : `/${encodeURIComponent(id)}`;
+export const DEFAULT_LANG = "en";
+const PREFIXED_LANGS = ["ar"];
+
+function splitPath(pathname) {
+  const parts = decodeURIComponent((pathname || "/").replace(/^\/+|\/+$/g, "")).split("/").filter(Boolean);
+  const lang = PREFIXED_LANGS.includes(parts[0]) ? parts.shift() : null;
+  return { lang, rest: parts };
+}
+
+export function pathForPage(id, lang = DEFAULT_LANG) {
+  const prefix = lang && lang !== DEFAULT_LANG ? `/${lang}` : "";
+  if (!id || id === "home" || id === "work") return prefix ? `${prefix}/` : "/";
+  return `${prefix}/${encodeURIComponent(id)}`;
 }
 
 export function pageFromPath(pathname) {
-  const slug = decodeURIComponent((pathname || "/").replace(/^\/+|\/+$/g, ""));
-  return slug && !slug.includes("/") ? slug : "home";
+  const { rest } = splitPath(pathname);
+  return rest.length === 1 ? rest[0] : "home";
+}
+
+// The language a URL names: "ar" for /ar/…, the default for an
+// unprefixed path.
+export function langFromPath(pathname) {
+  return splitPath(pathname).lang || DEFAULT_LANG;
+}
+
+// True when the path itself picks a language (/ar/…).
+export function pathHasLang(pathname) {
+  return splitPath(pathname).lang !== null;
 }
 
 // First real paragraph of a page's Markdown body, as plain text, for
@@ -39,7 +65,7 @@ function setMeta(selector, attr, value) {
   if (el) el.setAttribute(attr, value);
 }
 
-export function applyPageMeta({ title, description, path }) {
+export function applyPageMeta({ title, description, path, alternates }) {
   const url = `${window.location.origin}${path}`;
   if (title) document.title = title;
   setMeta("#meta-description", "content", description);
@@ -54,4 +80,8 @@ export function applyPageMeta({ title, description, path }) {
   const image = `${window.location.origin}/static/og-image.png`;
   setMeta("meta[property='og:image']", "content", image);
   setMeta("meta[name='twitter:image']", "content", image);
+  // hreflang alternates: { en: "/about", ar: "/ar/about" }
+  for (const [code, altPath] of Object.entries(alternates || {})) {
+    setMeta(`link[rel='alternate'][hreflang='${code}']`, "href", `${window.location.origin}${altPath}`);
+  }
 }

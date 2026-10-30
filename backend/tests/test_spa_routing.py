@@ -16,7 +16,7 @@ def test_known_pages_are_200_and_indexable(client):
     for path in ("/", "/privacy", "/terms"):
         r = client.get(path)
         assert r.status_code == 200, path
-        assert 'content="index, follow"' in r.text
+        assert 'name="robots" content="index, follow' in r.text
         assert r.headers["cache-control"] == "no-cache"
 
 

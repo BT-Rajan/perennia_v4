@@ -232,7 +232,9 @@
       "process_heading": "Start with the business. Build the technology around it.",
       "process_intro": "We normally take responsibility for the whole journey — from the first conversation to the solution in operation — so you are not left coordinating several vendors.",
       "hint": "Start chatting",
-      "lang_switch": "AR | عربي"
+      "lang_switch": "AR | عربي",
+      "seo_title": "AI & Custom Software Development Company in Kuwait | Perennia",
+      "seo_description": "Perennia is a Kuwait-based AI and software development company: custom software, AI implementation and IT strategy for businesses in Kuwait and the GCC."
     },
     "ar": {
       "welcome": "مرحبا بك في بيرينيا",
@@ -466,7 +468,9 @@
       "process_heading": "ابدأ بالأعمال. وابنِ التقنية حولها.",
       "process_intro": "نتحمّل عادةً مسؤولية الرحلة كاملة — من المحادثة الأولى حتى تشغيل الحل — فلا تضطر إلى التنسيق بين عدة موردين.",
       "hint": "ابدأ المحادثة",
-      "lang_switch": "EN | English"
+      "lang_switch": "EN | English",
+      "seo_title": "بيرينيا | شركة ذكاء اصطناعي وتطوير برمجيات مخصصة في الكويت",
+      "seo_description": "بيرينيا شركة ذكاء اصطناعي وتطوير برمجيات مقرّها الكويت: برمجيات مخصصة، وتطبيق الذكاء الاصطناعي، واستراتيجية تقنية المعلومات للشركات في الكويت ودول الخليج."
     }
   },
   "chat": {
@@ -638,7 +642,9 @@
       "footer_contact": "Get in touch",
       "footer_rights": "All rights reserved.",
       "footer_privacy": "Privacy Policy",
-      "footer_terms": "Terms of Use"
+      "footer_terms": "Terms of Use",
+      "footer_services": "Services",
+      "footer_case_studies": "Case studies"
     },
     "ar": {
       "close": "إغلاق",
@@ -652,7 +658,9 @@
       "footer_contact": "تواصل معنا",
       "footer_rights": "جميع الحقوق محفوظة.",
       "footer_privacy": "سياسة الخصوصية",
-      "footer_terms": "شروط الاستخدام"
+      "footer_terms": "شروط الاستخدام",
+      "footer_services": "خدماتنا",
+      "footer_case_studies": "دراسات الحالة"
     }
   }
 }

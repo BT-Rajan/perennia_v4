@@ -1,7 +1,7 @@
 {
   "name": "Perennia",
   "short_name": "Perennia",
-  "description": "Perennia — AI-powered technology & innovation.",
+  "description": "Perennia — AI and custom software development company in Kuwait: software development, AI implementation and IT strategy for Kuwait and the GCC.",
   "start_url": "/",
   "id": "/",
   "display": "standalone",
@@ -9,7 +9,28 @@
   "theme_color": "#07060a",
   "orientation": "portrait-primary",
   "icons": [
-    { "src": "/static/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "lang": "en",
+  "categories": [
+    "business",
+    "productivity"
   ]
 }
