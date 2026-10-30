@@ -575,7 +575,7 @@ img, video { max-width: 100%; }
   padding: var(--space-6) 0 var(--space-4);
   border-top: 1px solid color-mix(in srgb, var(--gold) 12%, transparent);
 }
-.site-footer-inner { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-6); }
+.site-footer-inner { display: grid; grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
 .site-footer-name { margin: 0 0 var(--space-1); font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body); color: var(--white-soft); }
 .site-footer-tagline { color: var(--muted); font-size: var(--fs-sm); }
 .site-footer-col h2 { margin: 0 0 var(--space-3); font-size: var(--fs-sm); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }

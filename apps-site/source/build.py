@@ -82,9 +82,37 @@ def site_path(lang, page=""):
 
 
 def main_url(lang, slug=""):
-    """A perennia.org page, opened in the same language (see readUrlLang
-    in src/context/LangContext.jsx)."""
-    return f"{MAIN}/{slug}?lang={lang}"
+    """A perennia.org page in the same language: English at /<slug>,
+    Arabic at /ar/<slug> (see src/seo/pageMeta.js)."""
+    return f"{MAIN}/{slug}" if lang == "en" else f"{MAIN}/{lang}/{slug}"
+
+
+# The main site's keyword service pages (backend/app/seo_render.py
+# SERVICE_PAGES), linked from every footer.
+SERVICE_PAGES = ("software-development", "ai-implementation", "it-strategy")
+ORG_ID = f"{MAIN}/#organization"
+
+
+def jsonld(lang, page_path, title, desc, study=None):
+    """WebPage + BreadcrumbList (+ Article for a case study), tied to the
+    main site's organization so both sites build one entity."""
+    url = f"{SITE}{site_path(lang, page_path)}"
+    ui = LANGS[lang]["content"].UI
+    crumbs = [{"@type": "ListItem", "position": 1, "name": BRAND[lang], "item": main_url(lang)},
+              {"@type": "ListItem", "position": 2, "name": ui["crumb"], "item": f"{SITE}{site_path(lang)}"}]
+    if study:
+        crumbs.append({"@type": "ListItem", "position": 3, "name": study["name"], "item": url})
+    graph = [{"@type": "WebPage", "@id": f"{url}#webpage", "url": url, "name": title, "description": desc,
+              "inLanguage": lang, "publisher": {"@id": ORG_ID},
+              "breadcrumb": {"@type": "BreadcrumbList", "itemListElement": crumbs}},
+             {"@type": "Organization", "@id": ORG_ID, "name": BRAND["en"], "alternateName": BRAND["ar"], "url": f"{MAIN}/"}]
+    if study:
+        graph.append({"@type": "Article", "@id": f"{url}#article", "headline": study["name"], "description": desc,
+                      "inLanguage": lang, "url": url, "image": OG_IMAGE,
+                      "author": {"@id": ORG_ID}, "publisher": {"@id": ORG_ID}, "mainEntityOfPage": {"@id": f"{url}#webpage"}})
+    # "<\/" so no text in the data can close the <script> early
+    data = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False).replace("</", "<\\/")
+    return f'<script type="application/ld+json">{data}</script>'
 
 
 def nav(lang):
@@ -109,7 +137,7 @@ def fill_tokens(html, lang):
     return re.sub(r"\{\{MAIN\}\}/([^\"?#]*)", lambda m: main_url(lang, m.group(1)), html)
 
 
-def page(lang, page_path, title, desc, body, script="", indexable=True):
+def page(lang, page_path, title, desc, body, script="", indexable=True, study=None):
     other = LANGS[lang]["other"]
     home, common = SITE_COPY["home"][lang], SITE_COPY["common"][lang]
     chat, booking = SITE_COPY["chat"][lang], SITE_COPY["booking"][lang]
@@ -125,6 +153,10 @@ def page(lang, page_path, title, desc, body, script="", indexable=True):
         f'    <a class="nav-mobile-link" href="{href}"{current if href == index else ""}>{label}</a>' for label, href in nav(lang)
     )
     explore = "\n".join(f'        <li><a href="{href}">{label}</a></li>' for label, href in nav(lang))
+    services = "\n".join(
+        f'        <li><a href="{main_url(lang, p["slug"])}">{p[lang]["nav_label"]}</a></li>'
+        for p in PAGES if p["slug"] in SERVICE_PAGES
+    )
     legal = "".join(
         f'<a href="{main_url(lang, p["slug"])}">{p[lang]["nav_label"]}</a>'
         for p in PAGES if p["slug"] in ("privacy", "terms")
@@ -156,6 +188,7 @@ def page(lang, page_path, title, desc, body, script="", indexable=True):
 <meta property="og:image" content="{OG_IMAGE}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#07060a">
+{jsonld(lang, page_path, title, desc, study) if indexable else ""}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?{FONTS[lang]}&display=swap" rel="stylesheet">
@@ -184,8 +217,8 @@ def page(lang, page_path, title, desc, body, script="", indexable=True):
 </nav>
 
 <div class="sticky-actions">
-  <a class="sticky-btn sticky-booking" href="{main_url(lang)}&amp;open=booking" aria-label="{booking['title']}" title="{booking['title']}">{CALENDAR_ICON}</a>
-  <a class="sticky-btn sticky-chat" href="{main_url(lang)}&amp;open=chat" aria-label="{chat['header']}" title="{chat['header']}"><span class="sticky-online" aria-hidden="true"></span>{CHAT_ICON}<span class="sticky-label">{chat['header']}</span></a>
+  <a class="sticky-btn sticky-booking" href="{main_url(lang)}?open=booking" aria-label="{booking['title']}" title="{booking['title']}">{CALENDAR_ICON}</a>
+  <a class="sticky-btn sticky-chat" href="{main_url(lang)}?open=chat" aria-label="{chat['header']}" title="{chat['header']}"><span class="sticky-online" aria-hidden="true"></span>{CHAT_ICON}<span class="sticky-label">{chat['header']}</span></a>
 </div>
 
 <div class="content-page">
@@ -198,6 +231,13 @@ def page(lang, page_path, title, desc, body, script="", indexable=True):
       <p class="site-footer-name">{BRAND[lang]}</p>
       <p class="site-footer-tagline">{home['eyebrow']}</p>
     </div>
+    <nav class="site-footer-col" aria-label="{common['footer_services']}">
+      <h2>{common['footer_services']}</h2>
+      <ul>
+{services}
+        <li><a href="{site_path(lang)}">{common['footer_case_studies']}</a></li>
+      </ul>
+    </nav>
     <nav class="site-footer-col" aria-label="{common['footer_explore']}">
       <h2>{common['footer_explore']}</h2>
       <ul class="site-footer-explore">
@@ -277,8 +317,8 @@ def study_page(lang, i):
     <a class="glass-panel next" href="{site_path(lang, next_s['slug'] + '.html')}"><small>{ui['next']}</small><b>{next_s['name']}</b></a>
   </nav>
 """
-    title = ui["study_title"].format(name=s["name"])
-    return page(lang, f"{s['slug']}.html", title, s["desc"], body, VIDEO_SCRIPT)
+    title = s.get("seo_title") or ui["study_title"].format(name=s["name"])
+    return page(lang, f"{s['slug']}.html", title, s["desc"], body, VIDEO_SCRIPT, study=s)
 
 
 def index_page(lang):
