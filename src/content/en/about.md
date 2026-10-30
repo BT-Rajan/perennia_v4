@@ -16,7 +16,7 @@ We create and periodically release practical AI utilities through our GitHub, he
 
 ### For Businesses
 
-We design and build **custom intelligent solutions** for businesses across manufacturing, consulting, healthcare, professional services, and other industries.
+We design and build **custom intelligent solutions** for businesses across manufacturing, trading and distribution, professional services, healthcare, education and other industries.
 
 We focus on practical opportunities to improve processes, reduce effort, accelerate work, and create better outcomes.
 
@@ -45,5 +45,3 @@ Our advisory work helps clients discover where technology can create the greates
 > **Practical AI. Affordable Innovation.**
 
 Perennia is here to make technology useful today, and make tomorrow more achievable.
-
-**Perennia — Practical AI. Affordable Innovation.**

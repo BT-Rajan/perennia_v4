@@ -1,0 +1,162 @@
+[
+  {
+    "slug": "services",
+    "show_in_nav": true,
+    "en": {
+      "nav_label": "Solutions",
+      "section_title": "Solutions",
+      "section_body": "Technology, AI and Advisory — three connected capabilities, built around how your business actually works.",
+      "tagline_line1": "What We ",
+      "tagline_line2": "Do",
+      "tagline_sub": "SOLUTIONS"
+    },
+    "ar": {
+      "nav_label": "الحلول",
+      "section_title": "الحلول",
+      "section_body": "التقنية والذكاء الاصطناعي والاستشارات — ثلاث قدرات مترابطة، مبنية حول طريقة عمل أعمالك فعليًا.",
+      "tagline_line1": "ماذا ",
+      "tagline_line2": "نقدّم",
+      "tagline_sub": "الحلول"
+    }
+  },
+  {
+    "slug": "products",
+    "show_in_nav": true,
+    "en": {
+      "nav_label": "Products",
+      "section_title": "Products",
+      "section_body": "Business platforms, booking systems, automation workflows and AI assistants — tuned to how your team actually works.",
+      "tagline_line1": "What We ",
+      "tagline_line2": "Build",
+      "tagline_sub": "PRODUCTS & PLATFORMS"
+    },
+    "ar": {
+      "nav_label": "المنتجات",
+      "section_title": "المنتجات",
+      "section_body": "منصات أعمال، وأنظمة حجز، وأتمتة سير العمل، ومساعدون بالذكاء الاصطناعي — مصممة لتناسب طريقة عمل فريقك فعليًا.",
+      "tagline_line1": "ماذا ",
+      "tagline_line2": "نبني",
+      "tagline_sub": "المنتجات والمنصات"
+    }
+  },
+  {
+    "slug": "labs",
+    "show_in_nav": true,
+    "en": {
+      "nav_label": "Labs",
+      "section_title": "Labs",
+      "section_body": "Experiments and free AI utilities, kept separate from client work and products.",
+      "tagline_line1": "Perennia ",
+      "tagline_line2": "Labs",
+      "tagline_sub": "EXPERIMENTS & OPEN WORK"
+    },
+    "ar": {
+      "nav_label": "المختبر",
+      "section_title": "المختبر",
+      "section_body": "تجارب وأدوات ذكاء اصطناعي مجانية، منفصلة عن أعمال العملاء والمنتجات.",
+      "tagline_line1": "مختبر ",
+      "tagline_line2": "بيرينيا",
+      "tagline_sub": "تجارب وأعمال مفتوحة"
+    }
+  },
+  {
+    "slug": "about",
+    "show_in_nav": true,
+    "en": {
+      "nav_label": "About",
+      "section_title": "About Perennia",
+      "section_body": "Perennia is a Kuwait-based technology company. We help businesses adopt, build and scale technology — using AI where it makes business sense — from first conversation through to production support.",
+      "tagline_line1": "Who We ",
+      "tagline_line2": "Are",
+      "tagline_sub": "PRACTICAL AI · AFFORDABLE INNOVATION"
+    },
+    "ar": {
+      "nav_label": "من نحن",
+      "section_title": "عن بيرينيا",
+      "section_body": "بيرينيا شركة تقنية مقرّها الكويت. نساعد الشركات على تبنّي التقنية وبنائها وتوسيعها — مع استخدام الذكاء الاصطناعي حيث يكون منطقيًا للأعمال — من المحادثة الأولى وحتى الدعم في التشغيل.",
+      "tagline_line1": "من ",
+      "tagline_line2": "نحن",
+      "tagline_sub": "ذكاء اصطناعي عملي · ابتكار في المتناول"
+    }
+  },
+  {
+    "slug": "contact",
+    "show_in_nav": true,
+    "en": {
+      "nav_label": "Contact",
+      "section_title": "Contact Us",
+      "section_body": "Ready to talk? Use \"Book a 30-Minute Discovery Meeting\" to pick a time directly, or start a chat below and our assistant will connect you with the right person.",
+      "tagline_line1": "Let's ",
+      "tagline_line2": "Talk",
+      "tagline_sub": "GET IN TOUCH"
+    },
+    "ar": {
+      "nav_label": "تواصل معنا",
+      "section_title": "تواصل معنا",
+      "section_body": "جاهز للتحدث؟ استخدم \"احجز اجتماعًا استكشافيًا لمدة 30 دقيقة\" لاختيار موعد مباشرة، أو ابدأ محادثة أدناه وسيقوم مساعدنا بتوصيلك بالشخص المناسب.",
+      "tagline_line1": "لنتحدث",
+      "tagline_line2": "",
+      "tagline_sub": "تواصل معنا"
+    }
+  },
+  {
+    "slug": "jdk-factory-erp",
+    "show_in_nav": false,
+    "en": {
+      "nav_label": "JDK Factory ERP",
+      "section_title": "JDK Factory ERP",
+      "section_body": "A manufacturing ERP built around one business's operational workflow.",
+      "tagline_line1": "JDK Factory ",
+      "tagline_line2": "ERP",
+      "tagline_sub": "CASE STUDY · MANUFACTURING"
+    },
+    "ar": {
+      "nav_label": "نظام ERP لمصنع JDK",
+      "section_title": "نظام ERP لمصنع JDK",
+      "section_body": "نظام ERP للتصنيع مبني حول سير العمل التشغيلي لشركة واحدة.",
+      "tagline_line1": "نظام ERP ",
+      "tagline_line2": "لمصنع JDK",
+      "tagline_sub": "دراسة حالة · التصنيع"
+    }
+  },
+  {
+    "slug": "privacy",
+    "show_in_nav": false,
+    "en": {
+      "nav_label": "Privacy Policy",
+      "section_title": "Privacy Policy",
+      "section_body": "How we collect, use and protect your information.",
+      "tagline_line1": "Privacy ",
+      "tagline_line2": "Policy",
+      "tagline_sub": "LEGAL"
+    },
+    "ar": {
+      "nav_label": "سياسة الخصوصية",
+      "section_title": "سياسة الخصوصية",
+      "section_body": "كيف نجمع معلوماتك ونستخدمها ونحميها.",
+      "tagline_line1": "سياسة ",
+      "tagline_line2": "الخصوصية",
+      "tagline_sub": "قانوني"
+    }
+  },
+  {
+    "slug": "terms",
+    "show_in_nav": false,
+    "en": {
+      "nav_label": "Terms of Use",
+      "section_title": "Terms of Use",
+      "section_body": "The terms for using this website.",
+      "tagline_line1": "Terms of ",
+      "tagline_line2": "Use",
+      "tagline_sub": "LEGAL"
+    },
+    "ar": {
+      "nav_label": "شروط الاستخدام",
+      "section_title": "شروط الاستخدام",
+      "section_body": "شروط استخدام هذا الموقع.",
+      "tagline_line1": "شروط ",
+      "tagline_line2": "الاستخدام",
+      "tagline_sub": "قانوني"
+    }
+  }
+]

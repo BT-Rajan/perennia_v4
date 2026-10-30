@@ -4,14 +4,18 @@ from html import escape
 from pathlib import Path
 from urllib.parse import quote
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.db import get_db
+from app.models import ContentPage
 from app.rate_limit import limiter
 from app.routers import (
     admin_auth,
@@ -40,6 +44,49 @@ PUBLIC_DIST = PROJECT_ROOT / "dist"          # `npm run build` output (root)
 ADMIN_DIST = PROJECT_ROOT / "admin" / "dist"  # `npm run build` output (admin/)
 
 
+def _built_file(root: Path, rel_path: str) -> Path | None:
+    """The file at root/rel_path, only if it really is inside root.
+
+    The SPA routes take an arbitrary {full_path:path}, and an encoded
+    "..%2f" arrives here already decoded to "../": without this check,
+    /static/..%2f..%2fbackend/.env would serve the backend's secrets.
+    """
+    if not rel_path:
+        return None
+    base = root.resolve()
+    candidate = (base / rel_path).resolve()
+    if candidate.is_relative_to(base) and candidate.is_file():
+        return candidate
+    return None
+
+
+# Footer legal pages are always routable, even before the DB has them
+# (the frontend falls back to its bundled copy — see siteContent.js).
+ALWAYS_ROUTABLE_PAGES = {"privacy", "terms"}
+
+# Pages may use the microphone (chat voice input); nothing else is needed.
+PERMISSIONS_POLICY = "camera=(), geolocation=(), payment=(), usb=(), microphone=(self)"
+# Restricts embedding, <base> and plugins only, so it can't break the
+# site's scripts, styles, fonts or admin-configured assets.
+CONTENT_SECURITY_POLICY = "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'"
+
+
+def _cache_control(path: str, content_type: str) -> str | None:
+    """Vite fingerprints /assets and /admin/assets, so they never change;
+    HTML must be revalidated so a deploy shows up at once."""
+    if path.startswith(("/assets/", "/admin/assets/")):
+        return "public, max-age=31536000, immutable"
+    if content_type.startswith("text/html"):
+        return "no-cache"
+    if path.startswith("/static/") or path.endswith((".svg", ".png", ".webmanifest")):
+        return "public, max-age=86400"
+    return None
+
+
+def _is_api_path(full_path: str) -> bool:
+    return full_path == "api" or full_path.startswith("api/")
+
+
 def create_app() -> FastAPI:
     app = FastAPI(
         title="Perennia API",
@@ -66,6 +113,12 @@ def create_app() -> FastAPI:
         resp.headers["X-Content-Type-Options"] = "nosniff"
         resp.headers["X-Frame-Options"] = "DENY"
         resp.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        resp.headers["Permissions-Policy"] = PERMISSIONS_POLICY
+        resp.headers.setdefault("Content-Security-Policy", CONTENT_SECURITY_POLICY)
+        if resp.status_code < 400 and "cache-control" not in resp.headers:
+            cache = _cache_control(request.url.path, resp.headers.get("content-type", ""))
+            if cache:
+                resp.headers["Cache-Control"] = cache
         if settings.is_production:
             resp.headers["Strict-Transport-Security"] = "max-age=63072000; includeSubDomains"
         return resp
@@ -137,25 +190,34 @@ def create_app() -> FastAPI:
         if admin_assets.is_dir():
             app.mount("/admin/assets", StaticFiles(directory=str(admin_assets)), name="admin-assets")
 
-        @app.get("/admin", include_in_schema=False)
-        @app.get("/admin/{full_path:path}", include_in_schema=False)
-        async def admin_spa(full_path: str = "") -> FileResponse:
-            candidate = ADMIN_DIST / full_path
-            if full_path and candidate.is_file():
-                return FileResponse(candidate)
-            return FileResponse(ADMIN_DIST / "index.html")
+        @app.api_route("/admin", methods=["GET", "HEAD"], include_in_schema=False)
+        @app.api_route("/admin/{full_path:path}", methods=["GET", "HEAD"], include_in_schema=False)
+        async def admin_spa(full_path: str = ""):
+            if _is_api_path(full_path):
+                return JSONResponse(status_code=404, content={"detail": "Not Found"})
+            built = _built_file(ADMIN_DIST, full_path)
+            return FileResponse(built or ADMIN_DIST / "index.html")
 
     if PUBLIC_DIST.is_dir():
         public_assets = PUBLIC_DIST / "assets"
         if public_assets.is_dir():
             app.mount("/assets", StaticFiles(directory=str(public_assets)), name="public-assets")
 
-        @app.get("/", include_in_schema=False)
-        @app.get("/{full_path:path}", include_in_schema=False)
-        async def public_spa(request: Request, full_path: str = ""):
-            candidate = PUBLIC_DIST / full_path
-            if full_path and candidate.is_file():
-                return FileResponse(candidate)
+        @app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
+        @app.api_route("/{full_path:path}", methods=["GET", "HEAD"], include_in_schema=False)
+        async def public_spa(request: Request, full_path: str = "", db: Session = Depends(get_db)):
+            if _is_api_path(full_path):
+                return JSONResponse(status_code=404, content={"detail": "Not Found"})
+            built = _built_file(PUBLIC_DIST, full_path)
+            if built:
+                return FileResponse(built)
+            # Unknown URLs still get the site (it shows the homepage), but
+            # with a 404 status and noindex so search engines don't index
+            # every mistyped address as a copy of the homepage.
+            slug = full_path.strip("/")
+            known = not slug or slug in ALWAYS_ROUTABLE_PAGES or db.scalar(
+                select(ContentPage.slug).where(ContentPage.slug == slug, ContentPage.is_visible.is_(True))
+            ) is not None
             # index.html carries __SITE_URL__/__PAGE_URL__ placeholders in
             # its canonical, Open Graph and JSON-LD tags (link previews
             # need absolute URLs and don't run JavaScript); fill them from
@@ -165,7 +227,10 @@ def create_app() -> FastAPI:
             page = f"{site}/{quote(full_path.strip('/'))}"
             html = (PUBLIC_DIST / "index.html").read_text(encoding="utf-8")
             html = html.replace("__PAGE_URL__", escape(page)).replace("__SITE_URL__", escape(site))
-            return HTMLResponse(html)
+            if not known:
+                html = html.replace('<meta name="robots" content="index, follow" />',
+                                    '<meta name="robots" content="noindex" />')
+            return HTMLResponse(html, status_code=200 if known else 404)
 
     return app
 

@@ -8,7 +8,6 @@ import StickyChat from "./components/StickyChat.jsx";
 import BookingPanel from "./components/booking/BookingPanel.jsx";
 import Toast from "./components/ui/Toast.jsx";
 import LogoIntro from "./components/ui/LogoIntro.jsx";
-import { COPY } from "./data/content.js";
 import { applyPageMeta, describeMarkdown, pageFromPath, pathForPage } from "./seo/pageMeta.js";
 
 // Pages with dedicated components — every other page id routes through
@@ -77,7 +76,7 @@ function AppShell() {
   // defaults set there.
   useEffect(() => {
     const siteName = branding?.siteName || "Perennia";
-    const home = { ...(COPY[lang] ?? COPY.en).home, ...copy.home };
+    const home = copy.home;
     if (shownPage === "home") {
       const headline = [home.taglineLine1, home.taglineLine2].filter(Boolean).join(" ");
       applyPageMeta({

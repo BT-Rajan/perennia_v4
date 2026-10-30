@@ -1,5 +1,4 @@
 import { useLang } from "../../context/LangContext.jsx";
-import { COPY } from "../../data/content.js";
 import TopBar from "../layout/TopBar.jsx";
 import SiteFooter from "../layout/SiteFooter.jsx";
 import ClassicLayout from "./layouts/ClassicLayout.jsx";
@@ -30,75 +29,9 @@ const LAYOUTS = {
  * itself. Which arrangement the headline/tagline/CTAs/nav-cards render in is chosen by the admin (see
  * Settings > Theme > Homepage layout) — see LAYOUTS above.
  */
-// The new hero-hierarchy fields (heroStatement/taglineLine1/taglineLine2/
-// supportingText) live inside the same free-form
-// copy.home JSON blob as the rest of the homepage text, so an admin
-// who hasn't touched Settings > On-screen text yet simply won't have
-// them in the live backend response. Falling back per-field (not
-// per-object) to the bundled copy means a partially-configured
-// copy.home still renders the full hierarchy instead of blank gaps.
-function withHomeFallbacks(home, lang) {
-  const fallback = COPY[lang]?.home ?? COPY.en.home;
-  return {
-    ...home,
-    heroStatement: home.heroStatement ?? fallback.heroStatement,
-    taglineLine1: home.taglineLine1 ?? fallback.taglineLine1,
-    taglineLine2: home.taglineLine2 ?? fallback.taglineLine2,
-    supportingText: home.supportingText ?? fallback.supportingText,
-    eyebrow: home.eyebrow ?? fallback.eyebrow,
-    situations: home.situations ?? fallback.situations,
-    sectors: home.sectors ?? fallback.sectors,
-    capabilities: home.capabilities ?? fallback.capabilities,
-    localPoints: home.localPoints ?? fallback.localPoints,
-    processSteps: home.processSteps ?? fallback.processSteps,
-    caseStages: home.caseStages ?? fallback.caseStages,
-    otherWork: home.otherWork ?? fallback.otherWork,
-    trustPoints: home.trustPoints ?? fallback.trustPoints,
-    casePageSlug: home.casePageSlug ?? fallback.casePageSlug,
-    caseImageUrl: home.caseImageUrl ?? fallback.caseImageUrl,
-    ctaPrimary: home.ctaPrimary ?? fallback.ctaPrimary,
-    ctaSecondary: home.ctaSecondary ?? fallback.ctaSecondary,
-    situationsKicker: home.situationsKicker ?? fallback.situationsKicker,
-    situationsHeading: home.situationsHeading ?? fallback.situationsHeading,
-    sectorsHeading: home.sectorsHeading ?? fallback.sectorsHeading,
-    sectorsNote: home.sectorsNote ?? fallback.sectorsNote,
-    situationsIntro: home.situationsIntro ?? fallback.situationsIntro,
-    capabilitiesHeading: home.capabilitiesHeading ?? fallback.capabilitiesHeading,
-    capabilitiesIntro: home.capabilitiesIntro ?? fallback.capabilitiesIntro,
-    capabilitiesRoles: home.capabilitiesRoles ?? fallback.capabilitiesRoles,
-    capabilitiesScopeNote: home.capabilitiesScopeNote ?? fallback.capabilitiesScopeNote,
-    localKicker: home.localKicker ?? fallback.localKicker,
-    localHeading: home.localHeading ?? fallback.localHeading,
-    localIntro: home.localIntro ?? fallback.localIntro,
-    processHeading: home.processHeading ?? fallback.processHeading,
-    processIntro: home.processIntro ?? fallback.processIntro,
-    workKicker: home.workKicker ?? fallback.workKicker,
-    workHeading: home.workHeading ?? fallback.workHeading,
-    workIntro: home.workIntro ?? fallback.workIntro,
-    workOtherLabel: home.workOtherLabel ?? fallback.workOtherLabel,
-    workNeedLabel: home.workNeedLabel ?? fallback.workNeedLabel,
-    workBuiltLabel: home.workBuiltLabel ?? fallback.workBuiltLabel,
-    caseKicker: home.caseKicker ?? fallback.caseKicker,
-    caseHeading: home.caseHeading ?? fallback.caseHeading,
-    caseBody: home.caseBody ?? fallback.caseBody,
-    caseLink: home.caseLink ?? fallback.caseLink,
-    caseImageAlt: home.caseImageAlt ?? fallback.caseImageAlt,
-    trustKicker: home.trustKicker ?? fallback.trustKicker,
-    trustHeading: home.trustHeading ?? fallback.trustHeading,
-    trustIntro: home.trustIntro ?? fallback.trustIntro,
-    trustContrastLabelA: home.trustContrastLabelA ?? fallback.trustContrastLabelA,
-    trustContrastA: home.trustContrastA ?? fallback.trustContrastA,
-    trustContrastLabelB: home.trustContrastLabelB ?? fallback.trustContrastLabelB,
-    trustContrastB: home.trustContrastB ?? fallback.trustContrastB,
-    discoveryHeading: home.discoveryHeading ?? fallback.discoveryHeading,
-    discoveryBody: home.discoveryBody ?? fallback.discoveryBody,
-    discoveryNote: home.discoveryNote ?? fallback.discoveryNote,
-  };
-}
-
 export default function Hero({ onEnter, onNavigate, onBookingClick }) {
   const { copy, sections, nav, branding, heroButtons, lang, theme, pages, features } = useLang();
-  const home = withHomeFallbacks(copy.home, lang);
+  const home = copy.home;
 
   // Primary CTA opens the same booking panel as the sticky Appointments
   // button; with booking switched off it falls back to the Contact page

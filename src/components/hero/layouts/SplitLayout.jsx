@@ -91,6 +91,7 @@ export default function SplitLayout({ home, heroButtons, lang, onCtaPrimary, onC
         needLabel={home.workNeedLabel}
         builtLabel={home.workBuiltLabel}
         otherItems={homeOtherWork}
+        allLink={{ label: home.workAllLabel, url: home.workAllUrl }}
         className="hero-block-start"
       />
 

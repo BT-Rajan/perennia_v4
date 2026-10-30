@@ -4,12 +4,13 @@
 // exact shape LangContext hands to every component: { copy, nav,
 // sections, faq, pages }, each keyed by language.
 //
-// Components never import COPY/FAQ/NAV/SECTIONS or PAGE_META/
-// PAGE_CONTENT directly anymore — only useLang() — so swapping how
-// content is sourced never touches component code again.
+// Both go through buildFromApi: the bundled data (src/content/*.json
+// and *.md) is first shaped exactly like the API's responses, so there
+// is one code path and the two can't render differently. Components
+// read only useLang() and never import content modules directly.
 // ──────────────────────────────────────────────────────────
-import { BRAND, COPY, FAQ, NAV, SECTIONS } from "./content.js";
-import { LEGAL_PAGE_IDS, PAGE_CONTENT, PAGE_META } from "./pages.js";
+import { BRAND, FAQ_ITEMS, PAGE_RECORDS, SITE_COPY } from "./content.js";
+import { LEGAL_PAGE_IDS, PAGE_CONTENT } from "./pages.js";
 import { fetchContentPages, fetchFaqItems, fetchPublicConfig } from "../api/publicContent.js";
 
 const RTL_LANGS = new Set(["ar", "he", "fa", "ur"]);
@@ -48,53 +49,66 @@ function fillTemplate(template, vars) {
   return Object.entries(vars).reduce((s, [k, v]) => s.replaceAll(`{${k}}`, v), template ?? "");
 }
 
-// ---- Building the unified shape from the BUNDLED FALLBACK ----------
+// ---- Bundled content, in the API's shape -------------------------
 
-function localCopyForLang(lang) {
-  const c = COPY[lang];
-  return {
-    home: c.home,
-    chat: c.chat,
-    common: c.common,
-    booking: {
-      ...c.booking,
-      // already functions in the local fallback — used as-is.
-    },
-  };
-}
+const COPY_BLOBS = { home: "copy.home", chat: "copy.chat", common: "copy.common", booking: "copy.booking" };
+
+const BUNDLED_CONFIG = Object.fromEntries(
+  Object.entries(COPY_BLOBS).map(([blob, key]) => [key, SITE_COPY[blob]])
+);
+
+// Same fields as GET /api/public/content/pages: order from pages.json.
+const BUNDLED_PAGES = PAGE_RECORDS.map(({ slug, show_in_nav, ...translations }, order) => ({
+  slug,
+  order,
+  show_in_nav,
+  translations: Object.fromEntries(
+    Object.entries(translations).map(([lang, fields]) => [
+      lang,
+      { ...fields, body_markdown: PAGE_CONTENT[lang]?.[slug] ?? "" },
+    ])
+  ),
+}));
+
+const BUNDLED_FAQ = FAQ_ITEMS.map((translations) => ({ translations }));
+
+const BUNDLED_LANGUAGES = Object.keys(SITE_COPY.home);
 
 function buildFromLocalFallback(supportedLanguages) {
-  const copy = {}, nav = {}, sections = {}, faq = {}, pages = {};
-  for (const lang of supportedLanguages) {
-    copy[lang] = localCopyForLang(lang);
-    nav[lang] = withWorkNav(NAV[lang], lang);
-    sections[lang] = SECTIONS[lang];
-    faq[lang] = FAQ[lang];
-    pages[lang] = Object.fromEntries(
-      Object.keys(PAGE_META[lang]).map((slug) => [
-        slug,
-        { ...PAGE_META[lang][slug], body: PAGE_CONTENT[lang][slug] },
-      ])
-    );
+  return buildFromApi(BUNDLED_CONFIG, BUNDLED_PAGES, BUNDLED_FAQ, supportedLanguages);
+}
+
+// Per-field fallback: an admin-saved copy blob that predates a newer
+// key (or leaves one out) still gets the bundled text for that key,
+// instead of a blank label or an undefined validation message.
+function withBundled(bundled, live) {
+  const out = { ...bundled };
+  for (const [k, v] of Object.entries(live ?? {})) {
+    if (v !== null && v !== undefined) out[k] = v;
   }
-  // No bundled fallback buttons — the fallback tagline string covers
-  // that spot until the admin configures real buttons via the API.
-  return { copy, nav, sections, faq, pages, heroButtons: [] };
+  return out;
+}
+
+function copyBlob(copyBlobs, key, lang) {
+  const bundled = BUNDLED_CONFIG[key] ?? {};
+  return withBundled(bundled[lang] ?? bundled.en, copyBlobs[key]?.[lang]);
 }
 
 // ---- Building the unified shape from the BACKEND API ----------------
 
 function apiCopyForLang(copyBlobs, lang) {
-  const home = toCamel(copyBlobs["copy.home"]?.[lang] ?? {});
-  const chat = toCamel(copyBlobs["copy.chat"]?.[lang] ?? {});
-  const common = toCamel(copyBlobs["copy.common"]?.[lang] ?? {});
-  const bookingRaw = toCamel(copyBlobs["copy.booking"]?.[lang] ?? {});
+  const home = toCamel(copyBlob(copyBlobs, "copy.home", lang));
+  const chat = toCamel(copyBlob(copyBlobs, "copy.chat", lang));
+  const common = toCamel(copyBlob(copyBlobs, "copy.common", lang));
+  const bookingBlob = copyBlob(copyBlobs, "copy.booking", lang);
+  const bookingRaw = toCamel(bookingBlob);
   // `errors` keys are backend error codes (e.g. "slot_unavailable"),
   // looked up verbatim against booking_service.py's return values —
   // NOT field names, so they must stay snake_case. camelCasing them
   // above (toCamel is recursive) would silently break every lookup,
   // since result.error from the API is always snake_case.
-  const rawErrors = copyBlobs["copy.booking"]?.[lang]?.errors ?? {};
+  const bundledErrors = (BUNDLED_CONFIG["copy.booking"][lang] ?? BUNDLED_CONFIG["copy.booking"].en).errors;
+  const rawErrors = withBundled(bundledErrors, bookingBlob.errors);
 
   return {
     home,
@@ -141,8 +155,11 @@ function buildFromApi(publicConfig, contentPages, faqItems, supportedLanguages) 
     // Privacy/Terms must always resolve (Google's OAuth review links to
     // them) — fall back to the bundled copy until the DB has its own.
     for (const slug of LEGAL_PAGE_IDS) {
-      if (!pages[lang][slug] && PAGE_META[lang]?.[slug]) {
-        pages[lang][slug] = { ...PAGE_META[lang][slug], body: PAGE_CONTENT[lang]?.[slug] ?? "" };
+      const bundled = BUNDLED_PAGES.find((p) => p.slug === slug)?.translations[lang];
+      if (!pages[lang][slug] && bundled) {
+        pages[lang][slug] = {
+          line1: bundled.tagline_line1, line2: bundled.tagline_line2, sub: bundled.tagline_sub, body: bundled.body_markdown,
+        };
       }
     }
 
@@ -213,27 +230,30 @@ const FALLBACK_THEME = {
   sectionRhythm: "standard",
 };
 
+const FALLBACK_FEATURES = { bookingEnabled: true, chatEnabled: true, whatsappWidgetEnabled: false };
+
+const FALLBACK_BRANDING = {
+  siteNameByLang: { en: BRAND.name, ar: BRAND.wordmarkAr },
+  logoUrl: "/static/perennia-logo.png",
+  logoScale: 1,
+  faviconUrl: "/favicon.svg",
+  metaDescriptionByLang: {
+    en: "Perennia — a technology partner for GCC businesses. Practical AI. Affordable Innovation.",
+    ar: "بيرينيا — شريك تقني للشركات في دول الخليج. ذكاء اصطناعي عملي. ابتكار في المتناول.",
+  },
+  chatAvatarUrl: "",
+};
+
 export function buildFallbackSite() {
-  const supportedLanguages = Object.keys(COPY);
   return {
     source: "fallback",
-    supportedLanguages,
+    supportedLanguages: BUNDLED_LANGUAGES,
     defaultLanguage: "en",
     theme: FALLBACK_THEME,
-    features: { bookingEnabled: true, chatEnabled: true, whatsappWidgetEnabled: false },
+    features: FALLBACK_FEATURES,
     contact: FALLBACK_CONTACT,
-    branding: {
-      siteNameByLang: { en: BRAND.name, ar: BRAND.wordmarkAr },
-      logoUrl: "/static/perennia-logo.png",
-      logoScale: 1,
-      faviconUrl: "/favicon.svg",
-      metaDescriptionByLang: {
-        en: "Perennia — a technology partner for GCC businesses. Practical AI. Affordable Innovation.",
-        ar: "بيرينيا — شريك تقني للشركات في دول الخليج. ذكاء اصطناعي عملي. ابتكار في المتناول.",
-      },
-      chatAvatarUrl: "",
-    },
-    ...buildFromLocalFallback(supportedLanguages),
+    branding: FALLBACK_BRANDING,
+    ...buildFromLocalFallback(BUNDLED_LANGUAGES),
   };
 }
 
@@ -301,7 +321,7 @@ export async function loadSiteContent() {
     fetchFaqItems(),
   ]);
 
-  const supportedLanguages = publicConfig?.["locale.supported_languages"] ?? Object.keys(COPY);
+  const supportedLanguages = publicConfig?.["locale.supported_languages"] ?? BUNDLED_LANGUAGES;
   const defaultLanguage = publicConfig?.["locale.default_language"] ?? "en";
 
   const haveFullApiData = publicConfig && contentPages && faqItems;
@@ -314,17 +334,15 @@ export async function loadSiteContent() {
     supportedLanguages,
     defaultLanguage,
     theme: haveFullApiData ? apiTheme(publicConfig) : FALLBACK_THEME,
-    features: haveFullApiData
-      ? apiFeatures(publicConfig)
-      : { bookingEnabled: true, chatEnabled: true, whatsappWidgetEnabled: false },
+    features: haveFullApiData ? apiFeatures(publicConfig) : FALLBACK_FEATURES,
     contact: haveFullApiData ? apiContact(publicConfig) : FALLBACK_CONTACT,
     branding: {
-      siteNameByLang: publicConfig?.["branding.site_name"] ?? { en: BRAND.name, ar: BRAND.wordmarkAr },
-      logoUrl: publicConfig?.["branding.logo_url"] ?? "/static/perennia-logo.png",
-      logoScale: publicConfig?.["branding.logo_scale"] ?? 1,
-      faviconUrl: publicConfig?.["branding.favicon_url"] ?? "/favicon.svg",
+      siteNameByLang: publicConfig?.["branding.site_name"] ?? FALLBACK_BRANDING.siteNameByLang,
+      logoUrl: publicConfig?.["branding.logo_url"] ?? FALLBACK_BRANDING.logoUrl,
+      logoScale: publicConfig?.["branding.logo_scale"] ?? FALLBACK_BRANDING.logoScale,
+      faviconUrl: publicConfig?.["branding.favicon_url"] ?? FALLBACK_BRANDING.faviconUrl,
       metaDescriptionByLang: publicConfig?.["branding.meta_description"] ?? { en: "", ar: "" },
-      chatAvatarUrl: publicConfig?.["chat.avatar_url"] ?? "",
+      chatAvatarUrl: publicConfig?.["chat.avatar_url"] ?? FALLBACK_BRANDING.chatAvatarUrl,
     },
     ...site,
   };

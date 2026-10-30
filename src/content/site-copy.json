@@ -1,0 +1,658 @@
+{
+  "home": {
+    "en": {
+      "welcome": "Welcome to Perennia",
+      "tagline": "Visit our V-Lounge for more",
+      "hero_statement": "",
+      "eyebrow": "Practical AI. Affordable Innovation.",
+      "tagline_line1": "Technology that moves",
+      "tagline_line2": "your business forward.",
+      "supporting_text": "Perennia helps GCC businesses adopt, build and scale technology — from their first digital initiative to practical AI and larger-scale transformation.",
+      "cta_primary": "Book a 30-Minute Discovery Meeting",
+      "cta_secondary": "Explore What We Build",
+      "situations": [
+        {
+          "id": "starting-digital",
+          "label": "Starting Digital",
+          "audience": "For businesses beginning their digital journey",
+          "body": "You have a business process, but technology has not yet been properly integrated into it.",
+          "question": "My business is just starting with technology — how can Perennia help?"
+        },
+        {
+          "id": "practical-ai",
+          "label": "Making AI Practical",
+          "audience": "For businesses that want to use AI without the uncertainty",
+          "body": "We identify where AI genuinely adds value and implement it around the business — not simply because it is fashionable.",
+          "question": "Where could practical AI genuinely help my business?"
+        },
+        {
+          "id": "scaling-technology",
+          "label": "Scaling Technology",
+          "audience": "For businesses ready for their next stage of growth",
+          "body": "Technology needs to become more capable, connected and reliable as the business grows.",
+          "question": "My business is growing — how can Perennia help our technology scale with it?"
+        }
+      ],
+      "sectors": [
+        {
+          "id": "trading",
+          "label": "Trading & Distribution",
+          "body": "Customers, orders, inventory, procurement and delivery, connected through business software built around how you trade."
+        },
+        {
+          "id": "professional-services",
+          "label": "Professional Services",
+          "body": "Workflows, approvals, documents and client management, made more connected and efficient through automation and custom systems."
+        },
+        {
+          "id": "healthcare",
+          "label": "Healthcare",
+          "body": "Dependable technology around operational workflows, information and service delivery."
+        },
+        {
+          "id": "education",
+          "label": "Education",
+          "body": "Practical technology for learning, administration and digital experiences."
+        }
+      ],
+      "capabilities": [
+        {
+          "id": "technology",
+          "label": "Technology",
+          "lead": "Build the technology your business needs.",
+          "body": "Custom software, business applications, automation and digital systems designed around the way the business actually operates."
+        },
+        {
+          "id": "ai",
+          "label": "AI",
+          "lead": "Use AI where it makes business sense.",
+          "body": "AI implementation, intelligent workflows and practical AI solutions focused on useful business outcomes — not AI for its own sake."
+        },
+        {
+          "id": "advisory",
+          "label": "Advisory",
+          "lead": "Make better technology decisions.",
+          "body": "Technology consulting, process assessment and guidance that helps businesses understand what to change, what to build and how to implement it reliably."
+        }
+      ],
+      "local_points": [
+        {
+          "id": "kuwait",
+          "label": "Based in Kuwait",
+          "body": "Working with businesses across the GCC, in person or virtually."
+        },
+        {
+          "id": "bilingual",
+          "label": "Arabic and English",
+          "body": "Interfaces, content and AI assistants that work fully in both languages, right-to-left included — as on this site."
+        },
+        {
+          "id": "fit",
+          "label": "Built around how you operate",
+          "body": "Technology fitted to how your business actually works here — not an imported template."
+        }
+      ],
+      "process_steps": [
+        {
+          "id": "understand",
+          "label": "Understand",
+          "body": "A 30-minute discovery conversation to understand the business, problem and desired outcome."
+        },
+        {
+          "id": "assess",
+          "label": "Assess",
+          "body": "Examine the existing process, identify gaps and determine where technology can genuinely help."
+        },
+        {
+          "id": "propose",
+          "label": "Propose",
+          "body": "Define the solution, scope, implementation approach and investment clearly."
+        },
+        {
+          "id": "prototype",
+          "label": "Prototype",
+          "body": "Where appropriate, demonstrate the proposed solution before committing to the full build."
+        },
+        {
+          "id": "build",
+          "label": "Build",
+          "body": "Develop and integrate the solution around the customer's actual business process."
+        },
+        {
+          "id": "deploy",
+          "label": "Deploy",
+          "body": "Put the technology into operation, provide training and support adoption."
+        },
+        {
+          "id": "adapt",
+          "label": "Adapt",
+          "body": "Continue improving the solution as the business, market and requirements evolve."
+        }
+      ],
+      "case_stages": [
+        "Sales",
+        "Feasibility",
+        "Quotation",
+        "Order",
+        "Procurement",
+        "Inventory",
+        "Production",
+        "Delivery",
+        "Payment"
+      ],
+      "other_work": [
+        {
+          "id": "field-sales",
+          "tag": "Mobile sales app · for JDK",
+          "label": "Field sales app",
+          "need": "Salespeople need to take a customer from enquiry to confirmed order while out of the office, and keep managers informed.",
+          "built": "An installable Arabic/English app: customers and visits, feasibility against today's stock, quotations, proforma invoices and orders, with manager reports."
+        },
+        {
+          "id": "service-operations",
+          "tag": "Business platform · for a Kuwait-based service company",
+          "label": "Service operations platform",
+          "need": "One place to run client projects — from onboarding and government submissions to quotations, contracts and payments.",
+          "built": "Client onboarding, project workspaces, a government forms library and submissions, quotations, contracts, tasks and reports, with an AI assistant — in Arabic and English."
+        },
+        {
+          "id": "practice-management",
+          "tag": "Practice management · for a small law firm",
+          "label": "Law firm practice management",
+          "need": "A small firm's clients, compliance records, tasks and billing in one system.",
+          "built": "Client onboarding with KYC and leadership history, secure document storage, tasks and calendar, and billing with PDF invoices."
+        },
+        {
+          "id": "perennia-site",
+          "tag": "Website & AI · our own platform",
+          "label": "This website",
+          "need": "Visitors should be able to get answers and book time without waiting for a reply.",
+          "built": "A bilingual website with an AI assistant grounded in our own content, and self-service booking with live availability."
+        }
+      ],
+      "trust_points": [
+        {
+          "id": "business-first",
+          "label": "Business first",
+          "body": "We understand the business before building, and design around your actual process."
+        },
+        {
+          "id": "careful",
+          "label": "Careful implementation",
+          "body": "We introduce technology carefully to minimise disruption, and help your people adopt and use it."
+        },
+        {
+          "id": "security",
+          "label": "Security and accountability",
+          "body": "We treat security and data protection seriously, with clear accountability for what we deliver."
+        },
+        {
+          "id": "support",
+          "label": "Support as you change",
+          "body": "Ongoing support where required, and technology that adapts as your requirements evolve."
+        }
+      ],
+      "case_page_slug": "jdk-factory-erp",
+      "case_image_url": "/static/case-studies/jdk-erp/sales-order.png",
+      "situations_kicker": "Who we work with",
+      "situations_heading": "Technology should fit the business — not force the business into a template.",
+      "situations_intro": "We work with SMEs in Kuwait and the wider GCC, typically organisations of around 100 to 500 people. Whatever stage your business is at, we help you adopt technology reliably, practically and with a clear path forward.",
+      "sectors_heading": "Businesses we understand particularly well",
+      "sectors_note": "Not in one of these? The approach is the same: understand how your business works, then build the technology around it.",
+      "work_kicker": "Our work",
+      "work_heading": "Different businesses have different technology problems.",
+      "work_intro": "We understand the problem first, then build the appropriate solution — from a factory's complete operation to a sales team in the field.",
+      "work_other_label": "Other work",
+      "work_need_label": "The need",
+      "work_built_label": "What we built",
+      "work_all_label": "View all case studies",
+      "work_all_url": "https://apps.perennia.org/",
+      "case_kicker": "Featured work",
+      "case_heading": "JDK Factory ERP: one system around a manufacturing workflow.",
+      "case_body": "We mapped how a manufacturing business actually runs — from sales and feasibility through procurement, production, delivery and payment — and built its ERP around that workflow.",
+      "case_link": "View Case Study",
+      "case_image_alt": "The completed sales order in JDK Factory ERP, linked to its quotation, finance record and deliveries",
+      "trust_kicker": "What sets Perennia apart",
+      "trust_heading": "Reliable technology induction for your business.",
+      "trust_intro": "Technology only creates value when it works in the real business. Building software is one part of that — we focus on the complete journey, from understanding the business through implementation, adoption and change.",
+      "trust_contrast_label_a": "Software delivery",
+      "trust_contrast_a": "“We can build software.”",
+      "trust_contrast_label_b": "Technology induction",
+      "trust_contrast_b": "“We can help you introduce technology into your business reliably.”",
+      "discovery_heading": "Let's understand the problem before deciding what to build.",
+      "discovery_body": "In 30 minutes we look at your business, your current process or problem, the outcome you want, whether technology can help — and what the sensible next step is.",
+      "discovery_note": "A working conversation, not a sales pitch — no solution or price is committed in the meeting.",
+      "capabilities_heading": "Three capabilities. One technology partner.",
+      "capabilities_intro": "Understand the business. Decide what technology is needed. Build it. Put it into operation. Help the business adapt.",
+      "capabilities_roles": "Work with us as an advisor, an implementation partner, a software builder, an AI implementation partner — or a combination of these.",
+      "capabilities_scope_note": "Scope and investment are agreed once we understand your requirements.",
+      "local_kicker": "Kuwait and the GCC",
+      "local_heading": "Technology built with your business environment in mind.",
+      "local_intro": "Perennia combines technology expertise with practical understanding of how businesses operate in Kuwait and the wider GCC.",
+      "process_heading": "Start with the business. Build the technology around it.",
+      "process_intro": "We normally take responsibility for the whole journey — from the first conversation to the solution in operation — so you are not left coordinating several vendors.",
+      "hint": "Start chatting",
+      "lang_switch": "AR | عربي"
+    },
+    "ar": {
+      "welcome": "مرحبا بك في بيرينيا",
+      "tagline": "زوروا V-Lounge الخاص بنا لمزيد من المعلومات",
+      "hero_statement": "",
+      "eyebrow": "ذكاء اصطناعي عملي. ابتكار في المتناول.",
+      "tagline_line1": "تقنية تدفع",
+      "tagline_line2": "أعمالك إلى الأمام.",
+      "supporting_text": "تساعد بيرينيا الشركات في دول الخليج على تبنّي التقنية وبنائها وتوسيعها — من أول مبادرة رقمية إلى الذكاء الاصطناعي العملي والتحول على نطاق أوسع.",
+      "cta_primary": "احجز اجتماعًا استكشافيًا لمدة 30 دقيقة",
+      "cta_secondary": "استكشف ما نبنيه",
+      "situations": [
+        {
+          "id": "starting-digital",
+          "label": "البدء رقميًا",
+          "audience": "للشركات التي تبدأ رحلتها الرقمية",
+          "body": "لديك عمليات أعمال قائمة، لكن التقنية لم تُدمج فيها بالشكل الصحيح بعد.",
+          "question": "أعمالي في بداية رحلتها مع التقنية — كيف يمكن لبيرينيا المساعدة؟"
+        },
+        {
+          "id": "practical-ai",
+          "label": "ذكاء اصطناعي عملي",
+          "audience": "للشركات التي تريد استخدام الذكاء الاصطناعي دون حيرة أو غموض",
+          "body": "نحدد أين يضيف الذكاء الاصطناعي قيمة حقيقية، ونطبّقه بما يخدم أعمالك — لا لمجرد أنه رائج.",
+          "question": "أين يمكن للذكاء الاصطناعي العملي أن يفيد أعمالي فعلًا؟"
+        },
+        {
+          "id": "scaling-technology",
+          "label": "توسيع التقنية",
+          "audience": "للشركات المستعدة لمرحلة النمو التالية",
+          "body": "مع نمو أعمالك، تحتاج التقنية إلى أن تصبح أكثر قدرة وترابطًا وموثوقية.",
+          "question": "أعمالي تنمو — كيف يمكن لبيرينيا مساعدتنا على توسيع التقنية معها؟"
+        }
+      ],
+      "sectors": [
+        {
+          "id": "trading",
+          "label": "التجارة والتوزيع",
+          "body": "العملاء والطلبات والمخزون والمشتريات والتسليم، مترابطة عبر برمجيات أعمال مبنية حول طريقة تجارتك."
+        },
+        {
+          "id": "professional-services",
+          "label": "الخدمات المهنية",
+          "body": "سير العمل والاعتمادات والمستندات وإدارة العملاء، أكثر ترابطًا وكفاءة عبر الأتمتة والأنظمة المخصصة."
+        },
+        {
+          "id": "healthcare",
+          "label": "الرعاية الصحية",
+          "body": "تقنية موثوقة حول سير العمل التشغيلي والمعلومات وتقديم الخدمات."
+        },
+        {
+          "id": "education",
+          "label": "التعليم",
+          "body": "تقنية عملية للتعلّم والإدارة والتجارب الرقمية."
+        }
+      ],
+      "capabilities": [
+        {
+          "id": "technology",
+          "label": "التقنية",
+          "lead": "ابنِ التقنية التي تحتاجها أعمالك.",
+          "body": "برمجيات مخصصة وتطبيقات أعمال وأتمتة وأنظمة رقمية مصممة وفق طريقة عمل أعمالك فعليًا."
+        },
+        {
+          "id": "ai",
+          "label": "الذكاء الاصطناعي",
+          "lead": "استخدم الذكاء الاصطناعي حيث يكون منطقيًا للأعمال.",
+          "body": "تطبيق الذكاء الاصطناعي وسير عمل ذكي وحلول عملية تركّز على نتائج مفيدة للأعمال — لا ذكاء اصطناعي لذاته."
+        },
+        {
+          "id": "advisory",
+          "label": "الاستشارات",
+          "lead": "اتخذ قرارات تقنية أفضل.",
+          "body": "استشارات تقنية وتقييم للعمليات وتوجيه يساعدك على فهم ما يجب تغييره، وما يجب بناؤه، وكيف تنفّذه بشكل موثوق."
+        }
+      ],
+      "local_points": [
+        {
+          "id": "kuwait",
+          "label": "مقرّنا الكويت",
+          "body": "نعمل مع الشركات في دول الخليج، حضوريًا أو عن بُعد."
+        },
+        {
+          "id": "bilingual",
+          "label": "العربية والإنجليزية",
+          "body": "واجهات ومحتوى ومساعدون أذكياء يعملون بالكامل باللغتين، مع دعم الكتابة من اليمين إلى اليسار — كما في هذا الموقع."
+        },
+        {
+          "id": "fit",
+          "label": "مصمَّمة حول طريقة عملك",
+          "body": "تقنية تناسب طريقة عمل أعمالك فعليًا هنا — لا قالبًا مستوردًا."
+        }
+      ],
+      "process_steps": [
+        {
+          "id": "understand",
+          "label": "الفهم",
+          "body": "محادثة استكشافية مدتها 30 دقيقة لفهم الأعمال والمشكلة والنتيجة المطلوبة."
+        },
+        {
+          "id": "assess",
+          "label": "التقييم",
+          "body": "دراسة العملية الحالية، وتحديد الفجوات، وتحديد أين يمكن للتقنية أن تساعد فعلًا."
+        },
+        {
+          "id": "propose",
+          "label": "المقترح",
+          "body": "تحديد الحل ونطاق العمل وأسلوب التنفيذ والتكلفة بوضوح."
+        },
+        {
+          "id": "prototype",
+          "label": "النموذج الأولي",
+          "body": "حيثما كان مناسبًا، نعرض الحل المقترح قبل الالتزام بالبناء الكامل."
+        },
+        {
+          "id": "build",
+          "label": "البناء",
+          "body": "تطوير الحل ودمجه حول عمليات أعمال العميل الفعلية."
+        },
+        {
+          "id": "deploy",
+          "label": "التشغيل",
+          "body": "وضع التقنية قيد التشغيل، وتقديم التدريب، ودعم اعتمادها."
+        },
+        {
+          "id": "adapt",
+          "label": "التكيّف",
+          "body": "مواصلة تحسين الحل مع تطور الأعمال والسوق والمتطلبات."
+        }
+      ],
+      "case_stages": [
+        "المبيعات",
+        "الجدوى",
+        "عرض السعر",
+        "الطلب",
+        "المشتريات",
+        "المخزون",
+        "الإنتاج",
+        "التسليم",
+        "الدفع"
+      ],
+      "other_work": [
+        {
+          "id": "field-sales",
+          "tag": "تطبيق مبيعات · لـ JDK",
+          "label": "تطبيق المبيعات الميدانية",
+          "need": "يحتاج مندوبو المبيعات إلى نقل العميل من الاستفسار إلى الطلب المؤكد وهم خارج المكتب، مع إبقاء المديرين على اطلاع.",
+          "built": "تطبيق قابل للتثبيت بالعربية والإنجليزية: العملاء والزيارات، وفحص الجدوى مقابل مخزون اليوم، وعروض الأسعار والفواتير المبدئية والطلبات، مع تقارير للمديرين."
+        },
+        {
+          "id": "service-operations",
+          "tag": "منصة أعمال · لشركة خدمات مقرّها الكويت",
+          "label": "منصة عمليات الخدمات",
+          "need": "مكان واحد لإدارة مشاريع العملاء — من الانضمام والمعاملات الحكومية إلى عروض الأسعار والعقود والمدفوعات.",
+          "built": "انضمام العملاء، ومساحات عمل للمشاريع، ومكتبة للنماذج الحكومية وتقديمها، وعروض الأسعار والعقود والمهام والتقارير، مع مساعد ذكي — بالعربية والإنجليزية."
+        },
+        {
+          "id": "practice-management",
+          "tag": "إدارة مكتب · لمكتب محاماة صغير",
+          "label": "إدارة مكتب محاماة",
+          "need": "عملاء المكتب وسجلات الامتثال والمهام والفوترة في نظام واحد.",
+          "built": "انضمام العملاء مع التحقق من الهوية وسجل القيادات، وتخزين آمن للمستندات، ومهام وتقويم، وفوترة مع فواتير PDF."
+        },
+        {
+          "id": "perennia-site",
+          "tag": "موقع وذكاء اصطناعي · منصتنا الخاصة",
+          "label": "هذا الموقع",
+          "need": "يجب أن يتمكن الزوار من الحصول على إجابات وحجز موعد دون انتظار رد.",
+          "built": "موقع ثنائي اللغة مع مساعد ذكي يستند إلى محتوانا، وحجز ذاتي بمواعيد متاحة مباشرة."
+        }
+      ],
+      "trust_points": [
+        {
+          "id": "business-first",
+          "label": "الأعمال أولًا",
+          "body": "نفهم أعمالك قبل أن نبني، ونصمّم حول عملياتك الفعلية."
+        },
+        {
+          "id": "careful",
+          "label": "تنفيذ مدروس",
+          "body": "ندخل التقنية بعناية لتقليل التعطّل، ونساعد فريقك على اعتمادها واستخدامها."
+        },
+        {
+          "id": "security",
+          "label": "الأمان والمسؤولية",
+          "body": "نتعامل مع الأمان وحماية البيانات بجدية، مع مسؤولية واضحة عمّا نقدّمه."
+        },
+        {
+          "id": "support",
+          "label": "دعم مع تغيّر أعمالك",
+          "body": "دعم مستمر عند الحاجة، وتقنية تتكيّف مع تطور متطلباتك."
+        }
+      ],
+      "case_page_slug": "jdk-factory-erp",
+      "case_image_url": "/static/case-studies/jdk-erp/sales-order.png",
+      "situations_kicker": "مع من نعمل",
+      "situations_heading": "يجب أن تناسب التقنية الأعمال — لا أن تُجبر الأعمال على قالب جاهز.",
+      "situations_intro": "نعمل مع الشركات الصغيرة والمتوسطة في الكويت ودول الخليج، وعادةً ما تضم نحو 100 إلى 500 موظف. أيًّا كانت المرحلة التي تمر بها أعمالك، نساعدك على تبنّي التقنية بشكل موثوق وعملي، مع مسار واضح للمضي قدمًا.",
+      "sectors_heading": "أعمال نفهمها جيدًا بشكل خاص",
+      "sectors_note": "لست ضمن هذه القطاعات؟ النهج نفسه: نفهم طريقة عمل أعمالك، ثم نبني التقنية حولها.",
+      "work_kicker": "أعمالنا",
+      "work_heading": "لكل عمل مشكلاته التقنية الخاصة.",
+      "work_intro": "نفهم المشكلة أولًا، ثم نبني الحل المناسب — من التشغيل الكامل لمصنع إلى فريق مبيعات في الميدان.",
+      "work_other_label": "أعمال أخرى",
+      "work_need_label": "الحاجة",
+      "work_built_label": "ما بنيناه",
+      "work_all_label": "عرض جميع دراسات الحالة",
+      "work_all_url": "https://apps.perennia.org/",
+      "case_kicker": "عمل مميز",
+      "case_heading": "نظام ERP لمصنع JDK: نظام واحد حول سير عمل تصنيعي.",
+      "case_body": "رسمنا طريقة عمل شركة تصنيع فعليًا — من المبيعات والجدوى إلى المشتريات والإنتاج والتسليم والدفع — وبنينا نظام ERP الخاص بها حول سير العمل هذا.",
+      "case_link": "عرض دراسة الحالة",
+      "case_image_alt": "أمر بيع مكتمل في نظام ERP لمصنع JDK، مرتبط بعرض السعر والسجل المالي والتسليمات",
+      "trust_kicker": "ما يميّز بيرينيا",
+      "trust_heading": "إدخال موثوق للتقنية إلى أعمالك.",
+      "trust_intro": "لا تُحدث التقنية قيمة إلا عندما تعمل في واقع الأعمال. بناء البرمجيات جزء من ذلك فقط — نحن نركّز على الرحلة كاملة، من فهم الأعمال إلى التنفيذ والاعتماد والتكيّف مع التغيير.",
+      "trust_contrast_label_a": "تسليم البرمجيات",
+      "trust_contrast_a": "«نستطيع بناء البرمجيات.»",
+      "trust_contrast_label_b": "إدخال التقنية",
+      "trust_contrast_b": "«نساعدك على إدخال التقنية إلى أعمالك بشكل موثوق.»",
+      "discovery_heading": "لنفهم المشكلة قبل أن نقرر ما يجب بناؤه.",
+      "discovery_body": "خلال 30 دقيقة نتعرّف على أعمالك، والعملية أو المشكلة الحالية، والنتيجة التي تريدها، وما إذا كانت التقنية قادرة على المساعدة — وما الخطوة التالية المناسبة.",
+      "discovery_note": "محادثة عمل، لا عرض مبيعات — لا نلتزم في الاجتماع بحل أو سعر.",
+      "capabilities_heading": "ثلاث قدرات. شريك تقني واحد.",
+      "capabilities_intro": "نفهم الأعمال. نحدد التقنية المطلوبة. نبنيها. نضعها قيد التشغيل. ونساعد الأعمال على التكيّف.",
+      "capabilities_roles": "اعمل معنا كمستشار، أو شريك تنفيذ، أو مطوّر برمجيات، أو شريك لتطبيق الذكاء الاصطناعي — أو مزيج من ذلك.",
+      "capabilities_scope_note": "نتفق على نطاق العمل والتكلفة بعد فهم متطلباتك.",
+      "local_kicker": "الكويت ودول الخليج",
+      "local_heading": "تقنية مبنية مع مراعاة بيئة أعمالك.",
+      "local_intro": "تجمع بيرينيا بين الخبرة التقنية والفهم العملي لطريقة عمل الشركات في الكويت ودول الخليج.",
+      "process_heading": "ابدأ بالأعمال. وابنِ التقنية حولها.",
+      "process_intro": "نتحمّل عادةً مسؤولية الرحلة كاملة — من المحادثة الأولى حتى تشغيل الحل — فلا تضطر إلى التنسيق بين عدة موردين.",
+      "hint": "ابدأ المحادثة",
+      "lang_switch": "EN | English"
+    }
+  },
+  "chat": {
+    "en": {
+      "tagline_line1": "Practical AI. ",
+      "tagline_line2": "Affordable Innovation.",
+      "sub": "PRACTICAL AI · AFFORDABLE INNOVATION",
+      "header": "AI Assistant",
+      "online_status": "Online · AI Assistant",
+      "powered_by": "Powered by",
+      "book_btn": "Book a 30-Minute Discovery Meeting",
+      "faq_title": "Quick Questions",
+      "input_placeholder": "Ask Perennia anything…",
+      "welcome_msg": "Hello! I'm Perennia's AI assistant. Before we get started, may I know your name? It helps us build a good relationship with you and follow up properly.",
+      "lang_switch": "AR | عربي",
+      "mic_label": "Talk",
+      "mic_label_listening": "Listening…",
+      "mic_label_speaking": "Speaking…",
+      "mic_unsupported": "Voice input isn't supported in this browser — try Chrome or Edge, or use the text box instead.",
+      "mic_denied": "Microphone access was blocked. Allow microphone access in your browser settings to talk to the assistant.",
+      "mute_tts": "Mute replies",
+      "unmute_tts": "Unmute replies",
+      "error_reply": "Sorry — I couldn't send that just now. Please try again in a moment, or book a meeting and we'll talk directly.",
+      "rate_limited_reply": "You've sent a lot of messages in a short time. Please wait a little before trying again, or book a meeting and we'll talk directly."
+    },
+    "ar": {
+      "tagline_line1": "ذكاء اصطناعي عملي. ",
+      "tagline_line2": "ابتكار في المتناول.",
+      "sub": "ذكاء اصطناعي عملي · ابتكار في المتناول",
+      "header": "المساعد الذكي",
+      "online_status": "متصل الآن · مساعد ذكي",
+      "powered_by": "بدعم من",
+      "book_btn": "احجز اجتماعًا استكشافيًا لمدة 30 دقيقة",
+      "faq_title": "أسئلة سريعة",
+      "input_placeholder": "اسأل مساعد بيرينيا أي شيء…",
+      "welcome_msg": "مرحباً! أنا المساعد الذكي لبيرينيا. قبل أن نبدأ، هل لي أن أعرف اسمك؟ هذا يساعدنا على بناء علاقة أفضل معك ومتابعة طلبك بشكل صحيح.",
+      "lang_switch": "EN | English",
+      "mic_label": "تحدث",
+      "mic_label_listening": "جارٍ الاستماع…",
+      "mic_label_speaking": "يتحدث الآن…",
+      "mic_unsupported": "الإدخال الصوتي غير مدعوم في هذا المتصفح — جرّب Chrome أو Edge، أو استخدم مربع الكتابة بدلاً من ذلك.",
+      "mic_denied": "تم حظر الوصول إلى الميكروفون. يرجى السماح بالوصول إليه من إعدادات المتصفح للتحدث مع المساعد.",
+      "mute_tts": "كتم الردود الصوتية",
+      "unmute_tts": "تفعيل الردود الصوتية",
+      "error_reply": "عذرًا — تعذّر إرسال رسالتك الآن. يرجى المحاولة مرة أخرى بعد قليل، أو احجز اجتماعًا وسنتحدث مباشرة.",
+      "rate_limited_reply": "لقد أرسلت عددًا كبيرًا من الرسائل في وقت قصير. يرجى الانتظار قليلًا قبل المحاولة مرة أخرى، أو احجز اجتماعًا وسنتحدث مباشرة."
+    }
+  },
+  "booking": {
+    "en": {
+      "title": "Book a 30-Minute Discovery Meeting",
+      "subtitle": "A conversation about your business, the problem and the outcome you want. Pick a time — we'll confirm by email.",
+      "tab_new": "New Appointment",
+      "tab_manage": "Manage Booking",
+      "date": "Date",
+      "slot": "Available times",
+      "slot_empty": "Pick a date to see available times",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "service": "Service",
+      "select_service": "Choose a service…",
+      "minutes_short": "min",
+      "err_pick_service": "Please choose a service.",
+      "err_required_question": "Please answer all required questions.",
+      "notes": "Notes (optional)",
+      "cancel": "Cancel",
+      "confirm": "Confirm Booking",
+      "lookup_id": "Appointment ID",
+      "lookup_email": "Email used to book",
+      "find_btn": "Find My Appointment",
+      "cancel_appt": "Cancel Appointment",
+      "reschedule": "Reschedule",
+      "lookup_different": "Look up a different appointment",
+      "new_date": "New date",
+      "back": "Back",
+      "confirm_new_time": "Confirm New Time",
+      "success_new": "You're booked! Confirmation code: {id}. A confirmation email is on its way.",
+      "success_cancel": "Your appointment has been cancelled.",
+      "success_reschedule": "All set — your appointment is now on {date} at {time}.",
+      "id_placeholder": "PRN-XXXXXXXX",
+      "no_availability": "No availability that day — try another date.",
+      "err_pick_date_slot": "Please pick a date and time.",
+      "err_name": "Please enter your name.",
+      "err_email": "Please enter a valid email.",
+      "err_lookup_both": "Enter both the appointment ID and email.",
+      "err_pick_new_date_slot": "Pick a new date and time.",
+      "errors": {
+        "slot_unavailable": "That time is no longer available — please pick another.",
+        "notice_window_passed": "This is too close to the appointment time to make that change.",
+        "not_found": "We couldn't find a matching appointment.",
+        "invalid_email": "Please enter a valid email.",
+        "invalid_name": "Please enter your name.",
+        "invalid_date": "That date isn't valid.",
+        "invalid_service": "That service isn't available anymore — please pick another.",
+        "invalid_question": "Something about the form didn't match — please try again.",
+        "missing_required_answer": "Please answer all required questions.",
+        "already_cancelled": "This appointment has already been cancelled.",
+        "booking_disabled": "Booking is currently unavailable — please check back soon.",
+        "generic": "Something went wrong — please try again.",
+        "rate_limited": "Too many attempts in a short time — please wait a few minutes and try again."
+      }
+    },
+    "ar": {
+      "title": "احجز اجتماعًا استكشافيًا لمدة 30 دقيقة",
+      "subtitle": "محادثة حول أعمالك والمشكلة والنتيجة التي تريدها. اختر الوقت المناسب — سنؤكد عبر البريد الإلكتروني.",
+      "tab_new": "موعد جديد",
+      "tab_manage": "إدارة الحجز",
+      "date": "التاريخ",
+      "slot": "الأوقات المتاحة",
+      "slot_empty": "اختر تاريخًا لرؤية الأوقات المتاحة",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف (اختياري)",
+      "service": "الخدمة",
+      "select_service": "اختر خدمة…",
+      "minutes_short": "د",
+      "err_pick_service": "يرجى اختيار خدمة.",
+      "err_required_question": "يرجى الإجابة عن جميع الأسئلة المطلوبة.",
+      "notes": "ملاحظات (اختياري)",
+      "cancel": "إلغاء",
+      "confirm": "تأكيد الحجز",
+      "lookup_id": "رقم الموعد",
+      "lookup_email": "البريد الإلكتروني المستخدم للحجز",
+      "find_btn": "ابحث عن موعدي",
+      "cancel_appt": "إلغاء الموعد",
+      "reschedule": "إعادة الجدولة",
+      "lookup_different": "البحث عن موعد آخر",
+      "new_date": "تاريخ جديد",
+      "back": "رجوع",
+      "confirm_new_time": "تأكيد الوقت الجديد",
+      "success_new": "تم الحجز! رمز التأكيد: {id}. بريد التأكيد في طريقه إليك.",
+      "success_cancel": "تم إلغاء موعدك.",
+      "success_reschedule": "تم! موعدك الآن في {date} الساعة {time}.",
+      "id_placeholder": "PRN-XXXXXXXX",
+      "no_availability": "لا توجد مواعيد متاحة في هذا اليوم — جرّب تاريخًا آخر.",
+      "err_pick_date_slot": "يرجى اختيار تاريخ ووقت.",
+      "err_name": "يرجى إدخال اسمك.",
+      "err_email": "يرجى إدخال بريد إلكتروني صالح.",
+      "err_lookup_both": "أدخل رقم الموعد والبريد الإلكتروني معًا.",
+      "err_pick_new_date_slot": "اختر تاريخًا ووقتًا جديدين.",
+      "errors": {
+        "slot_unavailable": "لم يعد هذا الوقت متاحًا — يرجى اختيار وقت آخر.",
+        "notice_window_passed": "الوقت المتبقي غير كافٍ لإجراء هذا التغيير.",
+        "not_found": "لم نتمكن من العثور على موعد مطابق.",
+        "invalid_email": "يرجى إدخال بريد إلكتروني صالح.",
+        "invalid_name": "يرجى إدخال اسمك.",
+        "invalid_date": "هذا التاريخ غير صالح.",
+        "invalid_service": "هذه الخدمة لم تعد متاحة — يرجى اختيار خدمة أخرى.",
+        "invalid_question": "حدث خلل في النموذج — يرجى المحاولة مرة أخرى.",
+        "missing_required_answer": "يرجى الإجابة عن جميع الأسئلة المطلوبة.",
+        "already_cancelled": "تم إلغاء هذا الموعد بالفعل.",
+        "booking_disabled": "الحجز غير متاح حاليًا — يرجى المحاولة لاحقًا.",
+        "generic": "حدث خطأ ما — يرجى المحاولة مرة أخرى.",
+        "rate_limited": "محاولات كثيرة في وقت قصير — يرجى الانتظار بضع دقائق ثم المحاولة مرة أخرى."
+      }
+    }
+  },
+  "common": {
+    "en": {
+      "close": "Close",
+      "back": "Back",
+      "send": "Send",
+      "quick_menu": "Quick menu",
+      "primary_nav": "Primary",
+      "go_home": "Go to home",
+      "assistant_typing": "Assistant is typing",
+      "footer_explore": "Explore",
+      "footer_contact": "Get in touch",
+      "footer_rights": "All rights reserved.",
+      "footer_privacy": "Privacy Policy",
+      "footer_terms": "Terms of Use"
+    },
+    "ar": {
+      "close": "إغلاق",
+      "back": "رجوع",
+      "send": "إرسال",
+      "quick_menu": "قائمة سريعة",
+      "primary_nav": "الأساسية",
+      "go_home": "الذهاب إلى الرئيسية",
+      "assistant_typing": "المساعد يكتب",
+      "footer_explore": "استكشف",
+      "footer_contact": "تواصل معنا",
+      "footer_rights": "جميع الحقوق محفوظة.",
+      "footer_privacy": "سياسة الخصوصية",
+      "footer_terms": "شروط الاستخدام"
+    }
+  }
+}

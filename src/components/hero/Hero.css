@@ -994,6 +994,7 @@
 
 /* ── Other work (HeroWork) — deliberately quieter than the featured
    panel: a text list divided by hairlines, no cards or screenshots. */
+.hero-work-all { display: flex; justify-content: center; margin-top: var(--space-5); }
 .hero-work-other { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-3); }
 .hero-work-other-label {
   margin: 0;

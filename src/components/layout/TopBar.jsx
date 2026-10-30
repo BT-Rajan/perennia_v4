@@ -1,6 +1,5 @@
 import "./TopBar.css";
 import { useLang } from "../../context/LangContext.jsx";
-import { COPY } from "../../data/content.js";
 import Button from "../ui/Button.jsx";
 import LangToggle from "../ui/LangToggle.jsx";
 import Logo from "../ui/Logo.jsx";
@@ -19,8 +18,8 @@ import NavMenu from "./NavMenu.jsx";
  * below 1024px — so booking is always one tap away from the nav.
  */
 export default function TopBar({ leading, children, onNavigate, onLogoClick, onBook }) {
-  const { copy, lang } = useLang();
-  const bookLabel = copy.home?.ctaPrimary ?? (COPY[lang] ?? COPY.en).home.ctaPrimary;
+  const { copy } = useLang();
+  const bookLabel = copy.home.ctaPrimary;
   return (
     <header className="top-bar-header">
       <div className="top-bar-start">
