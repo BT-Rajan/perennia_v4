@@ -8,7 +8,7 @@ import StickyChat from "./components/StickyChat.jsx";
 import BookingPanel from "./components/booking/BookingPanel.jsx";
 import Toast from "./components/ui/Toast.jsx";
 import LogoIntro from "./components/ui/LogoIntro.jsx";
-import { applyPageMeta, describeMarkdown, pageFromPath, pathForPage } from "./seo/pageMeta.js";
+import { applyPageMeta, describeMarkdown, langFromPath, pageFromPath, pathForPage } from "./seo/pageMeta.js";
 
 // Pages with dedicated components — every other page id routes through
 // the generic, Markdown-driven ContentPage, so an admin can add a new
@@ -29,7 +29,7 @@ function readOpenParam() {
 const OPEN_ON_ARRIVAL = readOpenParam();
 
 function AppShell() {
-  const { features, pages, copy, lang, branding } = useLang();
+  const { features, pages, copy, lang, setLang, supportedLanguages, branding } = useLang();
   // "home" | "contact" | any configured page slug. Each page also has
   // its own URL (/<slug>, home at /) so it can be linked, bookmarked and
   // indexed — see src/seo/pageMeta.js and /sitemap.xml.
@@ -56,7 +56,7 @@ function AppShell() {
   const [scrollTarget, setScrollTarget] = useState(null);
 
   function navigate(id) {
-    const path = pathForPage(id);
+    const path = pathForPage(id, lang);
     if (window.location.pathname !== path) window.history.pushState({ page: id }, "", path);
     if (id === "work") {
       setPage("home");
@@ -67,25 +67,31 @@ function AppShell() {
     setPage(id);
   }
 
-  // Drop ?open= (and ?lang=, already applied) from the address once used,
-  // so a reload or a shared link doesn't reopen the panel.
+  // Keep the address in step with the page and language: the language
+  // switch moves /about ↔ /ar/about, so every language version has its
+  // own URL. Also drops ?open= and ?lang= (already applied on arrival),
+  // so a reload or a shared link doesn't reopen a panel.
   useEffect(() => {
     const url = new URL(window.location.href);
-    if (!url.searchParams.has("open") && !url.searchParams.has("lang")) return;
+    const path = pathForPage(page, lang);
     url.searchParams.delete("open");
     url.searchParams.delete("lang");
-    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
-  }, []);
+    const next = path + url.search + url.hash;
+    if (next !== window.location.pathname + window.location.search + window.location.hash) {
+      window.history.replaceState(window.history.state, "", next);
+    }
+  }, [page, lang]);
 
-  // Browser back/forward: follow the URL.
+  // Browser back/forward: follow the URL, page and language.
   useEffect(() => {
     function onPopState() {
       setScrollTarget(null);
       setPage(pageFromPath(window.location.pathname));
+      setLang(langFromPath(window.location.pathname));
     }
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, []);
+  }, [setLang]);
 
   // A URL for a page that doesn't exist (or isn't loaded yet) shows the
   // homepage rather than a blank screen; an admin-added page appears as
@@ -95,26 +101,30 @@ function AppShell() {
   // Per-page <title>, description, canonical and share tags. Runs after
   // LangContext's theme/branding effect, so it wins over the site-wide
   // defaults set there.
+  // Same rules as the server (backend/app/seo_render.py): the page's
+  // search title/description, else its section title/summary.
   useEffect(() => {
     const siteName = branding?.siteName || "Perennia";
     const home = copy.home;
+    const alternates = Object.fromEntries((supportedLanguages || []).map((code) => [code, pathForPage(shownPage, code)]));
     if (shownPage === "home") {
-      const headline = [home.taglineLine1, home.taglineLine2].filter(Boolean).join(" ");
       applyPageMeta({
-        title: headline ? `${siteName} — ${headline}` : siteName,
-        description: branding?.metaDescription || home.supportingText,
-        path: "/",
+        title: home.seoTitle || siteName,
+        description: home.seoDescription || branding?.metaDescription || home.supportingText,
+        path: pathForPage("home", lang),
+        alternates,
       });
     } else {
       const meta = pages?.[shownPage];
-      const name = `${meta?.line1 || ""}${meta?.line2 || ""}`.trim();
+      const name = meta?.title || meta?.navLabel || `${meta?.line1 || ""}${meta?.line2 || ""}`.trim();
       applyPageMeta({
-        title: name ? `${name} · ${siteName}` : siteName,
-        description: describeMarkdown(meta?.body) || meta?.sub || branding?.metaDescription,
-        path: pathForPage(shownPage),
+        title: meta?.seoTitle || (name ? `${name} | ${siteName}` : siteName),
+        description: meta?.seoDescription || meta?.summary || describeMarkdown(meta?.body) || branding?.metaDescription,
+        path: pathForPage(shownPage, lang),
+        alternates,
       });
     }
-  }, [shownPage, pages, copy, lang, branding]);
+  }, [shownPage, pages, copy, lang, branding, supportedLanguages]);
 
   useEffect(() => {
     if (!scrollTarget || shownPage !== "home") return;

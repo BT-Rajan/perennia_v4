@@ -43,8 +43,11 @@ function parseInline(text, keyPrefix) {
       nodes.push(<strong key={`${keyPrefix}-${i++}`}>{token.slice(2, -2)}</strong>);
     } else if (token.startsWith("[")) {
       const linkMatch = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      // Links to this site's own pages ("/…") stay in the same tab;
+      // anything else opens in a new one.
+      const internal = /^\/(?!\/)/.test(linkMatch[2]);
       nodes.push(
-        <a key={`${keyPrefix}-${i++}`} href={linkMatch[2]} target="_blank" rel="noreferrer">
+        <a key={`${keyPrefix}-${i++}`} href={linkMatch[2]} {...(internal ? {} : { target: "_blank", rel: "noopener noreferrer" })}>
           {linkMatch[1]}
         </a>
       );

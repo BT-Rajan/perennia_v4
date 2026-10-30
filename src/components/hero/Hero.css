@@ -642,6 +642,17 @@
   color: var(--white-soft);
 }
 [dir="rtl"] .hero-capability h3 { font-family: var(--font-ar); }
+.hero-capability-link {
+  display: inline-block;
+  margin-top: var(--space-3);
+  padding-block: 6px;
+  color: var(--gold);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.hero-capability-link:hover { color: var(--brand-accent); }
 .hero-capability p {
   margin: 0;
   color: var(--muted-strong);

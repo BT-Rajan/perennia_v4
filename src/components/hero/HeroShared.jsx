@@ -222,11 +222,12 @@ export function HeroCapabilities({ heading, intro, items, roles, scopeNote, clas
     <section className={`hero-block hero-capabilities ${className || ""}`.trim()} aria-labelledby="hero-capabilities-heading">
       <HeroBlockHead id="hero-capabilities-heading" heading={heading} intro={intro} />
       <GlassPanel className="hero-capabilities-panel">
-        {items.map(({ id, label, lead, body }) => (
+        {items.map(({ id, label, lead, body, link, linkLabel }) => (
           <div key={id} className="hero-capability">
             <h3>{label}</h3>
             <p className="hero-capability-lead">{lead}</p>
             <p>{body}</p>
+            {link && <a className="hero-capability-link" {...link}>{linkLabel}</a>}
           </div>
         ))}
       </GlassPanel>

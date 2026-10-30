@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { buildFallbackSite, dirFor, loadSiteContent } from "../data/siteContent.js";
 import { applyTheme } from "../theme/applyTheme.js";
+import { langFromPath, pathHasLang } from "../seo/pageMeta.js";
 
 const LangContext = createContext(null);
 
@@ -34,7 +35,15 @@ function readUrlLang() {
   }
 }
 
+// Order: a language in the path (/ar/…), then ?lang=, then the
+// visitor's saved choice, then the browser's language. An unprefixed
+// path doesn't force English, so a returning Arabic visitor who opens
+// perennia.org gets Arabic (App.jsx then moves the address to /ar/…).
 function detectInitialLang(supportedLanguages, defaultLanguage) {
+  if (pathHasLang(window.location.pathname)) {
+    const fromPath = langFromPath(window.location.pathname);
+    if (supportedLanguages.includes(fromPath)) return fromPath;
+  }
   const fromUrl = readUrlLang();
   if (fromUrl && supportedLanguages.includes(fromUrl)) return fromUrl;
   const saved = readSavedLang();
