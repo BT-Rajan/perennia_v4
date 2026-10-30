@@ -88,6 +88,9 @@ class InfraSettings(BaseSettings):
     # and without any limit here a client could hammer it indefinitely.
     RATE_LIMIT_LOOKUP: str = "20/hour"
     RATE_LIMIT_KNOWLEDGE_UPLOAD: str = "10/hour"
+    # Per-IP chat messages. Separate from bookings: a normal conversation
+    # is many messages, and each one costs an LLM call.
+    RATE_LIMIT_CHAT: str = "40/hour"
 
     LOG_DIR: Path = BASE_DIR / "logs"
     DATA_DIR: Path = BASE_DIR / "data"

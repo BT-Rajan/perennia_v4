@@ -488,7 +488,9 @@
       "mic_unsupported": "Voice input isn't supported in this browser — try Chrome or Edge, or use the text box instead.",
       "mic_denied": "Microphone access was blocked. Allow microphone access in your browser settings to talk to the assistant.",
       "mute_tts": "Mute replies",
-      "unmute_tts": "Unmute replies"
+      "unmute_tts": "Unmute replies",
+      "error_reply": "Sorry — I couldn't send that just now. Please try again in a moment, or book a meeting and we'll talk directly.",
+      "rate_limited_reply": "You've sent a lot of messages in a short time. Please wait a little before trying again, or book a meeting and we'll talk directly."
     },
     "ar": {
       "tagline_line1": "ذكاء اصطناعي عملي. ",
@@ -508,7 +510,9 @@
       "mic_unsupported": "الإدخال الصوتي غير مدعوم في هذا المتصفح — جرّب Chrome أو Edge، أو استخدم مربع الكتابة بدلاً من ذلك.",
       "mic_denied": "تم حظر الوصول إلى الميكروفون. يرجى السماح بالوصول إليه من إعدادات المتصفح للتحدث مع المساعد.",
       "mute_tts": "كتم الردود الصوتية",
-      "unmute_tts": "تفعيل الردود الصوتية"
+      "unmute_tts": "تفعيل الردود الصوتية",
+      "error_reply": "عذرًا — تعذّر إرسال رسالتك الآن. يرجى المحاولة مرة أخرى بعد قليل، أو احجز اجتماعًا وسنتحدث مباشرة.",
+      "rate_limited_reply": "لقد أرسلت عددًا كبيرًا من الرسائل في وقت قصير. يرجى الانتظار قليلًا قبل المحاولة مرة أخرى، أو احجز اجتماعًا وسنتحدث مباشرة."
     }
   },
   "booking": {
@@ -562,7 +566,8 @@
         "missing_required_answer": "Please answer all required questions.",
         "already_cancelled": "This appointment has already been cancelled.",
         "booking_disabled": "Booking is currently unavailable — please check back soon.",
-        "generic": "Something went wrong — please try again."
+        "generic": "Something went wrong — please try again.",
+        "rate_limited": "Too many attempts in a short time — please wait a few minutes and try again."
       }
     },
     "ar": {
@@ -615,7 +620,8 @@
         "missing_required_answer": "يرجى الإجابة عن جميع الأسئلة المطلوبة.",
         "already_cancelled": "تم إلغاء هذا الموعد بالفعل.",
         "booking_disabled": "الحجز غير متاح حاليًا — يرجى المحاولة لاحقًا.",
-        "generic": "حدث خطأ ما — يرجى المحاولة مرة أخرى."
+        "generic": "حدث خطأ ما — يرجى المحاولة مرة أخرى.",
+        "rate_limited": "محاولات كثيرة في وقت قصير — يرجى الانتظار بضع دقائق ثم المحاولة مرة أخرى."
       }
     }
   },

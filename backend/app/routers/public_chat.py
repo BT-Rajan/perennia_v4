@@ -25,7 +25,7 @@ class ChatRequest(BaseModel):
 
 
 @router.post("")
-@limiter.limit(settings.RATE_LIMIT_APPOINTMENT)  # same conservative per-IP budget as booking actions
+@limiter.limit(settings.RATE_LIMIT_CHAT)
 def chat(request: Request, body: ChatRequest, db: Session = Depends(get_db)):
     reply, lead_captured = chat_service.get_reply(
         db, message=body.message, lang=body.lang,

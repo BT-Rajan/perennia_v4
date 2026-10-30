@@ -119,7 +119,8 @@ export default function ChatWidget({ open, onClose, onBookingClick, initialMessa
     setDraft("");
     setTyping(true);
     const history = historyOverride ?? messages.map(({ from, text }) => ({ from, text }));
-    const { reply, leadCaptured } = await api.chat(outgoing, lang, history, leadCapturedRef.current);
+    const { reply: answer, error, leadCaptured } = await api.chat(outgoing, lang, history, leadCapturedRef.current);
+    const reply = error ? (error === "rate_limited" ? t.rateLimitedReply : t.errorReply) : answer;
     leadCapturedRef.current = leadCaptured;
     setTyping(false);
     setMessages((m) => [...m, { from: "ai", text: reply }]);

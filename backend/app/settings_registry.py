@@ -655,7 +655,8 @@ _DEFS: list[SettingDef] = [
                           "have it type across two lines instead of one."),
     SettingDef("copy.chat", "copy", "Chat screen text", SettingType.JSON, _SITE_COPY["chat"], i18n=True,
                help_text="Chat widget labels and messages: header, online_status, welcome_msg, input_placeholder, "
-                          "faq_title, book_btn, the mic_* and *_tts voice controls, and powered_by. Any key left "
+                          "faq_title, book_btn, the mic_* and *_tts voice controls, powered_by, and error_reply / "
+                          "rate_limited_reply (shown when a message can't be sent). Any key left "
                           "out falls back to the bundled default text."),
     SettingDef("copy.booking", "copy", "Appointment flow text", SettingType.JSON, _SITE_COPY["booking"], i18n=True,
                help_text="Field labels and status messages for the booking panel, including validation and "

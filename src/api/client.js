@@ -3,24 +3,35 @@
 // hardcoded host:port — see vite.config.js for the matching dev-time
 // proxy to the Python backend (backend/app/main.py).
 //
-// If the backend isn't reachable (e.g. running `npm run dev` without
-// it started), every call transparently falls back to an in-memory
-// mock so the UI is still fully explorable.
+// In development only (`npm run dev`, possibly without the backend),
+// a failed call falls back to an in-memory mock so the UI is still
+// explorable. A production build never does: a failed booking or chat
+// request is reported as an error, never as a fake success.
 // ──────────────────────────────────────────────────────────
 
 const API_BASE = "api";
+const USE_MOCKS = import.meta.env.DEV;
 
-export async function tryFetch(path, options) {
+// { data } on success, otherwise { error } with a booking error code
+// ("rate_limited" for HTTP 429, "generic" for anything else).
+async function request(path, options) {
   try {
     const res = await fetch(`${API_BASE}/${path}`, {
       headers: { "Content-Type": "application/json" },
       ...options,
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
-  } catch (err) {
-    return null; // signal caller to use the mock
+    if (!res.ok) return { error: res.status === 429 ? "rate_limited" : "generic" };
+    return { data: await res.json() };
+  } catch {
+    return { error: "generic" };
   }
+}
+
+// For read-only site content, where the caller has bundled fallback
+// data: null on any failure.
+export async function tryFetch(path, options) {
+  const { data } = await request(path, options);
+  return data ?? null;
 }
 
 // ---- Mock data used only when no backend is present ----
@@ -41,13 +52,15 @@ function mockSlotsFor(dateStr) {
 }
 
 export const api = {
+  // { reply, leadCaptured } or { error }; the widget shows its own
+  // error text, since the message never reached anyone.
   async chat(message, lang, history, leadCaptured) {
-    const data = await tryFetch("chat", {
+    const { data, error } = await request("chat", {
       method: "POST",
       body: JSON.stringify({ message, lang, history, leadCaptured: !!leadCaptured }),
     });
     if (data) return { reply: data.reply, leadCaptured: !!data.leadCaptured };
-    // mock fallback: simple canned response
+    if (!USE_MOCKS) return { error, leadCaptured: !!leadCaptured };
     return {
       reply: lang === "ar"
         ? "شكرًا لك! سيقوم أحد أعضاء فريقنا بمتابعة رسالتك قريبًا. هل ترغب في حجز موعد؟"
@@ -67,28 +80,30 @@ export const api = {
 
   async getSlots(date, serviceId) {
     const qs = serviceId ? `booking/slots?date=${date}&service_id=${serviceId}` : `booking/slots?date=${date}`;
-    const data = await tryFetch(qs);
+    const { data } = await request(qs);
     if (data) return data.slots;
-    return mockSlotsFor(date);
+    return USE_MOCKS ? mockSlotsFor(date) : [];
   },
 
   async createAppointment(payload) {
-    const data = await tryFetch("booking/appointments", {
+    const { data, error } = await request("booking/appointments", {
       method: "POST",
       body: JSON.stringify(payload),
     });
     if (data) return data;
+    if (!USE_MOCKS) return { ok: false, error };
     const id = genId();
     mockAppointments.set(id, { ...payload, id, status: "confirmed" });
     return { ok: true, id };
   },
 
   async lookupAppointment(id, email) {
-    const data = await tryFetch("booking/appointments/lookup", {
+    const { data, error } = await request("booking/appointments/lookup", {
       method: "POST",
       body: JSON.stringify({ id, email }),
     });
     if (data) return data;
+    if (!USE_MOCKS) return { ok: false, error };
     const appt = mockAppointments.get(id);
     if (appt && appt.email?.toLowerCase() === email.toLowerCase()) {
       return { ok: true, appointment: appt };
@@ -97,22 +112,24 @@ export const api = {
   },
 
   async cancelAppointment(id, email) {
-    const data = await tryFetch("booking/appointments/cancel", {
+    const { data, error } = await request("booking/appointments/cancel", {
       method: "POST",
       body: JSON.stringify({ id, email }),
     });
     if (data) return data;
+    if (!USE_MOCKS) return { ok: false, error };
     const appt = mockAppointments.get(id);
     if (appt) appt.status = "cancelled";
     return { ok: true };
   },
 
   async rescheduleAppointment(id, email, date, time) {
-    const data = await tryFetch("booking/appointments/reschedule", {
+    const { data, error } = await request("booking/appointments/reschedule", {
       method: "POST",
       body: JSON.stringify({ id, email, date, time }),
     });
     if (data) return data;
+    if (!USE_MOCKS) return { ok: false, error };
     const appt = mockAppointments.get(id);
     if (appt) Object.assign(appt, { date, time });
     return { ok: true };
