@@ -40,6 +40,22 @@ PUBLIC_DIST = PROJECT_ROOT / "dist"          # `npm run build` output (root)
 ADMIN_DIST = PROJECT_ROOT / "admin" / "dist"  # `npm run build` output (admin/)
 
 
+def _built_file(root: Path, rel_path: str) -> Path | None:
+    """The file at root/rel_path, only if it really is inside root.
+
+    The SPA routes take an arbitrary {full_path:path}, and an encoded
+    "..%2f" arrives here already decoded to "../": without this check,
+    /static/..%2f..%2fbackend/.env would serve the backend's secrets.
+    """
+    if not rel_path:
+        return None
+    base = root.resolve()
+    candidate = (base / rel_path).resolve()
+    if candidate.is_relative_to(base) and candidate.is_file():
+        return candidate
+    return None
+
+
 def create_app() -> FastAPI:
     app = FastAPI(
         title="Perennia API",
@@ -140,10 +156,8 @@ def create_app() -> FastAPI:
         @app.get("/admin", include_in_schema=False)
         @app.get("/admin/{full_path:path}", include_in_schema=False)
         async def admin_spa(full_path: str = "") -> FileResponse:
-            candidate = ADMIN_DIST / full_path
-            if full_path and candidate.is_file():
-                return FileResponse(candidate)
-            return FileResponse(ADMIN_DIST / "index.html")
+            built = _built_file(ADMIN_DIST, full_path)
+            return FileResponse(built or ADMIN_DIST / "index.html")
 
     if PUBLIC_DIST.is_dir():
         public_assets = PUBLIC_DIST / "assets"
@@ -153,9 +167,9 @@ def create_app() -> FastAPI:
         @app.get("/", include_in_schema=False)
         @app.get("/{full_path:path}", include_in_schema=False)
         async def public_spa(request: Request, full_path: str = ""):
-            candidate = PUBLIC_DIST / full_path
-            if full_path and candidate.is_file():
-                return FileResponse(candidate)
+            built = _built_file(PUBLIC_DIST, full_path)
+            if built:
+                return FileResponse(built)
             # index.html carries __SITE_URL__/__PAGE_URL__ placeholders in
             # its canonical, Open Graph and JSON-LD tags (link previews
             # need absolute URLs and don't run JavaScript); fill them from
