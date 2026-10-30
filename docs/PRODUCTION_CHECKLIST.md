@@ -87,15 +87,15 @@ canonical, share tags, favicon, sitemap, robots and 404 page.
 
 | # | Check | perennia.org | apps.perennia.org | Evidence / action |
 |---|---|---|---|---|
-| 3.1 | Unique `<title>` per page | ✅ ⚠️ | ✅ | All unique. ⚠️ Main-site titles use the page tagline ("What We Do · Perennia") while the page heading says "Solutions": consider titles that match the nav label. |
-| 3.2 | Meta description per page | ✅ | ✅ | |
+| 3.1 | Unique, keyword-targeted `<title>` per page | 🔧 | 🔧 | Server-rendered per page and language from each page's *Search title* (admin field), e.g. "Custom Software Development Company in Kuwait \| Perennia"; keyword map in `docs/SEO.md`. Before, every URL served the same title until JavaScript ran. |
+| 3.2 | Meta description per page | 🔧 | ✅ | Server-rendered from each page's *Search description* (about 155 characters). |
 | 3.3 | Canonical URL | ✅ | 🔧 | Main: filled per request by the backend. Apps: added (`https://apps.perennia.org/<page>`); internal links use `/`, not `index.html`, so one page has one URL. |
 | 3.4 | Exactly one `<h1>` per page | 🔧 | 🔧 | Main: Labs, JDK Factory ERP, Privacy and Terms had none; the tagline is now the `<h1>` when the page body has no `# ` heading. Apps: no page had one; each title is now the `<h1>`. |
 | 3.5 | Open Graph / Twitter share tags with image | ✅ | 🔧 | Main share image 1200×630 (249 KB). Apps now use the same image. |
 | 3.6 | `robots.txt` and `sitemap.xml` | ✅ | 🔧 | Main: generated per request from the visible pages (9 URLs). Apps: generated static files (6 URLs). Submit both sitemaps in Google Search Console (🔍). |
-| 3.7 | Arabic content indexable | ⚠️ | 🔧 | Main: both languages share one URL; `?lang=ar` now opens any page in Arabic, but search engines still index English only. Separate URLs (e.g. `/ar/...`) plus `hreflang` remain a product decision. Apps: every page has an Arabic version under `/ar/` with `hreflang` en/ar/x-default, and the sitemap lists both. |
-| 3.8 | Structured data | ✅ | ⚠️ | Main: JSON-LD Organization in `index.html`. Apps: none. |
-| 3.9 | Favicon and app icons | ⚠️ | 🔧 | Main favicon ✅, but `apple-touch-icon` is an SVG (iOS ignores it) and the web manifest has only SVG icons: add 180×180, 192×192 and 512×512 PNGs. Apps: favicon added (shared with the main site). |
+| 3.7 | Arabic content indexable | 🔧 | 🔧 | Main: Arabic now has its own URLs (`/ar/...`) with `hreflang` en/ar/x-default, server-rendered in Arabic, listed in the sitemap with alternates. Apps: same, under `/ar/`. |
+| 3.8 | Structured data | 🔧 | 🔧 | Main: ProfessionalService (Kuwait, six GCC countries, topics, phone, profiles), WebSite, WebPage, BreadcrumbList; Service and FAQPage on the three service pages. Apps: WebPage, BreadcrumbList and Article per case study, tied to the same organization. Validate live at search.google.com/test/rich-results. |
+| 3.9 | Favicon and app icons | 🔧 | ✅ | PNG `apple-touch-icon` (180) and manifest icons (192, 512) rendered from the favicon. |
 
 ## 4. Content and copy
 
