@@ -93,7 +93,7 @@ canonical, share tags, favicon, sitemap, robots and 404 page.
 | 3.4 | Exactly one `<h1>` per page | 🔧 | 🔧 | Main: Labs, JDK Factory ERP, Privacy and Terms had none; the tagline is now the `<h1>` when the page body has no `# ` heading. Apps: no page had one; each title is now the `<h1>`. |
 | 3.5 | Open Graph / Twitter share tags with image | ✅ | 🔧 | Main share image 1200×630 (249 KB). Apps now use the same image. |
 | 3.6 | `robots.txt` and `sitemap.xml` | ✅ | 🔧 | Main: generated per request from the visible pages (9 URLs). Apps: generated static files (6 URLs). Submit both sitemaps in Google Search Console (🔍). |
-| 3.7 | Arabic content indexable | ⚠️ | — | Both languages share one URL and Arabic loads only after the toggle, so search engines see English only. Indexing Arabic needs separate URLs (e.g. `/ar/...`) plus `hreflang`: a product decision. Apps are English only. |
+| 3.7 | Arabic content indexable | ⚠️ | 🔧 | Main: both languages share one URL; `?lang=ar` now opens any page in Arabic, but search engines still index English only. Separate URLs (e.g. `/ar/...`) plus `hreflang` remain a product decision. Apps: every page has an Arabic version under `/ar/` with `hreflang` en/ar/x-default, and the sitemap lists both. |
 | 3.8 | Structured data | ✅ | ⚠️ | Main: JSON-LD Organization in `index.html`. Apps: none. |
 | 3.9 | Favicon and app icons | ⚠️ | 🔧 | Main favicon ✅, but `apple-touch-icon` is an SVG (iOS ignores it) and the web manifest has only SVG icons: add 180×180, 192×192 and 512×512 PNGs. Apps: favicon added (shared with the main site). |
 
@@ -104,7 +104,7 @@ canonical, share tags, favicon, sitemap, robots and 404 page.
 | 4.1 | Legal pages final | ❌ | — | `privacy.md` and `terms.md` (EN and AR) still start with "Placeholder — draft text" and contain `[DATE]`, `[CONTACT EMAIL]` and `[PLACEHOLDER]`. Google OAuth verification links to the privacy page. Apps link to the main site's legal pages. |
 | 4.2 | No placeholder text elsewhere | ✅ | ✅ | Only the legal pages above. |
 | 4.3 | Same names and facts on both sites | ✅ | ✅ | Shared copy in `src/content/*.json`; "JDK Factory ERP" and its workflow stages match on both sites. |
-| 4.4 | Arabic parity | ✅ | — | All 8 Markdown pages have matching heading structure in EN and AR; every page crawled in Arabic renders `lang="ar"` `dir="rtl"` with Arabic titles. Apps are English only (decision). |
+| 4.4 | Arabic version and language switch on every page | ✅ | 🔧 | Main: all 10 page types have the AR/EN switch at desktop and phone width; each switches fully to `lang="ar"` `dir="rtl"` and back, the choice is remembered, and `?lang=ar`/`?lang=en` selects it from a link. Apps: Arabic versions of all 7 pages (`apps-site/ar/`, content in `apps-site/source/content_ar.py`), each with an "AR \| عربي" / "EN \| English" switch to the same page in the other language; links to perennia.org keep the language. 28 page checks pass (7 pages × 2 languages × 2 widths). |
 | 4.5 | Contact details consistent | ✅ ⚠️ | ✅ | Phone +965 9933 1344 on both. No contact email is configured (`contact.email`); the Contact page's Email bullet was removed in the repo. |
 | 4.6 | Live database content matches the repo | 🔍 | — | The seed never overwrites existing rows, so the live site may still show older text: the Contact page's Email bullet, chat header "Perennia Assistant", the FAQ "book a consultation", and old Arabic Solutions/Products summaries. Edit them in the admin panel. |
 | 4.7 | Copyright year current | ✅ | ✅ | Main computes it; apps take it from the build date (regenerate yearly). |
@@ -226,6 +226,7 @@ done
 
 ```nginx
 error_page 404 /404.html;
+location /ar/ { error_page 404 /ar/404.html; }
 gzip on;
 gzip_types text/css application/javascript image/svg+xml application/xml text/plain;
 add_header X-Content-Type-Options nosniff always;
