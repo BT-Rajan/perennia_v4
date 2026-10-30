@@ -63,15 +63,12 @@ Each target phrase has one page that owns it, so pages don't compete.
 5. **Pages:** existing live pages got search titles/descriptions on deploy (only where empty). Review the
    *Search title* and *Search description* fields on each page; keep titles about 60 characters with the
    keyword first.
-6. **Homepage headline (recommended):** the hero headline "Technology that moves your business forward."
-   is the homepage `<h1>` and contains no search terms. Consider making the supporting line say what you are,
-   e.g. *"Perennia is a Kuwait-based AI and custom software development company, helping GCC businesses
-   adopt, build and scale technology — from IT strategy to practical AI."* (Settings → On-screen text →
-   Home).
-7. **Solutions page:** its live text predates the new pages. Add a "learn more" link under Technology, AI
-   and Advisory to `/software-development`, `/ai-implementation` and `/it-strategy` (the bundled copy in
-   `src/content/*/services.md` shows the wording), and consider a keyword-bearing heading such as
-   "Software, AI and IT Strategy Solutions in Kuwait".
+6. **Homepage headline:** now "AI & Custom Software Development for Kuwait and the GCC." /
+   "الذكاء الاصطناعي وتطوير البرمجيات المخصصة للكويت ودول الخليج.", with a supporting line naming
+   IT strategy and AI implementation. Deploys update it on the live site unless it was edited in
+   Settings → On-screen text → Home (the deploy log says which).
+7. **Solutions page:** links to the three service pages; deploys add them on the live site unless the
+   page was edited in the admin panel (the deploy log says so — then add them in Pages → Solutions).
 
 ## 4. Authority — what usually decides #1 in Kuwait
 
