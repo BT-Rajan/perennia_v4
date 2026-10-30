@@ -407,6 +407,24 @@ else
 fi
 
 # ----------------------------------------------------------------------------
+# 6b. apps.perennia.org static site (apps-site/ -> APPS_WEBROOT)
+#     Copies the top-level files of apps-site/ over the apps webroot. It
+#     never deletes anything there, and never touches promo/ or .well-known/.
+#     Set APPS_WEBROOT to override, or APPS_WEBROOT="" to skip.
+# ----------------------------------------------------------------------------
+
+APPS_WEBROOT="${APPS_WEBROOT-/home/perenniaapps/htdocs/apps.perennia.org}"
+if [[ -z "$APPS_WEBROOT" ]]; then
+    log "APPS_WEBROOT is empty — skipping the apps site"
+elif [[ ! -d "$APPS_WEBROOT" ]]; then
+    warn "Apps webroot $APPS_WEBROOT does not exist — skipping the apps site"
+else
+    log "Deploying apps-site/ to $APPS_WEBROOT"
+    find "$ROOT_DIR/apps-site" -maxdepth 1 -type f -print0 | xargs -0 -r -I{} cp -f {} "$APPS_WEBROOT"/
+    log "Apps site updated: $(find "$ROOT_DIR/apps-site" -maxdepth 1 -type f | wc -l) files"
+fi
+
+# ----------------------------------------------------------------------------
 # 7. pm2
 # ----------------------------------------------------------------------------
 
