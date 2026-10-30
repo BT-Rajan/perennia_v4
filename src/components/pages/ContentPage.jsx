@@ -5,7 +5,6 @@ import SiteFooter from "../layout/SiteFooter.jsx";
 import GlassPanel from "../ui/GlassPanel.jsx";
 import Markdown from "../ui/Markdown.jsx";
 import PageIllustration, { asideProps } from "../ui/PageIllustration.jsx";
-import { COPY } from "../../data/content.js";
 import { PAGE_ILLUSTRATIONS } from "../../data/pageIllustrations.js";
 import "./ContentPage.css";
 
@@ -24,7 +23,7 @@ export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick
   // label and booking panel as the homepage's primary CTA, falling back
   // to the Contact page when booking is switched off.
   const cta = {
-    label: copy.home?.ctaPrimary ?? (COPY[lang] ?? COPY.en).home.ctaPrimary,
+    label: copy.home.ctaPrimary,
     onClick: features?.bookingEnabled && onBookingClick ? onBookingClick : () => onNavigate("contact"),
   };
 

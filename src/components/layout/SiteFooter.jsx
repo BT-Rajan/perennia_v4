@@ -1,5 +1,4 @@
 import { useLang } from "../../context/LangContext.jsx";
-import { COPY } from "../../data/content.js";
 import { pathForPage } from "../../seo/pageMeta.js";
 import "./SiteFooter.css";
 
@@ -12,10 +11,9 @@ import "./SiteFooter.css";
  * it. `onNavigate` is the same handler the page passes to TopBar.
  */
 export default function SiteFooter({ onNavigate }) {
-  const { nav, copy, lang, branding, contact } = useLang();
-  const fallback = COPY[lang] ?? COPY.en;
-  const common = { ...fallback.common, ...copy.common };
-  const tagline = copy.home?.eyebrow ?? fallback.home.eyebrow;
+  const { nav, copy, branding, contact } = useLang();
+  const common = copy.common;
+  const tagline = copy.home.eyebrow;
   const whatsappDigits = (contact?.whatsappNumber || "").replace(/\D/g, "");
 
   return (
