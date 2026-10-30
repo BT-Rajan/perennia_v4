@@ -4,7 +4,29 @@ import { applyTheme } from "../theme/applyTheme.js";
 
 const LangContext = createContext(null);
 
+// The visitor's own choice (the AR/EN toggle) wins over the browser's
+// language, and survives reloads, new tabs and shared links opened later.
+const LANG_KEY = "perennia.lang";
+
+function readSavedLang() {
+  try {
+    return window.localStorage.getItem(LANG_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function saveLang(lang) {
+  try {
+    window.localStorage.setItem(LANG_KEY, lang);
+  } catch {
+    // Storage blocked (private mode etc.): the choice lasts this visit only.
+  }
+}
+
 function detectInitialLang(supportedLanguages, defaultLanguage) {
+  const saved = readSavedLang();
+  if (saved && supportedLanguages.includes(saved)) return saved;
   if (typeof navigator === "undefined") return defaultLanguage;
   const nav = (navigator.language || navigator.languages?.[0] || "").toLowerCase();
   const match = supportedLanguages.find((code) => nav.startsWith(code));
@@ -84,6 +106,10 @@ export function LangProvider({ children }) {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    saveLang(lang);
+  }, [lang]);
 
   const resolvedBranding = useMemo(
     () => resolveBranding(site.branding, lang, site.defaultLanguage),

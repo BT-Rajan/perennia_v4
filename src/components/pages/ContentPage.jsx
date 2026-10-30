@@ -33,6 +33,9 @@ export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick
 
   if (!meta) return null; // an admin-removed or not-yet-loaded page id; nothing to render
   const illustration = PAGE_ILLUSTRATIONS[pageId];
+  // Every page needs exactly one <h1>: the body's own "# Title" when it
+  // has one, otherwise the tagline above the content.
+  const TaglineTag = /^# /m.test(meta.body || "") ? "div" : "h1";
 
   return (
     <div className="content-page">
@@ -40,10 +43,10 @@ export default function ContentPage({ pageId, onBack, onNavigate, onBookingClick
 
       <main className="content-main">
         <div className="content-tagline">
-          <div className="content-tagline-main">
+          <TaglineTag className="content-tagline-main">
             <span>{meta.line1}</span>
             <span className="gold">{meta.line2}</span>
-          </div>
+          </TaglineTag>
           <div className="content-tagline-divider" />
           <div className="content-tagline-sub">{meta.sub}</div>
         </div>

@@ -39,7 +39,7 @@ export default function SiteFooter({ onNavigate }) {
           <h2>{common.footerContact}</h2>
           <ul>
             {contact?.email && <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>}
-            {contact?.phone && <li><a href={`tel:${contact.phone}`}>{contact.phone}</a></li>}
+            {contact?.phone && <li><a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} dir="ltr">{contact.phone}</a></li>}
             {whatsappDigits && (
               <li><a href={`https://wa.me/${whatsappDigits}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
             )}
